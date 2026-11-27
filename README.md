@@ -93,6 +93,7 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Agent | `polyglot-dev:refactorer` | Test-first refactoring in small green steps; never mixes refactor with behavior change |
 | Knowledge | `polyglot-dev:javascript-typescript`, `polyglot-dev:python`, `polyglot-dev:go`, `polyglot-dev:ci-cd`, `polyglot-dev:testing`, `polyglot-dev:docker`, `polyglot-dev:databases` | Toolchains, conventions, and diagnostics per language plus CI/CD, testing, containers, databases |
 | Hook | `guard-destructive-commands` | Pre-tool guard on `bash` (see below) |
+| Hook | `guard-secrets-in-git` | On `git add`/`git commit`, scans staged/unstaged/untracked content for secret patterns and blocks the command |
 
 ## The destructive-command guard
 
@@ -120,6 +121,17 @@ Deliberate overrides via environment variables:
 
 - `POLYGLOT_GUARD_DISABLED=1` — disables every block
 - `POLYGLOT_GUARD_ALLOW_PROTECTED_PUSH=1` — allows pushing to protected branches
+
+## The secrets guard
+
+`guard_secrets.py` also runs as a `pre_tool` hook on `bash`. When the command
+contains `git add` or `git commit`, it scans the staged diff, unstaged diff,
+and untracked files (skipping lockfiles and minified bundles) for likely
+secrets: AWS keys, GitHub/Slack/Stripe/Google tokens, private key blocks, and
+generic `api_key`/`secret`/`token` assignments. Findings are reported masked
+(first/last characters only) and the command is blocked.
+
+Override for a deliberate, informed case: `POLYGLOT_SECRETS_DISABLED=1`.
 
 ## Install
 

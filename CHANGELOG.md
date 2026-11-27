@@ -23,6 +23,11 @@ versioning is semantic.
   device, redirects and `cp`/`mv`/`tee` onto block devices (`/dev/sd*`,
   `/dev/nvme*`, ...), `kubectl delete --all[--namespaces]`, and
   `git push --delete` / `git push :ref`. 23 new test cases.
+- New hook `guard-secrets-in-git` (`guard_secrets.py`): on `git add`/`git
+  commit`, scans staged, unstaged, and untracked content for secret patterns
+  (AWS, GitHub, Slack, Stripe, Google keys, private key blocks, generic
+  api_key/secret/token assignments) and blocks the command. Override:
+  `POLYGLOT_SECRETS_DISABLED=1`. 18 new test cases.
 
 ## [1.3.0] - 2026-11-27
 

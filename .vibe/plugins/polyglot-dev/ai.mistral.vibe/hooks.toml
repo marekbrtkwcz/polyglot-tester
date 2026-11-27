@@ -4,3 +4,10 @@ type = "pre_tool"
 match = "bash"
 command = "python guard_destructive.py"
 strict = true
+
+[[hooks]]
+name = "guard-secrets-in-git"
+type = "pre_tool"
+match = "bash"
+command = "python guard_secrets.py"
+strict = true
