@@ -72,6 +72,19 @@ def test_ignores_non_commit_commands():
     assert wip_guard.is_wip_commit('echo "WIP"') is False
 
 
+def test_ignores_dash_m_of_other_tools_in_same_line():
+    # `-m wip` belongs to pytest here, not to git commit
+    assert wip_guard.is_wip_commit('pytest -m wip && git commit -m "fix bug"') is False
+    assert wip_guard.is_wip_commit('git commit -m "fix bug" && pytest -m wip') is False
+    assert wip_guard.is_wip_commit('git commit -m "fix bug"; pytest -m wip') is False
+
+
+def test_blocks_wip_in_any_commit_of_a_chain():
+    assert (
+        wip_guard.is_wip_commit('git commit -m "ok" && git commit -m "WIP: x"') is True
+    )
+
+
 def test_subject_from_file(tmp_path):
     msg = tmp_path / "msg.txt"
     msg.write_text("\nWIP: from file\n", encoding="utf-8")

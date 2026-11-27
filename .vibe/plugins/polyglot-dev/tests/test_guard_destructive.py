@@ -54,6 +54,8 @@ def assert_blocked(result, reason):
         "rm -r --force build",
         "rm --recursive -f build",
         "rm -vrf build",
+        "rm -irfv build",  # 4-letter cluster, not a long parameter
+        "rm -dvrf build",
         "sudo rm -rf /",
         "echo hi && rm -rf build",
         "cd /tmp && rm -rf .cache",
@@ -254,6 +256,10 @@ PROTECTED_REASON = (
         "git push origin release/2.0",
         "git push main",
         "git push origin main --force-with-lease",
+        "git push origin HEAD:main",  # refspec destination decides
+        "git push origin main:main",
+        "git push origin refs/heads/main",
+        "git push origin HEAD:release/1.0",
     ],
 )
 def test_protected_push_blocked(command):
@@ -264,7 +270,9 @@ def test_protected_push_blocked(command):
     "command",
     [
         "git push origin feature/new-ui",
-        "git push origin HEAD:main",  # refspec form is not the branch shorthand
+        "git push origin main:feature/x",  # source may be main, destination is not
+        "git push origin HEAD:refs/heads/feature/x",
+        "git push --dry-run origin main",  # dry-run changes nothing on the remote
         "git push",
     ],
 )

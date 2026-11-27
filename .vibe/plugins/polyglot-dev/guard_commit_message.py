@@ -1,8 +1,10 @@
 """Pre-tool guard: block WIP commit messages.
 
 When a bash command contains `git commit`, extracts the commit subject —
-from the first -m/--message argument, or the first line of a -F/--file
-message file — and exits non-zero when the subject starts with WIP
+from the first -m/--message argument of that `git commit` segment (flags of
+other tools in the same line, e.g. `pytest -m wip`, are ignored), or the
+first line of a -F/--file message file — and exits non-zero when the
+subject starts with WIP
 (optionally bracketed: [WIP], (wip)). Everything else passes.
 
 Fail-open on anything unreadable or unrecognized: the guard must never
@@ -22,10 +24,10 @@ import re
 import sys
 
 try:
-    from guard_destructive import extract_command
+    from guard_destructive import extract_command, segment_after
 except ImportError:  # pragma: no cover - hook always runs from the plugin dir
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    from guard_destructive import extract_command
+    from guard_destructive import extract_command, segment_after
 
 GIT_COMMIT = re.compile(r"\bgit\s+commit\b")
 
@@ -47,10 +49,23 @@ def unquote(token):
     return token
 
 
+def commit_segments(command):
+    """Each `git commit` argument segment, cut at the next shell separator.
+
+    `-m` flags of other tools in the same line (e.g. `pytest -m wip`) must
+    not be read as a commit message.
+    """
+    for match in GIT_COMMIT.finditer(command):
+        yield segment_after(command, match.end())
+
+
 def subject_from_command(command):
-    """Best-effort commit subject from -m args (first wins); None if absent."""
-    messages = [unquote(m) for m in MESSAGE_ARG.findall(command)]
-    return messages[0] if messages else None
+    """First commit subject found in a `git commit` segment; None if absent."""
+    for segment in commit_segments(command):
+        messages = [unquote(m) for m in MESSAGE_ARG.findall(segment)]
+        if messages:
+            return messages[0]
+    return None
 
 
 def subject_from_file(path):
@@ -65,18 +80,24 @@ def subject_from_file(path):
 
 
 def is_wip_commit(command):
-    """True when a git commit in the command carries a WIP subject."""
+    """True when any `git commit` segment carries a WIP subject.
+
+    Per segment the first -m wins (later -m args are the body); -F files
+    are consulted only when the segment has no -m.
+    """
     if not GIT_COMMIT.search(command):
         return False
-    subject = subject_from_command(command)
-    if subject is None:
-        for path in MESSAGE_FILE.findall(command):
-            subject = subject_from_file(path)
-            if subject:
-                break
-    if subject is None:
-        return False
-    return bool(WIP_SUBJECT.match(subject))
+    for segment in commit_segments(command):
+        messages = [unquote(m) for m in MESSAGE_ARG.findall(segment)]
+        subject = messages[0] if messages else None
+        if subject is None:
+            for path in MESSAGE_FILE.findall(segment):
+                subject = subject_from_file(path)
+                if subject:
+                    break
+        if subject and WIP_SUBJECT.match(subject):
+            return True
+    return False
 
 
 EMPTY = object()  # sentinel: stdin was empty, not merely unparseable

@@ -134,6 +134,27 @@ versioning is semantic.
 - `rm` flag detection in the destructive-command guard is now
   case-insensitive: the GNU uppercase spelling `rm -Rf` and the capitalized
   PowerShell `-Recurse`/`-Force` parameters no longer bypass it.
+- Secrets guard no longer blocks a fix commit that REMOVES a leaked key:
+  the git diff is scanned for added (`+`) lines only, so `-` lines never
+  match. A plain `git commit` also no longer scans the unstaged diff (it
+  stages nothing from the worktree); the unstaged diff is still scanned
+  for `git add` and `git commit -a`, and untracked files for `git add`.
+- `SKIP_PATHS` in the secrets guard now also excludes `uv.lock`,
+  `poetry.lock`, `bun.lock`/`bun.lockb`, and `*.map` source maps; the
+  pattern list gained OpenAI (`sk-proj-`/`sk-svcacct-`/legacy `sk-`),
+  Anthropic (`sk-ant-`), and HuggingFace (`hf_`) keys.
+- `is_bulk_rm` treats any single-dash token made only of GNU rm short-flag
+  letters as an option cluster, so 4+-letter clusters like `rm -irfv` or
+  `rm -dvrf` are blocked too (long parameters such as `-Confirm` still
+  pass).
+- Protected-push detection is token-based now: refspec destinations count
+  (`git push origin HEAD:main`, `refs/heads/main`, `HEAD:release/1.0` are
+  blocked; `main:feature/x` is not), and `--dry-run` pushes are never
+  treated as protected.
+- The WIP-commit guard only reads `-m`/`--message`/`-F` inside the
+  `git commit` segment of the command, so `pytest -m wip && git commit -m
+  "fix"` no longer false-positives; a WIP subject in ANY commit of a
+  chain still blocks.
 
 ## [1.5.0] - 2026-11-27
 

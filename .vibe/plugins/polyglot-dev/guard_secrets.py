@@ -1,9 +1,12 @@
 """Pre-tool guard: block committing or writing likely secrets.
 
-When a bash command contains `git add` or `git commit`, scans the staged
-diff, the unstaged diff, and untracked files for known secret patterns
-(AWS keys, GitHub/Slack/Stripe tokens, private key blocks, generic
-api_key/secret assignments). Exits non-zero with the findings on stderr.
+When a bash command contains `git add` or `git commit`, scans the ADDED
+lines of the staged diff — plus the unstaged diff for `git add` and
+`git commit -a`, and untracked files for `git add` — for known secret
+patterns (AWS keys, GitHub/Slack/Stripe tokens, AI-provider keys, private
+key blocks, generic api_key/secret assignments). Removed (`-`) diff lines
+are never scanned: a commit that deletes a leaked key must pass. Exits
+non-zero with the findings on stderr.
 
 When a `write_file`/`edit` payload carries the text about to be written
 (`content`/`new_string`), scans that text too, so a secret is caught the
@@ -19,8 +22,10 @@ Git commands run in the session folder named in the hook payload's `cwd`
 (plugin hooks are spawned from the plugin's read-only snapshot, not from
 the project), resolved to the repository top level. Lockfiles matched by
 SKIP_PATHS are excluded from the staged diff, the unstaged diff, and the
-untracked files; untracked files are only read for `git add`, since a
-plain `git commit` never includes them.
+untracked files. Untracked files are only read for `git add` (a plain
+`git commit` never includes them), and the unstaged diff is only scanned
+for `git add` / `git commit -a` — a plain `git commit` stages nothing from
+the worktree, so unstaged content cannot leak into it.
 
 Environment override: POLYGLOT_SECRETS_DISABLED=1 disables every block
 (only the exact value "1" counts).
@@ -33,10 +38,10 @@ import subprocess
 import sys
 
 try:
-    from guard_destructive import extract_command
+    from guard_destructive import extract_command, segment_after
 except ImportError:  # pragma: no cover - hook always runs from the plugin dir
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    from guard_destructive import extract_command
+    from guard_destructive import extract_command, segment_after
 
 
 SECRET_PATTERNS = [
@@ -76,13 +81,23 @@ SECRET_PATTERNS = [
             r"\s*[:=]\s*[\"']?[A-Za-z0-9/+_.~\-]{16,}[\"']?"
         ),
     ),
+    (
+        "OpenAI key",
+        re.compile(
+            r"\bsk-(?:proj|svcacct)-[A-Za-z0-9_\-]{20,}\b|\bsk-[A-Za-z0-9]{40,}\b"
+        ),
+    ),
+    ("Anthropic key", re.compile(r"\bsk-ant-[A-Za-z0-9_\-]{20,}\b")),
+    ("HuggingFace token", re.compile(r"\bhf_[A-Za-z0-9]{30,}\b")),
 ]
 
 GIT_TRIGGER = re.compile(r"\bgit\s+(?:add|commit)\b")
 GIT_ADD = re.compile(r"\bgit\s+add\b")
+GIT_COMMIT = re.compile(r"\bgit\s+commit\b")
 
 SKIP_PATHS = re.compile(
-    r"(?:^|/)(?:package-lock\.json|pnpm-lock\.yaml|yarn\.lock|go\.sum|Cargo\.lock|.*\.min\.js)$"
+    r"(?:^|/)(?:package-lock\.json|pnpm-lock\.yaml|yarn\.lock|go\.sum|Cargo\.lock|"
+    r"uv\.lock|poetry\.lock|bun\.lockb?|.*\.min\.js|.*\.map)$"
 )
 
 
@@ -119,7 +134,12 @@ def payload_root(payload):
 
 
 def diff_text(root, cached):
-    """Staged or unstaged diff, excluding SKIP_PATHS via pathspec."""
+    """ADDED lines of the staged or unstaged diff, excluding SKIP_PATHS.
+
+    Only `+` lines (never `+++` headers) are returned: a commit that
+    REMOVES a leaked secret shows it as a `-` line, and the file gets
+    cleaner — that must pass, not block.
+    """
     args = ["diff", "--cached"] if cached else ["diff"]
     paths = [
         p
@@ -128,7 +148,12 @@ def diff_text(root, cached):
     ]
     if not paths:
         return ""
-    return git_output([*args, "--", *paths], cwd=root)
+    raw = git_output([*args, "--", *paths], cwd=root)
+    return "\n".join(
+        line
+        for line in raw.splitlines()
+        if line.startswith("+") and not line.startswith("+++")
+    )
 
 
 def untracked_text(root):
@@ -149,12 +174,26 @@ def untracked_text(root):
     return "\n".join(parts)
 
 
-def collect_text(root, scan_untracked=False):
-    """Staged diff + unstaged diff (+ untracked contents on git add only)."""
-    parts = [
-        diff_text(root, cached=True),
-        diff_text(root, cached=False),
-    ]
+def commit_stages_worktree(command):
+    """True when a `git commit` segment carries -a/--all.
+
+    `git commit -a` stages worktree changes, so the unstaged diff is about
+    to be committed and must be scanned; a plain `git commit` stages
+    nothing from the worktree.
+    """
+    for match in GIT_COMMIT.finditer(command):
+        for token in segment_after(command, match.end()).split():
+            if token == "--all" or re.fullmatch(r"-[a-zA-Z]*a[a-zA-Z]*", token):
+                return True
+    return False
+
+
+def collect_text(root, scan_untracked=False, scan_unstaged=False):
+    """Staged added lines, plus unstaged added lines and/or untracked
+    contents when asked (git add / git commit -a)."""
+    parts = [diff_text(root, cached=True)]
+    if scan_unstaged:
+        parts.append(diff_text(root, cached=False))
     if scan_untracked:
         parts.append(untracked_text(root))
     return "\n".join(parts)
@@ -274,8 +313,13 @@ def main():
     if not root:
         return 0  # not inside a git repository: nothing to scan
 
+    scan_unstaged = bool(GIT_ADD.search(command)) or commit_stages_worktree(command)
     findings = find_secrets(
-        collect_text(root, scan_untracked=bool(GIT_ADD.search(command)))
+        collect_text(
+            root,
+            scan_untracked=bool(GIT_ADD.search(command)),
+            scan_unstaged=scan_unstaged,
+        )
     )
     if findings:
         sys.stderr.write(

@@ -62,6 +62,10 @@ def stage(repo, name, content):
         "jwt = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U",
         "-----BEGIN RSA PRIVATE KEY-----",
         'config: api_key: "abcdef1234567890abcd"',
+        "openai = sk-proj-" + "a" * 30,
+        "legacy = sk-" + "b" * 48,
+        "anthropic = sk-ant-" + "c" * 30,
+        "hf = hf_" + "d" * 34,
     ],
 )
 def test_find_secrets_detects_known_patterns(text):
@@ -141,6 +145,44 @@ def test_hook_skips_lockfile_in_unstaged_diff(repo):
     )
     result = run_hook({"command": "git add yarn.lock"}, cwd=repo)
     assert result.returncode == 0
+
+
+def test_hook_skips_modern_lockfiles_and_source_maps(repo):
+    (repo / "web").mkdir()
+    for name in ("uv.lock", "poetry.lock", "web/app.js.map"):
+        stage(repo, name, 'api_key = "abcdef1234567890abcd"\n')
+    result = run_hook({"command": "git commit -m chore"}, cwd=repo)
+    assert result.returncode == 0
+
+
+def test_hook_allows_commit_removing_a_secret(repo):
+    # the fix commit deletes the leaked key: the `-` diff line must not block
+    stage(repo, "config.py", "key = 'AKIAIOSFODNN7EXAMPLE'\nkeep = 1\n")
+    subprocess.run(["git", "commit", "-qm", "init"], cwd=repo, check=True)
+    (repo / "config.py").write_text("keep = 1\n", encoding="utf-8")
+    subprocess.run(["git", "add", "config.py"], cwd=repo, check=True)
+    result = run_hook({"command": "git commit -m 'remove leaked key'"}, cwd=repo)
+    assert result.returncode == 0
+
+
+def test_hook_plain_commit_ignores_unstaged_secret(repo):
+    # unstaged worktree changes are not staged by a plain `git commit`
+    (repo / "main.py").write_text("print('hello')\n", encoding="utf-8")
+    subprocess.run(["git", "add", "main.py"], cwd=repo, check=True)
+    subprocess.run(["git", "commit", "-qm", "init"], cwd=repo, check=True)
+    (repo / "main.py").write_text(
+        "print('hello')\ntok = 'ghp_" + "E" * 36 + "'\n", encoding="utf-8"
+    )
+    result = run_hook({"command": "git commit -m 'msg'"}, cwd=repo)
+    assert result.returncode == 0
+    # `git commit -a` stages the worktree: the same change must block
+    result = run_hook({"command": "git commit -am 'msg'"}, cwd=repo)
+    assert result.returncode == 1
+    assert b"GitHub token" in result.stderr
+    # `git add` scans the unstaged diff too: must block
+    result = run_hook({"command": "git add main.py"}, cwd=repo)
+    assert result.returncode == 1
+    assert b"GitHub token" in result.stderr
 
 
 def test_hook_scans_payload_cwd_not_process_cwd(repo):

@@ -83,9 +83,16 @@ BLOCKED_PATTERNS = [
 ]
 
 # git push to a protected branch, unless explicitly allowed via env.
-PROTECTED_PUSH = re.compile(
-    r"\bgit\s+push\b[^;|&]*\s(?:\S+\s+)?(?:main|master|release/\S+)(?:\s|$)"
-)
+# Token-based (see is_protected_push): a refspec's destination decides, so
+# `HEAD:main` is caught while `--dry-run` never counts.
+PROTECTED_REFS = ("main", "master")
+
+
+def is_protected_ref(ref):
+    """True for main, master, release/* (also under refs/heads/)."""
+    ref = ref.removeprefix("refs/heads/")
+    return ref in PROTECTED_REFS or ref.startswith("release/")
+
 
 # Boundaries of a command within a shell line: stop scanning at the first
 # separator, so "rm -r dir; echo f" is not misread as rm -rf.
@@ -95,6 +102,11 @@ SEGMENT_SPLIT = re.compile(r"[;&|]")
 # option clusters: -Confirm contains both "r" and "f" as letters but is a
 # confirmation prompt, not recursive+force.
 LONG_RM_FLAGS = {"recurse": "r", "force": "f"}
+
+# GNU rm short options (-d -f -i -I -P -r -R -v), lowercased: a single-dash
+# token made only of these letters is an option cluster of ANY length
+# (-rf, -vrf, -irfv, -dvrf), not a long parameter.
+RM_SHORT_FLAGS = set("dfiprv")
 
 # Quoted strings passed to `git commit -m` / `--message=` are data, never
 # executed: strip them so a commit message that merely mentions a blocked
@@ -140,9 +152,9 @@ def is_bulk_rm(command):
     """True when any rm invocation combines recursive and force.
 
     Catches every flag spelling: -rf, -fr, -r -f, -fr --force, -r dir -f,
-    --recursive --force, the uppercase GNU -R, the capitalized PowerShell
-    -Recurse/-Force long parameters, and rm invocations inside a command
-    chain.
+    clusters of any length (-vrf, -irfv, -dvrf), --recursive --force, the
+    uppercase GNU -R, the capitalized PowerShell -Recurse/-Force long
+    parameters, and rm invocations inside a command chain.
     """
     for match in re.finditer(r"\brm\b", command):
         segment = segment_after(command, match.end())
@@ -165,13 +177,14 @@ def is_bulk_rm(command):
                         recursive = True
                     else:
                         force = True
-                elif len(name) <= 3:
-                    # short option cluster: -rf, -fr, -vrf, -Rf
+                elif all(ch in RM_SHORT_FLAGS for ch in name):
+                    # short option cluster of any length: -rf, -fr, -vrf,
+                    # -irfv, -dvrf, -Rf
                     if "r" in name:
                         recursive = True
                     if "f" in name:
                         force = True
-                # longer single-dash words are long parameters
+                # other single-dash words are long parameters
                 # (e.g. -Confirm): not flag clusters, ignore them
         if recursive and force:
             return True
@@ -202,10 +215,28 @@ def is_force_push(command):
 
 
 def is_protected_push(command):
-    """True when `git push` targets main, master, or release/* explicitly."""
+    """True when any `git push` targets main, master, or release/*.
+
+    Token-based: non-option arguments after `git push` are the remote
+    followed by refspecs (or just a refspec when no remote is given). A
+    refspec's destination — the part after the colon — decides, so
+    `git push origin HEAD:main` is caught while `git push origin main:tmp`
+    is not. `--dry-run` changes nothing on the remote, so a dry-run push
+    is never treated as protected.
+    """
     if os.environ.get("POLYGLOT_GUARD_ALLOW_PROTECTED_PUSH") == "1":
         return False
-    return bool(PROTECTED_PUSH.search(command))
+    for match in re.finditer(r"\bgit\s+push\b", command):
+        tokens = segment_after(command, match.end()).split()
+        if any(token == "--dry-run" for token in tokens):
+            continue
+        for token in tokens:
+            if token.startswith(("-", ":")):
+                continue  # option, or a `:ref` delete refspec (handled below)
+            destination = token.split(":", 1)[1] if ":" in token else token
+            if destination and is_protected_ref(destination):
+                return True
+    return False
 
 
 EMPTY = object()  # sentinel: stdin was empty, not merely unparseable
