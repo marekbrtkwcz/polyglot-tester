@@ -31,6 +31,10 @@ versioning is semantic.
 - Cross-references to the `test-automation` and `qa-mcp` plugins added to
   `testing-polyglot`, `debugging-polyglot`, `typescript-testing-advanced`,
   `python-testing-advanced`, and `golang-testing-advanced`.
+- Seven skills closing the per-language coverage gaps found in the audit:
+  `auth-polyglot` (cross-language auth), `typescript-database`,
+  `typescript-graphql`, `python-database`, `python-refactoring`,
+  `python-stay-updated`, `golang-web-and-apis`.
 
 ## [1.3.0] - 2026-11-27
 

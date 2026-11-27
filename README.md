@@ -36,6 +36,7 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Skill | `polyglot-dev:dependency-audit` | Vulnerability and outdated-dependency audits per language (npm audit, pip-audit, govulncheck) |
 | Skill | `polyglot-dev:database-polyglot` | Store choice, safe queries, transactions, expand/contract migrations, pooling across JS/TS, Python, Go |
 | Skill | `polyglot-dev:api-design-polyglot` | Resource modeling, status codes, error envelopes, pagination, versioning, breaking-change policy |
+| Skill | `polyglot-dev:auth-polyglot` | Passwords (argon2/bcrypt), sessions, JWT, OAuth2/OIDC+PKCE, authorization, MFA across all three languages |
 | Skill | `polyglot-dev:observability-polyglot` | Structured logs, RED/USE metrics, traces, correlation IDs, symptom-based alerting per language |
 | Skill | `polyglot-dev:docs-polyglot` | READMEs, docstrings, ADRs, API docs, changelogs — docs a new teammate can follow verbatim |
 | Skill | `polyglot-dev:golang-error-handling` | Go errors: `%w` wrapping, sentinels, `errors.Is/As`, API error design |
@@ -53,6 +54,7 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Skill | `polyglot-dev:golang-database` | sqlc/sqlx/ORM choice, pooling, transactions, migrations, query safety |
 | Skill | `polyglot-dev:golang-graphql` | gqlgen, schema design, dataloader for N+1, errors, depth limits |
 | Skill | `polyglot-dev:golang-how-to` | Copy-paste recipes: HTTP server, JSON API, env, files, retry, shutdown |
+| Skill | `polyglot-dev:golang-web-and-apis` | net/http vs gin/echo/fiber, handlers, middleware order, graceful shutdown, handler tests |
 | Skill | `polyglot-dev:golang-pkg-go-dev` | Evaluating packages on pkg.go.dev, curated library categories |
 | Skill | `polyglot-dev:golang-samber-libs` | lo, oops, do, mo, hot, ro — what each is for and when to skip it |
 | Skill | `polyglot-dev:golang-language-idioms` | Guard clauses, var vs :=/iota/shadowing, generics, function style, Stringer |
@@ -68,6 +70,9 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Skill | `polyglot-dev:python-project-structure` | src layout, pyproject, uv, ruff/mypy gates, pre-commit, packaging |
 | Skill | `polyglot-dev:python-logging` | logging module, structlog, levels, JSON in prod, correlation IDs |
 | Skill | `polyglot-dev:python-web-and-apis` | FastAPI/Django/Flask choice, async SQLAlchemy, Alembic, Strawberry, Celery |
+| Skill | `polyglot-dev:python-database` | SQLAlchemy 2.x sync/async, psycopg3/asyncpg, Alembic up/down, pooling, transactions |
+| Skill | `polyglot-dev:python-refactoring` | Test-first refactoring: rename/extract/move via jedi/rope, one green step at a time |
+| Skill | `polyglot-dev:python-stay-updated` | Python EOL schedule, What's New, deprecation-driven upgrades, dependency bumps |
 | Skill | `polyglot-dev:python-data-and-validation` | pydantic v2 vs attrs vs dataclasses, Protocols, boundary validation |
 | Skill | `polyglot-dev:python-ecosystem` | Evaluating PyPI packages, curated picks (httpx, typer, polars, respx...) |
 | Skill | `polyglot-dev:typescript-idioms` | Modern JS/TS idioms: const/arrow/destructuring, immutable updates, guard clauses |
@@ -81,6 +86,8 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Skill | `polyglot-dev:typescript-lint-format-tooling` | Biome vs ESLint+Prettier, type-aware linting, pre-commit hooks, CI gates that can fail |
 | Skill | `polyglot-dev:typescript-node-runtime` | Node versions, ESM/CJS, streams/buffers, CLI tools, env validation, graceful shutdown |
 | Skill | `polyglot-dev:typescript-web-and-dom` | DOM APIs, fetch + AbortController, storage, events, IntersectionObserver, a11y basics |
+| Skill | `polyglot-dev:typescript-database` | Prisma vs Drizzle vs pg, pool sizing, transactions, migrations, N+1 |
+| Skill | `polyglot-dev:typescript-graphql` | yoga/Apollo/Pothos, dataloaders, typed errors, depth limits, codegen client |
 | Skill | `polyglot-dev:typescript-ecosystem-and-packages` | npm/pnpm/yarn, semver, exports map, publishing with provenance, evaluating dependencies |
 | Skill | `polyglot-dev:typescript-build-and-bundling` | tsc vs bundlers, ESM+CJS+d.ts for libs, attw, Vite/esbuild/tsup, code splitting |
 | Skill | `polyglot-dev:typescript-stay-updated` | TS/ES/Node release tracking, safe upgrade routine, baseline-wide features, dep hygiene |
