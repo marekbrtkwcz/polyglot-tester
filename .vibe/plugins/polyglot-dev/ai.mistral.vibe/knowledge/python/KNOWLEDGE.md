@@ -56,3 +56,12 @@ addopts = "-q --tb=short"
 - Late-binding closures in loops (bind with default arg or `functools.partial`).
 - `is` only for identity/`None`; `==` for values.
 - Beware shadowing stdlib names (`type.py`, `json.py` in a package root).
+
+## Official sources
+
+- https://www.python.org — downloads, release schedule, PSF.
+- https://docs.python.org/3/ — language reference + stdlib docs (start here).
+- https://docs.python.org/3/whatsnew/ — per-version changes; read before upgrading.
+- https://peps.python.org/pep-0008/ — style guide (PEP 8).
+- https://peps.python.org/pep-0020/ — Zen of Python (`import this`).
+- https://pypi.org — package index (pair with the `python-ecosystem` skill for evaluating packages).
