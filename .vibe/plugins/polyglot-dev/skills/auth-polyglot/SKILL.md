@@ -1,6 +1,6 @@
 ---
 name: auth-polyglot
-description: Load this skill when implementing or reviewing authentication and authorization in JavaScript/TypeScript, Python, or Go — passwords, sessions, JWT, OAuth2/OIDC, MFA, and access control patterns across languages.
+description: Load this skill when implementing or reviewing authentication and authorization in JavaScript/TypeScript, Python, or Go — passwords, sessions, JWT, OAuth2/OIDC, MFA, and access control patterns across languages. For reviewing the crypto choices behind credential storage themselves (hashing, KDFs, parameter choices) prefer security-polyglot.
 ---
 
 # Auth & Access Control (Polyglot)
