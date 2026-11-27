@@ -16,6 +16,13 @@ and a safety hook that blocks destructive shell commands before they run.
 | Skill | `polyglot-dev:git-workflow-polyglot` | Day-to-day git: commit conventions, branching, PRs, rebase, bisect, recovery |
 | Skill | `polyglot-dev:release-and-changelog` | Semver, Keep a Changelog, tagging, release notes from a diff, rollback plan |
 | Skill | `polyglot-dev:dependency-audit` | Vulnerability and outdated-dependency audits per language (npm audit, pip-audit, govulncheck) |
+| Skill | `polyglot-dev:golang-error-handling` | Go errors: `%w` wrapping, sentinels, `errors.Is/As`, API error design |
+| Skill | `polyglot-dev:golang-concurrency` | Goroutines, channels, errgroup, context, race/leak prevention |
+| Skill | `polyglot-dev:golang-testing-advanced` | Table-driven tests, testify, mocks, fuzzing, benchmarks, goleak |
+| Skill | `polyglot-dev:golang-security` | Injection, path traversal, secrets, crypto, HTTP hardening, govulncheck |
+| Skill | `polyglot-dev:golang-performance` | pprof profiling, allocations, escape analysis, benchmarking discipline |
+| Skill | `polyglot-dev:golang-project-structure` | Standard layout, naming, modern Go idioms, gofmt/vet/golangci-lint gate |
+| Skill | `polyglot-dev:golang-libraries-and-patterns` | When to pick cobra/viper, gRPC, slog, wire/fx, lo, sqlc, testify |
 | Agent | `polyglot-dev:code-reviewer` | Read-only subagent reviewing diffs for correctness, security, and language-specific pitfalls |
 | Agent | `polyglot-dev:test-runner` | Detects the repo's runner, runs tests/lint/type checks, reports pass/fail with evidence |
 | Agent | `polyglot-dev:explorer` | Read-only code exploration: structure, call sites, stack detection before planning |

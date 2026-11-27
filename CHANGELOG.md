@@ -6,6 +6,14 @@ versioning is semantic.
 
 ## [Unreleased]
 
+### Added
+
+- Seven Go-specific skills covering the depth of the samber/cc-skills-golang
+  collection, written natively for this plugin: `golang-error-handling`,
+  `golang-concurrency`, `golang-testing-advanced`, `golang-security`,
+  `golang-performance`, `golang-project-structure`,
+  `golang-libraries-and-patterns`.
+
 ## [1.2.0] - 2026-11-27
 
 ### Added
