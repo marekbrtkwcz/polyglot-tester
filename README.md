@@ -23,6 +23,16 @@ and a safety hook that blocks destructive shell commands before they run.
 | Skill | `polyglot-dev:golang-performance` | pprof profiling, allocations, escape analysis, benchmarking discipline |
 | Skill | `polyglot-dev:golang-project-structure` | Standard layout, naming, modern Go idioms, gofmt/vet/golangci-lint gate |
 | Skill | `polyglot-dev:golang-libraries-and-patterns` | When to pick cobra/viper, gRPC, slog, wire/fx, lo, sqlc, testify |
+| Skill | `polyglot-dev:golang-design-and-data` | Structs vs interfaces, composition, common patterns, choosing data structures |
+| Skill | `polyglot-dev:golang-refactoring` | Safe refactoring: test-first, small compiling steps, gopls rename |
+| Skill | `polyglot-dev:golang-stay-updated` | Toolchain upgrades, go directive, `gopls modernize`, stdlib-first rule |
+| Skill | `polyglot-dev:golang-safety` | Panic recovery, nil map/pointer traps, races, overflow, input limits |
+| Skill | `polyglot-dev:golang-context` | ctx as first param, cancellation, deadlines, values sparingly |
+| Skill | `polyglot-dev:golang-database` | sqlc/sqlx/ORM choice, pooling, transactions, migrations, query safety |
+| Skill | `polyglot-dev:golang-graphql` | gqlgen, schema design, dataloader for N+1, errors, depth limits |
+| Skill | `polyglot-dev:golang-how-to` | Copy-paste recipes: HTTP server, JSON API, env, files, retry, shutdown |
+| Skill | `polyglot-dev:golang-pkg-go-dev` | Evaluating packages on pkg.go.dev, curated library categories |
+| Skill | `polyglot-dev:golang-samber-libs` | lo, oops, do, mo, hot, ro — what each is for and when to skip it |
 | Agent | `polyglot-dev:code-reviewer` | Read-only subagent reviewing diffs for correctness, security, and language-specific pitfalls |
 | Agent | `polyglot-dev:test-runner` | Detects the repo's runner, runs tests/lint/type checks, reports pass/fail with evidence |
 | Agent | `polyglot-dev:explorer` | Read-only code exploration: structure, call sites, stack detection before planning |

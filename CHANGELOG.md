@@ -13,6 +13,10 @@ versioning is semantic.
   `golang-concurrency`, `golang-testing-advanced`, `golang-security`,
   `golang-performance`, `golang-project-structure`,
   `golang-libraries-and-patterns`.
+- Ten more Go skills completing the topic range: `golang-design-and-data`,
+  `golang-refactoring`, `golang-stay-updated`, `golang-safety`,
+  `golang-context`, `golang-database`, `golang-graphql`, `golang-how-to`,
+  `golang-pkg-go-dev`, `golang-samber-libs`.
 
 ## [1.2.0] - 2026-11-27
 
