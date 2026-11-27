@@ -1,6 +1,6 @@
 ---
 name: observability-polyglot
-description: Load this skill when adding or fixing logging, metrics, and tracing in JavaScript/TypeScript, Python, or Go — structured logs, RED/USE metrics, correlation IDs, and alerting on symptoms. For logging alone in one language prefer logging, logging, or logging.
+description: Load this skill when adding or fixing logging, metrics, and tracing in JavaScript/TypeScript, Python, or Go — structured logs, RED/USE metrics, correlation IDs, and alerting on symptoms. For logging alone in one language prefer the `logging` skill.
 ---
 
 # Observability (Polyglot)
@@ -41,5 +41,5 @@ description: Load this skill when adding or fixing logging, metrics, and tracing
 
 ## Related
 
-- Per-language logging depth: `logging`, `logging`, `logging`.
+- Per-language logging depth: the `logging` skill's `references/` files.
 - `events-and-queues-polyglot` — broker lag and DLQ metrics for queue-backed systems.

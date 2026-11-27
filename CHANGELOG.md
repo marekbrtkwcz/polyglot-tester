@@ -4,7 +4,20 @@ All notable changes to the polyglot-dev plugin are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning is semantic.
 
-## [Unreleased]
+## [2.0.0] - 2026-11-27
+
+### Breaking
+
+- 44 per-language skill names removed/renamed: all 14 twin groups are
+  merged into single skills — `database` (pilot) plus `error-handling`,
+  `performance`, `refactoring`, `security`, `stay-updated`, `testing`,
+  `concurrency`, `context`, `graphql`, `idioms`, `logging`,
+  `project-structure`, `web-and-apis`. References like
+  `polyglot-dev:golang-security` or `polyglot-dev:database-polyglot` must
+  switch to the merged name (`polyglot-dev:security`,
+  `polyglot-dev:database`); per-language depth is read from the skill's
+  `references/` files on demand. Skill count 79 → 45, description chars
+  18,779 → 10,934 (−41.8%).
 
 ### Added
 

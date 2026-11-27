@@ -12,8 +12,8 @@ database pilot (`2026-11-27-database-merge-pilot.md`):
   (TS twin was `typescript-web-and-dom` — browser DOM/fetch depth lives in
   its `references/ts.md`)
 
-Skill count: 76 → 45. Description chars: 18,100 → 10,934 (−1,166… measured
-−39.6%). Every group's deferral sentences ("If the language is not Go,
+Skill count: 76 → 45. Description chars: 18,100 → 10,934 (−7,166, −39.6%).
+Every group's deferral sentences ("If the language is not Go,
 prefer ...") and twin-pointer sections are gone; each merged SKILL.md names
 its `references/*.md` in the description and in a "Per-language deep dives"
 table. Twin bodies moved unchanged (frontmatter stripped).
@@ -71,17 +71,29 @@ available in this environment (same limitation as the pilot). The
 before/after gate from `activation-cases.md` therefore remains lexical +
 structure tests only.
 
-## Vibe-side verification
+## Vibe-side verification (live session, updated 2026-11-27)
 
-The pilot's owed live check was done in a live Vibe session on
-2026-11-27T22:51Z and recorded in `2026-11-27-database-merge-pilot.md`:
-the references/ on-demand mechanism is supported (`vibe:skill-creator`),
-the wiring is enforced by `test_skill_references_wired_both_ways`, and a
-live `read_file` of `references/go.md` worked. Caveat found there: a
-running session serves a startup snapshot of skills, so the merged skills
-appear after `/reload` or in a fresh session — observing one real
-activation of a merged skill (e.g. `error-handling`) followed by reading
-`references/<lang>.md` in a fresh Vibe session is still to be done once.
+The activation → on-demand read hop is now observed end to end in a live
+Vibe session: `skill polyglot-dev:database` resolved the merged skill, its
+body shows the "Per-language deep dives" table, the loader advertises
+`references/go.md`, `references/python.md`, `references/ts.md` in
+`<skill_files>`, and a live `read_file` of the activated skill's
+`references/ts.md` returned the real TS database content (Prisma vs Drizzle
+vs pg, pooling). The mechanism is supported per `vibe:skill-creator`
+(support files read with `read_file` on demand) and the wiring is enforced
+by `test_skill_references_wired_both_ways` over all 14 merged skills.
+
+Caveat: a running session serves a startup snapshot of the skill registry —
+this session (started after the database pilot, before a1b96b4) sees
+`database` but not the 13 groups merged in a1b96b4 (`skill
+polyglot-dev:error-handling` is rejected mid-session; new skill
+directories are not picked up until restart). So the last confirmation is
+one prompt in a fresh Vibe session after this commit — e.g. "N+1 queries
+from Prisma" should activate `database` + read `references/ts.md`, and "Go
+error wrapping with sentinels" should activate `error-handling` + read
+`references/go.md`. The disk state they load is committed and
+structure-tested, and the lexical matcher already ranks both merged skills
+first on those prompts.
 
 ## Gate verdict
 
