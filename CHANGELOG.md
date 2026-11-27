@@ -46,6 +46,9 @@ versioning is semantic.
 - CI gains a `plugin-schema` job (plugin.json validated against the official
   Agent Plugins 1.0 schema via `scripts/validate_plugin_schema.py`) and a
   `docs-lint` job (markdownlint-cli2 over all markdown).
+- Unit tests for `scripts/validate_plugin_schema.py` in `tests/` (schema
+  fetch mocked); the CI test step now runs both `tests/` and the plugin
+  test suite (143 tests).
 
 ## [1.3.0] - 2026-11-27
 
