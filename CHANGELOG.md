@@ -4,7 +4,7 @@ All notable changes to the polyglot-dev plugin are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning is semantic.
 
-## [Unreleased]
+## [1.4.0] - 2026-11-27
 
 ### Added
 
