@@ -6,6 +6,15 @@ versioning is semantic.
 
 ## [Unreleased]
 
+### Added
+
+- `tests/test_plugin_structure.py`: CI-validated plugin invariants — every
+  skill dir has a `SKILL.md` with `name`/`description` frontmatter matching
+  the directory (kebab-case, unique), `plugin.json` is valid with semver
+  version, agent TOMLs parse with snake_case keys only, every knowledge
+  folder has `KNOWLEDGE.md`, `hooks.toml` is well-formed. CI job renamed to
+  `tests` since it now runs guard + structure suites.
+
 ## [1.3.0] - 2026-11-27
 
 ### Added
