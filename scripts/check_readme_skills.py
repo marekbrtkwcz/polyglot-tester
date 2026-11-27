@@ -41,7 +41,7 @@ def check(skills_dir=SKILLS_DIR, readme=README):
 
 
 def main():
-    missing, stale = check()
+    missing, stale = check(SKILLS_DIR, README)
     ok = True
     for name in missing:
         sys.stderr.write(f"skill missing from README.md: polyglot-dev:{name}\n")
