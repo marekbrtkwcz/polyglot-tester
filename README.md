@@ -34,6 +34,10 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Skill | `polyglot-dev:git-workflow-polyglot` | Day-to-day git: commit conventions, branching, PRs, rebase, bisect, recovery |
 | Skill | `polyglot-dev:release-and-changelog` | Semver, Keep a Changelog, tagging, release notes from a diff, rollback plan |
 | Skill | `polyglot-dev:dependency-audit` | Vulnerability and outdated-dependency audits per language (npm audit, pip-audit, govulncheck) |
+| Skill | `polyglot-dev:database-polyglot` | Store choice, safe queries, transactions, expand/contract migrations, pooling across JS/TS, Python, Go |
+| Skill | `polyglot-dev:api-design-polyglot` | Resource modeling, status codes, error envelopes, pagination, versioning, breaking-change policy |
+| Skill | `polyglot-dev:observability-polyglot` | Structured logs, RED/USE metrics, traces, correlation IDs, symptom-based alerting per language |
+| Skill | `polyglot-dev:docs-polyglot` | READMEs, docstrings, ADRs, API docs, changelogs — docs a new teammate can follow verbatim |
 | Skill | `polyglot-dev:golang-error-handling` | Go errors: `%w` wrapping, sentinels, `errors.Is/As`, API error design |
 | Skill | `polyglot-dev:golang-concurrency` | Goroutines, channels, errgroup, context, race/leak prevention |
 | Skill | `polyglot-dev:golang-testing-advanced` | Table-driven tests, testify, mocks, fuzzing, benchmarks, goleak |
@@ -84,7 +88,10 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Agent | `polyglot-dev:test-runner` | Detects the repo's runner, runs tests/lint/type checks, reports pass/fail with evidence |
 | Agent | `polyglot-dev:explorer` | Read-only code exploration: structure, call sites, stack detection before planning |
 | Agent | `polyglot-dev:planner` | Turns a goal into a concrete plan: files to touch, test level, risks, verification steps |
-| Knowledge | `polyglot-dev:javascript-typescript`, `polyglot-dev:python`, `polyglot-dev:go`, `polyglot-dev:ci-cd` | Toolchains, conventions, and diagnostics per language plus GitHub Actions |
+| Agent | `polyglot-dev:security-auditor` | Read-only security review: injection, access control, secrets, deserialization, supply chain |
+| Agent | `polyglot-dev:doc-writer` | Writes READMEs, docstrings, ADRs, changelogs matching the repo's existing docs style |
+| Agent | `polyglot-dev:refactorer` | Test-first refactoring in small green steps; never mixes refactor with behavior change |
+| Knowledge | `polyglot-dev:javascript-typescript`, `polyglot-dev:python`, `polyglot-dev:go`, `polyglot-dev:ci-cd`, `polyglot-dev:testing`, `polyglot-dev:docker`, `polyglot-dev:databases` | Toolchains, conventions, and diagnostics per language plus CI/CD, testing, containers, databases |
 | Hook | `guard-destructive-commands` | Pre-tool guard on `bash` (see below) |
 
 ## The destructive-command guard

@@ -14,6 +14,11 @@ versioning is semantic.
   version, agent TOMLs parse with snake_case keys only, every knowledge
   folder has `KNOWLEDGE.md`, `hooks.toml` is well-formed. CI job renamed to
   `tests` since it now runs guard + structure suites.
+- Four cross-language skills: `database-polyglot`, `api-design-polyglot`,
+  `observability-polyglot`, `docs-polyglot`.
+- Three new agents: `security-auditor` (read-only), `doc-writer`,
+  `refactorer` (test-first, small green steps).
+- Three new knowledge folders: `testing`, `docker`, `databases`.
 
 ## [1.3.0] - 2026-11-27
 
