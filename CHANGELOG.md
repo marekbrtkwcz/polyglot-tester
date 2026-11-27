@@ -35,6 +35,9 @@ versioning is semantic.
   `auth-polyglot` (cross-language auth), `typescript-database`,
   `typescript-graphql`, `python-database`, `python-refactoring`,
   `python-stay-updated`, `golang-web-and-apis`.
+- Three more cross-language skills: `accessibility-polyglot` (WCAG 2.2),
+  `i18n-polyglot` (locales, plurals, RTL), `events-and-queues-polyglot`
+  (brokers, idempotency, DLQ).
 
 ## [1.3.0] - 2026-11-27
 

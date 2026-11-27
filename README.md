@@ -37,6 +37,9 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Skill | `polyglot-dev:database-polyglot` | Store choice, safe queries, transactions, expand/contract migrations, pooling across JS/TS, Python, Go |
 | Skill | `polyglot-dev:api-design-polyglot` | Resource modeling, status codes, error envelopes, pagination, versioning, breaking-change policy |
 | Skill | `polyglot-dev:auth-polyglot` | Passwords (argon2/bcrypt), sessions, JWT, OAuth2/OIDC+PKCE, authorization, MFA across all three languages |
+| Skill | `polyglot-dev:accessibility-polyglot` | WCAG 2.2 AA: semantics, keyboard, screen readers, axe-core per stack, manual sign-off |
+| Skill | `polyglot-dev:i18n-polyglot` | Message catalogs, ICU plurals, Intl/Babel/x-text formatting, RTL, pseudo-localization |
+| Skill | `polyglot-dev:events-and-queues-polyglot` | Kafka/SQS/RabbitMQ, idempotent consumers, backoff+DLQ, message contracts, async testing |
 | Skill | `polyglot-dev:observability-polyglot` | Structured logs, RED/USE metrics, traces, correlation IDs, symptom-based alerting per language |
 | Skill | `polyglot-dev:docs-polyglot` | READMEs, docstrings, ADRs, API docs, changelogs — docs a new teammate can follow verbatim |
 | Skill | `polyglot-dev:golang-error-handling` | Go errors: `%w` wrapping, sentinels, `errors.Is/As`, API error design |
