@@ -20,6 +20,11 @@ versioning is semantic.
 - Two more skills from the cxuu/golang-skills topic range: `golang-language-idioms`
   (control flow, declarations, generics, function style) and `golang-logging`
   (slog, levels, structured attributes, zap/zerolog comparison).
+- Thirteen Python-specific skills mirroring the Go set: `python-idioms`,
+  `python-typing`, `python-error-handling`, `python-concurrency`,
+  `python-context`, `python-testing-advanced`, `python-security`,
+  `python-performance`, `python-project-structure`, `python-logging`,
+  `python-web-and-apis`, `python-data-and-validation`, `python-ecosystem`.
 
 ## [1.2.0] - 2026-11-27
 

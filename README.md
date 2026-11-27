@@ -35,6 +35,19 @@ and a safety hook that blocks destructive shell commands before they run.
 | Skill | `polyglot-dev:golang-samber-libs` | lo, oops, do, mo, hot, ro — what each is for and when to skip it |
 | Skill | `polyglot-dev:golang-language-idioms` | Guard clauses, var vs :=/iota/shadowing, generics, function style, Stringer |
 | Skill | `polyglot-dev:golang-logging` | slog in depth, levels, structured attributes, ctx, when zap/zerolog win |
+| Skill | `polyglot-dev:python-idioms` | Pythonic constructs, EAFP, context managers, dataclasses, dunder methods |
+| Skill | `polyglot-dev:python-typing` | mypy strict, generics, TypeGuard, TypedDict, Protocols, overloads |
+| Skill | `polyglot-dev:python-error-handling` | Custom exceptions, `raise from` chaining, traceback reading, error logging |
+| Skill | `polyglot-dev:python-concurrency` | asyncio vs threads vs processes, the GIL, cancellation, thread safety |
+| Skill | `polyglot-dev:python-context` | contextvars for request-scoped state, context managers, avoiding globals |
+| Skill | `polyglot-dev:python-testing-advanced` | pytest fixtures/parametrize, monkeypatch, mocking, hypothesis, coverage |
+| Skill | `polyglot-dev:python-security` | Injection (SQL/eval/pickle/YAML), path traversal, secrets, bandit + pip-audit |
+| Skill | `polyglot-dev:python-performance` | cProfile, memory_profiler, lru_cache, `__slots__`, when to leave CPython |
+| Skill | `polyglot-dev:python-project-structure` | src layout, pyproject, uv, ruff/mypy gates, pre-commit, packaging |
+| Skill | `polyglot-dev:python-logging` | logging module, structlog, levels, JSON in prod, correlation IDs |
+| Skill | `polyglot-dev:python-web-and-apis` | FastAPI/Django/Flask choice, async SQLAlchemy, Alembic, Strawberry, Celery |
+| Skill | `polyglot-dev:python-data-and-validation` | pydantic v2 vs attrs vs dataclasses, Protocols, boundary validation |
+| Skill | `polyglot-dev:python-ecosystem` | Evaluating PyPI packages, curated picks (httpx, typer, polars, respx...) |
 | Agent | `polyglot-dev:code-reviewer` | Read-only subagent reviewing diffs for correctness, security, and language-specific pitfalls |
 | Agent | `polyglot-dev:test-runner` | Detects the repo's runner, runs tests/lint/type checks, reports pass/fail with evidence |
 | Agent | `polyglot-dev:explorer` | Read-only code exploration: structure, call sites, stack detection before planning |
