@@ -7,7 +7,7 @@ description: Load this skill when integrating LLM APIs into an app in JavaScript
 
 ## Provider & SDK choice
 
-- Use the official SDK, never raw HTTP for chat/completions. Mistral first in a Mistral/Vibe stack: JS/TS — `@mistralai/mistralai`; Python — `mistralai`; Go — `mistralai/client-go`; the API key lives in `MISTRAL_API_KEY`. Other providers: JS/TS — Vercel AI SDK or `openai`/`@anthropic-ai/sdk`; Python — `openai`/`anthropic` SDKs, or `litellm` when multi-provider from one codebase; Go — the `genai` SDK or other provider SDKs.
+- Use the official SDK, never raw HTTP for chat/completions. Mistral first in a Mistral/Vibe stack: JS/TS — `@mistralai/mistralai`; Python — `mistralai`; the API key lives in `MISTRAL_API_KEY`. Mistral ships NO official Go SDK — in Go use an OpenAI-compatible client against `https://api.mistral.ai/v1` (e.g. `openai-go` with `option.WithBaseURL`) or the community `github.com/gage-technologies/mistral-go`. Other providers: JS/TS — Vercel AI SDK or `openai`/`@anthropic-ai/sdk`; Python — `openai`/`anthropic` SDKs, or `litellm` when multi-provider from one codebase; Go — the `genai` SDK or other provider SDKs.
 - Wrap calls in one thin adapter (a port) so swapping provider or model is a config change, not a refactor.
 - Model, temperature, and max tokens live in env/config, never hardcoded; log the model ID with every request so you can attribute quality and cost drift.
 
@@ -50,7 +50,7 @@ description: Load this skill when integrating LLM APIs into an app in JavaScript
 
 - **JS/TS**: Mistral `@mistralai/mistralai` (`new Mistral({ apiKey })`, then `client.chat.complete` / `client.chat.stream`); Vercel AI SDK — `generateText`/`streamText`, `generateObject` with a zod schema for structured output.
 - **Python**: Mistral `mistralai` (`Mistral(api_key=os.environ["MISTRAL_API_KEY"])`, then `client.chat.complete`); other providers via their SDKs or `litellm`; pydantic + `response_format` (or `instructor`) for structured output; `tenacity` for retries with backoff.
-- **Go**: Mistral `mistralai/client-go` (`client.Chat.Complete`); Google `genai` SDK with response schema via `*genai.Schema`; `errgroup` + context for concurrent calls.
+- **Go**: no official Mistral SDK — call the OpenAI-compatible endpoint `https://api.mistral.ai/v1` with `openai-go` (`option.WithBaseURL(...)`) or use community `github.com/gage-technologies/mistral-go`; Google `genai` SDK with response schema via `*genai.Schema`; `errgroup` + context for concurrent calls.
 
 ## Related
 

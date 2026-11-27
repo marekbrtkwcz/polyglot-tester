@@ -58,7 +58,8 @@ func mustEnv(key string) string {
 ```go
 data, err := os.ReadFile(path)                      // whole file
 w := bufio.NewWriter(f)                             // buffered writes
-lines := bufio.Scanner over file                    // line by line, big files
+sc := bufio.NewScanner(f)                           // line by line, big files:
+for sc.Scan() { line := sc.Text() }                 // handle line, then sc.Err()
 os.WriteFile(path, data, 0o600)                     // secrets: 0600, not 0644
 ```
 

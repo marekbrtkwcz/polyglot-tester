@@ -169,6 +169,16 @@ def test_read_only_agents_have_approved_bash():
         assert bash_cfg.get("denylist"), f"{f.name}: bash denylist missing"
 
 
+def test_ai_integration_skill_has_no_invented_go_sdk():
+    # Mistral ships official SDKs for Python and JS/TS only; the Go note
+    # must point at the OpenAI-compatible endpoint, not an invented package.
+    text = (SKILLS_DIR / "ai-integration-polyglot" / "SKILL.md").read_text(
+        encoding="utf-8"
+    )
+    assert "mistralai/client-go" not in text
+    assert "https://api.mistral.ai/v1" in text
+
+
 def test_agent_instructions_cover_global_plugin_path():
     # With a global install the plugin lives in ~/.vibe/plugins/polyglot-dev/;
     # instructions pointing at plugin files must name both locations.

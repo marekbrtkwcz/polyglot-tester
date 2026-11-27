@@ -153,9 +153,11 @@ versioning is semantic.
   `sys.path` fix runs.
 - `guard_all.py` added to `--paths-to-mutate` in the mutation workflow.
 - `ai-integration-polyglot` now names the official Mistral SDKs per language
-  (`mistralai` for Python, `@mistralai/mistralai` for JS/TS,
-  `mistralai/client-go` for Go, key in `MISTRAL_API_KEY`) alongside the
-  other providers.
+  (`mistralai` for Python, `@mistralai/mistralai` for JS/TS, key in
+  `MISTRAL_API_KEY`) alongside the other providers; for Go it states
+  honestly that Mistral ships no official Go SDK and points to the
+  OpenAI-compatible endpoint `https://api.mistral.ai/v1` (e.g. via
+  `openai-go`) or the community `gage-technologies/mistral-go`.
 
 - `pre-push-checks` is now a silent no-op when the plugin is installed in a
   project other than its own repository: it no longer prints `skipped` noise
