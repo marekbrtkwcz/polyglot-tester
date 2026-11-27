@@ -7,9 +7,13 @@ message file — and exits non-zero when the subject starts with WIP
 
 Fail-open on anything unreadable or unrecognized: the guard must never
 brick a session. `git commit` without -m/-F opens an editor; nothing to
-scan, so it passes.
+scan, so it passes. One deliberate exception: an EMPTY stdin fails
+closed — the hook runner always sends a JSON payload, so empty stdin
+means this process is the fallback interpreter in a `python x || python3 x`
+chain whose first run already consumed the payload.
 
-Environment override: POLYGLOT_WIP_DISABLED=1 disables every block.
+Environment override: POLYGLOT_WIP_DISABLED=1 disables every block
+(only the exact value "1" counts).
 """
 
 import json
@@ -26,8 +30,9 @@ except ImportError:  # pragma: no cover - hook always runs from the plugin dir
 GIT_COMMIT = re.compile(r"\bgit\s+commit\b")
 
 # -m "msg" / -m 'msg' / -m msg / --message=... / --message "..."
+# Combined short flags count too: -am "msg" is `git commit -a -m "msg"`.
 MESSAGE_ARG = re.compile(
-    r"(?:-m\s+|--message[= ])(\"(?:[^\"\\]|\\.)*\"|'(?:[^'\\]|\\.)*'|\S+)"
+    r"(?:--message[= ]|-[a-zA-Z]*m\s+)(\"(?:[^\"\\]|\\.)*\"|'(?:[^'\\]|\\.)*'|\S+)"
 )
 
 # -F file / --file=file
@@ -74,12 +79,35 @@ def is_wip_commit(command):
     return bool(WIP_SUBJECT.match(subject))
 
 
+EMPTY = object()  # sentinel: stdin was empty, not merely unparseable
+
+
+def read_payload():
+    """Read the hook payload from stdin; EMPTY on empty stdin.
+
+    Empty stdin fails closed in main(): the hook runner always sends a
+    JSON payload, so empty stdin means this process is the fallback
+    interpreter in a `python x || python3 x` chain re-running the guard
+    after the payload was consumed — allowing that would bypass the
+    guard. Unparseable non-empty input fails open.
+    """
+    raw = sys.stdin.read()
+    if not raw.strip():
+        return EMPTY
+    try:
+        return json.loads(raw)
+    except Exception:  # noqa: BLE001 - fail open
+        return None
+
+
 def main():
     if os.environ.get("POLYGLOT_WIP_DISABLED") == "1":
         return 0
-    try:
-        payload = json.load(sys.stdin)
-    except Exception:  # noqa: BLE001 - fail open
+    payload = read_payload()
+    if payload is EMPTY:
+        sys.stderr.write("blocked: empty stdin, no payload to inspect (fail-closed)\n")
+        return 1
+    if payload is None:
         return 0
     command = extract_command(payload)
     if not command:

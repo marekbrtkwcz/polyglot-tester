@@ -1,6 +1,7 @@
 """Tests for the guard_secrets.py pre-tool hook script."""
 
 import importlib.util
+import io
 import json
 import os
 import subprocess
@@ -125,9 +126,80 @@ def test_hook_env_override_disables(repo):
 
 
 def test_hook_skips_lockfiles(repo):
-    stage(repo, "package-lock.json", '"api_key": "abcdef1234567890abcd"\n')
+    # the pattern would match if scanned: SKIP_PATHS must exclude the
+    # staged diff of a lockfile too, not only untracked files
+    stage(repo, "package-lock.json", 'api_key = "abcdef1234567890abcd"\n')
     result = run_hook({"command": "git commit -m chore"}, cwd=repo)
     assert result.returncode == 0
+
+
+def test_hook_skips_lockfile_in_unstaged_diff(repo):
+    stage(repo, "main.py", "print('hello')\n")
+    subprocess.run(["git", "commit", "-qm", "init"], cwd=repo, check=True)
+    (repo / "yarn.lock").write_text(
+        'api_key = "abcdef1234567890abcd"\n', encoding="utf-8"
+    )
+    result = run_hook({"command": "git add yarn.lock"}, cwd=repo)
+    assert result.returncode == 0
+
+
+def test_hook_scans_payload_cwd_not_process_cwd(repo):
+    # Plugin hooks are spawned from the plugin snapshot; the project repo is
+    # named in the payload's cwd. A staged secret there must be caught even
+    # when the process runs from elsewhere.
+    stage(repo, "config.py", "key = 'AKIAIOSFODNN7EXAMPLE'\n")
+    result = run_hook(
+        {"command": "git commit -m init", "cwd": str(repo)}, cwd=PLUGIN_DIR
+    )
+    assert result.returncode == 1
+    assert b"AWS access key" in result.stderr
+
+
+def test_hook_untracked_secret_ignored_on_plain_commit(repo):
+    # `git commit` never includes untracked files: scanning them would only
+    # produce false positives. `git add` must still catch them.
+    (repo / "notes.txt").write_text("tok: ghp_" + "B" * 36 + "\n", encoding="utf-8")
+    result = run_hook({"command": "git commit -m x"}, cwd=repo)
+    assert result.returncode == 0
+    result = run_hook({"command": "git add ."}, cwd=repo)
+    assert result.returncode == 1
+    assert b"GitHub token" in result.stderr
+
+
+def test_hook_env_override_requires_exact_1(repo):
+    stage(repo, "config.py", "key = 'AKIAIOSFODNN7EXAMPLE'\n")
+    result = run_hook(
+        {"command": "git commit -m init"},
+        cwd=repo,
+        env_extra={"POLYGLOT_SECRETS_DISABLED": "0"},
+    )
+    assert result.returncode == 1
+
+
+def test_hook_fails_closed_on_empty_stdin():
+    result = subprocess.run(
+        [sys.executable, str(SCRIPT)],
+        input=b"",
+        capture_output=True,
+        check=False,
+    )
+    assert result.returncode == 1
+    assert b"empty stdin" in result.stderr
+
+
+def test_fallback_interpreter_cannot_bypass_block():
+    # `python guard.py || python3 guard.py`: the second run sees the consumed
+    # stdin and must fail closed, so the chain cannot wave a block through.
+    cmd = f'"{sys.executable}" "{SCRIPT}" || "{sys.executable}" "{SCRIPT}"'
+    payload = {"path": "config.py", "content": "key = 'AKIAIOSFODNN7EXAMPLE'\n"}
+    result = subprocess.run(
+        cmd,
+        input=json.dumps(payload).encode(),
+        capture_output=True,
+        shell=True,
+        check=False,
+    )
+    assert result.returncode == 1
 
 
 # --- write/edit payload mode -------------------------------------------------
@@ -202,3 +274,65 @@ def test_hook_write_mode_works_outside_git_repo(tmp_path):
         cwd=tmp_path,
     )
     assert result.returncode == 1
+
+
+# --- main() in process: payload reading, cwd resolution, env gate ----------
+
+
+def run_main(monkeypatch, payload, env=None):
+    monkeypatch.setattr(sys, "stdin", io.StringIO(payload))
+    if env:
+        for key, value in env.items():
+            monkeypatch.setenv(key, value)
+    return secrets_guard.main()
+
+
+def test_main_in_process_empty_stdin_fails_closed(monkeypatch):
+    assert run_main(monkeypatch, "") == 1
+    assert run_main(monkeypatch, "  \n ") == 1
+
+
+def test_main_in_process_garbage_fails_open(monkeypatch):
+    assert run_main(monkeypatch, "not json") == 0
+
+
+def test_main_in_process_env_gate_requires_exact_1(monkeypatch):
+    payload = json.dumps({"path": "c.py", "content": "key = 'AKIAIOSFODNN7EXAMPLE'"})
+    assert run_main(monkeypatch, payload, {"POLYGLOT_SECRETS_DISABLED": "1"}) == 0
+    assert run_main(monkeypatch, payload, {"POLYGLOT_SECRETS_DISABLED": "0"}) == 1
+
+
+def test_main_in_process_write_payload_blocks(monkeypatch):
+    payload = json.dumps({"path": "c.py", "content": "key = 'AKIAIOSFODNN7EXAMPLE'"})
+    assert run_main(monkeypatch, payload) == 1
+    assert run_main(monkeypatch, json.dumps({"path": "c.py", "content": "ok"})) == 0
+
+
+def test_main_in_process_git_scan_uses_payload_cwd(monkeypatch, repo):
+    stage(repo, "config.py", "key = 'AKIAIOSFODNN7EXAMPLE'\n")
+    payload = json.dumps({"command": "git commit -m x", "cwd": str(repo)})
+    assert run_main(monkeypatch, payload) == 1
+    # not a git repo in the payload cwd: pass
+    payload = json.dumps({"command": "git commit -m x", "cwd": str(repo / "nope")})
+    assert run_main(monkeypatch, payload) == 0
+    # non-git command: pass
+    assert run_main(monkeypatch, json.dumps({"command": "ls"})) == 0
+
+
+def test_payload_root_outside_repo(tmp_path):
+    assert secrets_guard.payload_root({"cwd": str(tmp_path)}) is None
+    assert secrets_guard.payload_root({}) is None or isinstance(
+        secrets_guard.payload_root({}), str
+    )
+
+
+def test_diff_and_untracked_helpers_skip_lockfiles(repo):
+    stage(repo, "package-lock.json", 'api_key = "abcdef1234567890abcd"\n')
+    stage(repo, "main.py", "print('hi')\n")
+    assert "api_key" not in secrets_guard.diff_text(str(repo), cached=True)
+    assert "print" in secrets_guard.diff_text(str(repo), cached=True)
+    (repo / "go.sum").write_text('api_key = "abcdef1234567890abcd"\n', encoding="utf-8")
+    (repo / "notes.txt").write_text("hello\n", encoding="utf-8")
+    text = secrets_guard.untracked_text(str(repo))
+    assert "api_key" not in text
+    assert "hello" in text

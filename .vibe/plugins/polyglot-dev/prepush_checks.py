@@ -13,8 +13,13 @@ installed into another project it adds no noise and blocks nothing.
 
 Fail-open: if python, pytest, or the repo layout is unavailable, the push
 passes with a warning on stderr — this hook must never brick a session.
+One deliberate exception: an EMPTY stdin fails closed — the hook runner
+always sends a JSON payload, so empty stdin means this process is the
+fallback interpreter in a `python x || python3 x` chain whose first run
+already consumed the payload.
 
-Environment override: POLYGLOT_PREPUSH_DISABLED=1 disables the checks.
+Environment override: POLYGLOT_PREPUSH_DISABLED=1 disables the checks
+(only the exact value "1" counts).
 """
 
 import importlib.util
@@ -32,7 +37,9 @@ except ImportError:  # pragma: no cover - hook always runs from the plugin dir
     from guard_destructive import extract_command
 
 GIT_PUSH = re.compile(r"\bgit\s+push\b")
-FORCE_PUSH = re.compile(r"--force(?:-with-lease(?:=\S*)?)?|--delete|\s:\S+")
+# --force/--force-with-lease (with or without =ref), the short -f, --delete,
+# and the :ref delete refspec: all are the destructive guard's job.
+FORCE_PUSH = re.compile(r"--force(?:-with-lease(?:=\S*)?)?|\s-f\b|--delete|\s:\S+")
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 CHECKS = [
@@ -96,12 +103,37 @@ def run_checks(repo_root):
     return results
 
 
+EMPTY = object()  # sentinel: stdin was empty, not merely unparseable
+
+
+def read_payload():
+    """Read the hook payload from stdin; EMPTY on empty stdin.
+
+    Empty stdin fails closed in main(): the hook runner always sends a
+    JSON payload, so empty stdin means this process is the fallback
+    interpreter in a `python x || python3 x` chain re-running the hook
+    after the payload was consumed — allowing that would bypass the
+    guards. Unparseable non-empty input fails open.
+    """
+    raw = sys.stdin.read()
+    if not raw.strip():
+        return EMPTY
+    try:
+        return json.loads(raw)
+    except Exception:  # noqa: BLE001 - fail open
+        return None
+
+
 def main():
     if os.environ.get("POLYGLOT_PREPUSH_DISABLED") == "1":
         return 0
-    try:
-        payload = json.load(sys.stdin)
-    except Exception:  # noqa: BLE001 - fail open
+    payload = read_payload()
+    if payload is EMPTY:
+        sys.stderr.write(
+            "pre-push blocked: empty stdin, no payload to inspect (fail-closed)\n"
+        )
+        return 1
+    if payload is None:
         return 0
     command = extract_command(payload)
     if not command or not GIT_PUSH.search(command):

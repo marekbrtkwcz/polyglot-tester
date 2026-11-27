@@ -4,9 +4,14 @@ Reads the tool-call JSON on stdin, looks for the shell command string
 (bash, Git Bash, or PowerShell) in common payload shapes, and exits
 non-zero (with a reason on stderr) when the command matches a destructive
 pattern. Unrecognized payloads pass through so the guard can never brick
-the session.
+the session. One deliberate exception: an EMPTY stdin fails closed.
+The hook runner always sends a JSON payload on stdin, so empty stdin
+means this process is the fallback interpreter in a
+`python x || python3 x` chain whose first run already consumed the
+payload — allowing that would bypass the guard.
 
-Environment overrides (for deliberate, informed use):
+Environment overrides (for deliberate, informed use; only the exact
+value "1" counts, "0" or any other value does not disable):
   POLYGLOT_GUARD_DISABLED=1              disable every block
   POLYGLOT_GUARD_ALLOW_PROTECTED_PUSH=1  allow push to main/master/release/*
 """
@@ -86,6 +91,11 @@ PROTECTED_PUSH = re.compile(
 # separator, so "rm -r dir; echo f" is not misread as rm -rf.
 SEGMENT_SPLIT = re.compile(r"[;&|]")
 
+# PowerShell long single-dash parameters that must not be parsed as short
+# option clusters: -Confirm contains both "r" and "f" as letters but is a
+# confirmation prompt, not recursive+force.
+LONG_RM_FLAGS = {"recurse": "r", "force": "f"}
+
 # Quoted strings passed to `git commit -m` / `--message=` are data, never
 # executed: strip them so a commit message that merely mentions a blocked
 # command does not trip the guard. Quoted strings elsewhere (e.g.
@@ -147,11 +157,22 @@ def is_bulk_rm(command):
                 elif token == "--force":
                     force = True
             elif token.startswith("-") and len(token) > 1:
-                flags = token[1:].lower()
-                if "r" in flags:
-                    recursive = True
-                if "f" in flags:
-                    force = True
+                name = token[1:].lower()
+                if name in LONG_RM_FLAGS:
+                    # PowerShell long parameter, matched by its full word:
+                    # -Recurse/-Force count, -Confirm/-WhatIf do not.
+                    if LONG_RM_FLAGS[name] == "r":
+                        recursive = True
+                    else:
+                        force = True
+                elif len(name) <= 3:
+                    # short option cluster: -rf, -fr, -vrf, -Rf
+                    if "r" in name:
+                        recursive = True
+                    if "f" in name:
+                        force = True
+                # longer single-dash words are long parameters
+                # (e.g. -Confirm): not flag clusters, ignore them
         if recursive and force:
             return True
     return False
@@ -160,15 +181,18 @@ def is_bulk_rm(command):
 def is_force_push(command):
     """True when any `git push` rewrites remote history.
 
-    Token-based: --force always blocks; --force-with-lease blocks only when
-    the expected ref is missing or malformed (e.g. =false). The safe forms
-    --force-with-lease and --force-with-lease=<ref>:<sha> pass.
+    Token-based: --force and the short -f (also inside clusters like -vf)
+    always block; --force-with-lease blocks only when the expected ref is
+    missing or malformed (e.g. =false). The safe forms --force-with-lease
+    and --force-with-lease=<ref>:<sha> pass.
     """
     for match in re.finditer(r"\bgit\s+push\b", command):
         segment = segment_after(command, match.end())
         for token in segment.split():
             if token == "--force":
                 return True
+            if re.fullmatch(r"-[a-zA-Z]*f[a-zA-Z]*", token):
+                return True  # short force flag: -f, -vf, ...
             if token.startswith("--force-with-lease") and "=" in token:
                 expected = token.split("=", 1)[1]
                 if not expected or ":" not in expected or expected == "false":
@@ -179,19 +203,45 @@ def is_force_push(command):
 
 def is_protected_push(command):
     """True when `git push` targets main, master, or release/* explicitly."""
-    if os.environ.get("POLYGLOT_GUARD_ALLOW_PROTECTED_PUSH"):
+    if os.environ.get("POLYGLOT_GUARD_ALLOW_PROTECTED_PUSH") == "1":
         return False
     return bool(PROTECTED_PUSH.search(command))
 
 
+EMPTY = object()  # sentinel: stdin was empty, not merely unparseable
+
+
+def read_payload():
+    """Read the hook payload from stdin.
+
+    Returns EMPTY when stdin has no payload at all, None on unparseable
+    input. Empty stdin fails closed in main(): the hook runner always
+    sends a JSON payload, so empty stdin means this process is the
+    fallback interpreter in a `python x || python3 x` chain re-running
+    the guard after the payload was consumed — allowing that would
+    bypass the guard. Unparseable non-empty input fails open.
+    """
+    raw = sys.stdin.read()
+    if not raw.strip():
+        return EMPTY
+    try:
+        return json.loads(raw)
+    except Exception:  # noqa: BLE001 - fail open, never brick the session
+        return None
+
+
 def main():
-    if os.environ.get("POLYGLOT_GUARD_DISABLED"):
+    if os.environ.get("POLYGLOT_GUARD_DISABLED") == "1":
         return 0
 
-    try:
-        raw = sys.stdin.read()
-        payload = json.loads(raw) if raw.strip() else {}
-    except Exception:  # noqa: BLE001 - fail open, never brick the session
+    payload = read_payload()
+    if payload is EMPTY:
+        sys.stderr.write(
+            "blocked by polyglot-dev guard: empty stdin, no payload to inspect "
+            "(fail-closed)\n"
+        )
+        return 1
+    if payload is None:
         return 0  # never block on a payload we cannot read
 
     command = extract_command(payload)

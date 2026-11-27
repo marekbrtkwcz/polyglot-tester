@@ -10,8 +10,20 @@ When a `write_file`/`edit` payload carries the text about to be written
 moment it would land in a file — not only at the next `git add`.
 
 Fail-open on anything unreadable: the guard must never brick a session.
+One deliberate exception: an EMPTY stdin fails closed — the hook runner
+always sends a JSON payload, so empty stdin means this process is the
+fallback interpreter in a `python x || python3 x` chain whose first run
+already consumed the payload.
 
-Environment override: POLYGLOT_SECRETS_DISABLED=1 disables every block.
+Git commands run in the session folder named in the hook payload's `cwd`
+(plugin hooks are spawned from the plugin's read-only snapshot, not from
+the project), resolved to the repository top level. Lockfiles matched by
+SKIP_PATHS are excluded from the staged diff, the unstaged diff, and the
+untracked files; untracked files are only read for `git add`, since a
+plain `git commit` never includes them.
+
+Environment override: POLYGLOT_SECRETS_DISABLED=1 disables every block
+(only the exact value "1" counts).
 """
 
 import json
@@ -67,6 +79,7 @@ SECRET_PATTERNS = [
 ]
 
 GIT_TRIGGER = re.compile(r"\bgit\s+(?:add|commit)\b")
+GIT_ADD = re.compile(r"\bgit\s+add\b")
 
 SKIP_PATHS = re.compile(
     r"(?:^|/)(?:package-lock\.json|pnpm-lock\.yaml|yarn\.lock|go\.sum|Cargo\.lock|.*\.min\.js)$"
@@ -88,20 +101,62 @@ def git_output(args, cwd=None):
     return result.stdout if result.returncode == 0 else ""
 
 
-def collect_text():
-    """Staged diff + unstaged diff + untracked file contents."""
-    parts = [
-        git_output(["diff", "--cached"]),
-        git_output(["diff"]),
+def payload_root(payload):
+    """Repository top level for the session folder named in the payload.
+
+    Plugin hooks are spawned from the plugin's read-only snapshot, so the
+    process cwd is not the project: use the payload's `cwd` when present
+    and resolve it to the git top level. None when not inside a work tree.
+    """
+    root = None
+    if isinstance(payload, dict):
+        cwd = payload.get("cwd")
+        if isinstance(cwd, str) and cwd:
+            root = cwd
+    if not git_output(["rev-parse", "--is-inside-work-tree"], cwd=root).strip():
+        return None
+    return git_output(["rev-parse", "--show-toplevel"], cwd=root).strip() or None
+
+
+def diff_text(root, cached):
+    """Staged or unstaged diff, excluding SKIP_PATHS via pathspec."""
+    args = ["diff", "--cached"] if cached else ["diff"]
+    paths = [
+        p
+        for p in git_output([*args, "--name-only"], cwd=root).splitlines()
+        if p and not SKIP_PATHS.search(p)
     ]
-    for path in git_output(["ls-files", "--others", "--exclude-standard"]).splitlines():
-        if SKIP_PATHS.search(path):
+    if not paths:
+        return ""
+    return git_output([*args, "--", *paths], cwd=root)
+
+
+def untracked_text(root):
+    """Contents of untracked files (excluding SKIP_PATHS), relative to root."""
+    parts = []
+    for path in git_output(
+        ["ls-files", "--others", "--exclude-standard"], cwd=root
+    ).splitlines():
+        if not path or SKIP_PATHS.search(path):
             continue
         try:
-            with open(path, encoding="utf-8", errors="replace") as fh:
+            with open(
+                os.path.join(root, path), encoding="utf-8", errors="replace"
+            ) as fh:
                 parts.append(fh.read())
         except OSError:
             continue
+    return "\n".join(parts)
+
+
+def collect_text(root, scan_untracked=False):
+    """Staged diff + unstaged diff (+ untracked contents on git add only)."""
+    parts = [
+        diff_text(root, cached=True),
+        diff_text(root, cached=False),
+    ]
+    if scan_untracked:
+        parts.append(untracked_text(root))
     return "\n".join(parts)
 
 
@@ -163,14 +218,40 @@ def scan_written_text(payload):
     return find_secrets("\n".join(written))
 
 
+EMPTY = object()  # sentinel: stdin was empty, not merely unparseable
+
+
+def read_payload():
+    """Read the hook payload from stdin.
+
+    Returns EMPTY when stdin has no payload at all, None on unparseable
+    input. Empty stdin fails closed in main(): the hook runner always
+    sends a JSON payload, so empty stdin means this process is the
+    fallback interpreter in a `python x || python3 x` chain re-running
+    the guard after the payload was consumed — allowing that would
+    bypass the guard. Unparseable non-empty input fails open.
+    """
+    raw = sys.stdin.read()
+    if not raw.strip():
+        return EMPTY
+    try:
+        return json.loads(raw)
+    except Exception:  # noqa: BLE001 - fail open, never brick the session
+        return None
+
+
 def main():
-    if os.environ.get("POLYGLOT_SECRETS_DISABLED"):
+    if os.environ.get("POLYGLOT_SECRETS_DISABLED") == "1":
         return 0
 
-    try:
-        raw = sys.stdin.read()
-        payload = json.loads(raw) if raw.strip() else {}
-    except Exception:  # noqa: BLE001 - fail open, never brick the session
+    payload = read_payload()
+    if payload is EMPTY:
+        sys.stderr.write(
+            "blocked by polyglot-dev secrets guard: empty stdin, no payload to "
+            "inspect (fail-closed)\n"
+        )
+        return 1
+    if payload is None:
         return 0
 
     if isinstance(payload, dict):
@@ -187,11 +268,15 @@ def main():
     if not command or not GIT_TRIGGER.search(command):
         return 0
 
-    # Only scan when we are actually inside a git repository.
-    if not git_output(["rev-parse", "--is-inside-work-tree"]).strip():
-        return 0
+    # Plugin hooks run from the plugin snapshot, not the project: resolve
+    # the repository from the session folder named in the payload.
+    root = payload_root(payload)
+    if not root:
+        return 0  # not inside a git repository: nothing to scan
 
-    findings = find_secrets(collect_text())
+    findings = find_secrets(
+        collect_text(root, scan_untracked=bool(GIT_ADD.search(command)))
+    )
     if findings:
         sys.stderr.write(
             "blocked by polyglot-dev secrets guard: likely secret(s) would be committed:\n"

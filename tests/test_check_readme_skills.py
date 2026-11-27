@@ -37,7 +37,9 @@ def test_missing_skill_detected(tmp_path):
 
 def test_stale_readme_entry_detected(tmp_path):
     readme = tmp_path / "README.md"
-    readme.write_text("| Skill | `polyglot-dev:ghost` | removed skill |\n", encoding="utf-8")
+    readme.write_text(
+        "| Skill | `polyglot-dev:ghost` | removed skill |\n", encoding="utf-8"
+    )
     missing, stale = crs.check(tmp_path / "skills", readme)
     assert missing == []
     assert stale == ["ghost"]

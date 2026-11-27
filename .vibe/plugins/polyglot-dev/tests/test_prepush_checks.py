@@ -1,6 +1,7 @@
 """Tests for the prepush_checks.py pre-tool hook script."""
 
 import importlib.util
+import io
 import json
 import os
 import shutil
@@ -37,7 +38,11 @@ def test_ignores_non_push_commands():
 def test_skips_force_push():
     # history-rewriting pushes belong to guard-destructive-commands
     assert prepush.FORCE_PUSH.search("git push --force origin main")
+    assert prepush.FORCE_PUSH.search("git push -f origin main")  # short flag
+    assert prepush.FORCE_PUSH.search("git push origin main -f")
     proc = run_hook({"command": "git push --force origin main"})
+    assert proc.returncode == 0
+    proc = run_hook({"command": "git push -f origin main"})
     assert proc.returncode == 0
 
 
@@ -64,6 +69,48 @@ def test_hook_fails_open_on_garbage():
         check=False,
     )
     assert proc.returncode == 0
+
+
+def test_hook_fails_closed_on_empty_stdin():
+    # a fallback interpreter in `python x || python3 x` re-runs the hook on
+    # the consumed stdin; that must not wave a payload through
+    proc = subprocess.run(
+        [sys.executable, str(SCRIPT)],
+        input=b"",
+        capture_output=True,
+        cwd=PLUGIN_DIR,
+        check=False,
+    )
+    assert proc.returncode == 1
+
+
+# --- main() in process -------------------------------------------------------
+
+
+def run_main(monkeypatch, stdin_text, env=None):
+    monkeypatch.setattr(sys, "stdin", io.StringIO(stdin_text))
+    if env:
+        for key, value in env.items():
+            monkeypatch.setenv(key, value)
+    return prepush.main()
+
+
+def test_main_in_process_empty_stdin_fails_closed(monkeypatch):
+    assert run_main(monkeypatch, "") == 1
+
+
+def test_main_in_process_garbage_fails_open(monkeypatch):
+    assert run_main(monkeypatch, "not json") == 0
+
+
+def test_main_in_process_env_and_push_gates(monkeypatch, tmp_path):
+    push = json.dumps({"command": "git push origin main", "cwd": str(tmp_path)})
+    assert run_main(monkeypatch, push) == 0  # foreign project: silent no-op
+    assert run_main(monkeypatch, push, {"POLYGLOT_PREPUSH_DISABLED": "1"}) == 0
+    force = json.dumps({"command": "git push -f origin main"})
+    assert run_main(monkeypatch, force) == 0  # destructive guard's job
+    other = json.dumps({"command": "git commit -m x"})
+    assert run_main(monkeypatch, other) == 0
 
 
 def test_own_repo_detected_via_markers():

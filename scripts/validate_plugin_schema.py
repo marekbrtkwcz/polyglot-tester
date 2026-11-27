@@ -12,7 +12,9 @@ from pathlib import Path
 import jsonschema
 
 SCHEMA_URL = "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"
-PLUGIN_JSON = Path(__file__).resolve().parents[1] / ".vibe/plugins/polyglot-dev/plugin.json"
+PLUGIN_JSON = (
+    Path(__file__).resolve().parents[1] / ".vibe/plugins/polyglot-dev/plugin.json"
+)
 
 
 def main():
@@ -23,7 +25,9 @@ def main():
     try:
         jsonschema.validate(plugin, schema)
     except jsonschema.ValidationError as exc:
-        sys.stderr.write(f"plugin.json schema violation: {exc.message}\n  at: {list(exc.absolute_path)}\n")
+        sys.stderr.write(
+            f"plugin.json schema violation: {exc.message}\n  at: {list(exc.absolute_path)}\n"
+        )
         return 1
     print(f"plugin.json valid against {SCHEMA_URL}")
     return 0

@@ -19,8 +19,12 @@ EXCLUDED = ("skipped",)
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("cache", nargs="?", default=".mutmut-cache", help="mutmut sqlite cache")
-    parser.add_argument("--min-score", type=float, default=0.80, help="minimum mutation score (0-1)")
+    parser.add_argument(
+        "cache", nargs="?", default=".mutmut-cache", help="mutmut sqlite cache"
+    )
+    parser.add_argument(
+        "--min-score", type=float, default=0.80, help="minimum mutation score (0-1)"
+    )
     args = parser.parse_args()
 
     conn = sqlite3.connect(args.cache)
@@ -35,11 +39,16 @@ def main() -> int:
     survived = sum(counts[s] for s in NOT_CAUGHT)
     scored = caught + survived
 
-    print(f"mutation outcomes: killed/timeout/suspicious {caught}, survived {survived}, "
-          f"skipped {counts['skipped']}, untested {untested}")
+    print(
+        f"mutation outcomes: killed/timeout/suspicious {caught}, survived {survived}, "
+        f"skipped {counts['skipped']}, untested {untested}"
+    )
 
     if scored == 0:
-        print("no scored mutants found — is the cache from a finished run?", file=sys.stderr)
+        print(
+            "no scored mutants found — is the cache from a finished run?",
+            file=sys.stderr,
+        )
         return 1
     if untested:
         print(f"run incomplete: {untested} mutants untested", file=sys.stderr)

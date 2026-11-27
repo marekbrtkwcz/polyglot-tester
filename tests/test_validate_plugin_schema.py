@@ -31,7 +31,11 @@ def run_main(plugin_doc, schema=SCHEMA):
     fake_response.__exit__ = lambda s, *a: False
     with (
         mock.patch.object(vps.urllib.request, "urlopen", return_value=fake_response),
-        mock.patch.object(vps, "PLUGIN_JSON", mock.Mock(read_text=lambda encoding="utf-8": json.dumps(plugin_doc))),
+        mock.patch.object(
+            vps,
+            "PLUGIN_JSON",
+            mock.Mock(read_text=lambda encoding="utf-8": json.dumps(plugin_doc)),
+        ),
     ):
         return vps.main()
 
@@ -55,5 +59,9 @@ def test_invalid_plugin_fails(plugin_doc):
 
 def test_real_plugin_json_is_valid_against_minimal_schema():
     """The shipped plugin.json satisfies the required-fields contract."""
-    real = json.loads((REPO_ROOT / ".vibe/plugins/polyglot-dev/plugin.json").read_text(encoding="utf-8"))
+    real = json.loads(
+        (REPO_ROOT / ".vibe/plugins/polyglot-dev/plugin.json").read_text(
+            encoding="utf-8"
+        )
+    )
     assert run_main(real) == 0

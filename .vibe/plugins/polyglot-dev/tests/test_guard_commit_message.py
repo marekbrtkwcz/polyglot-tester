@@ -1,6 +1,7 @@
 """Tests for the guard_commit_message.py pre-tool hook script."""
 
 import importlib.util
+import io
 import json
 import os
 import subprocess
@@ -30,6 +31,15 @@ def run_hook(payload, env_extra=None):
 
 def test_blocks_wip_subject_double_quotes():
     assert wip_guard.is_wip_commit('git commit -m "WIP: refactor"') is True
+
+
+def test_blocks_wip_with_combined_short_flags():
+    # -am is `git commit -a -m`: the message must still be scanned
+    assert wip_guard.is_wip_commit('git commit -am "WIP: refactor"') is True
+    assert wip_guard.is_wip_commit("git commit -am 'wip fix'") is True
+    assert wip_guard.is_wip_commit('git commit -a -m "WIP: x"') is True
+    assert wip_guard.is_wip_commit('git commit --amend -m "WIP: x"') is True
+    assert wip_guard.is_wip_commit('git commit -am "Add feature"') is False
 
 
 def test_blocks_wip_subject_single_quotes():
@@ -99,3 +109,45 @@ def test_hook_fails_open_on_garbage():
         check=False,
     )
     assert proc.returncode == 0
+
+
+def test_hook_fails_closed_on_empty_stdin():
+    # a fallback interpreter in `python x || python3 x` re-runs the guard on
+    # the consumed stdin; that must not wave a payload through
+    proc = subprocess.run(
+        [sys.executable, str(SCRIPT)],
+        input=b"",
+        capture_output=True,
+        cwd=PLUGIN_DIR,
+        check=False,
+    )
+    assert proc.returncode == 1
+
+
+# --- main() in process -------------------------------------------------------
+
+
+def run_main(monkeypatch, stdin_text, env=None):
+    monkeypatch.setattr(sys, "stdin", io.StringIO(stdin_text))
+    if env:
+        for key, value in env.items():
+            monkeypatch.setenv(key, value)
+    return wip_guard.main()
+
+
+def test_main_in_process_empty_stdin_fails_closed(monkeypatch):
+    assert run_main(monkeypatch, "") == 1
+
+
+def test_main_in_process_garbage_fails_open(monkeypatch):
+    assert run_main(monkeypatch, "not json") == 0
+
+
+def test_main_in_process_blocks_wip_and_env_gate(monkeypatch):
+    wip = json.dumps({"command": 'git commit -am "WIP: x"'})
+    assert run_main(monkeypatch, wip) == 1
+    assert run_main(monkeypatch, wip, {"POLYGLOT_WIP_DISABLED": "1"}) == 0
+    assert run_main(monkeypatch, wip, {"POLYGLOT_WIP_DISABLED": "0"}) == 1
+    ok = json.dumps({"command": 'git commit -m "Add feature"'})
+    assert run_main(monkeypatch, ok) == 0
+    assert run_main(monkeypatch, json.dumps({})) == 0

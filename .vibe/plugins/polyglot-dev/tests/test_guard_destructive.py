@@ -1,6 +1,7 @@
 """Tests for the guard_destructive.py pre-tool hook script."""
 
 import importlib.util
+import io
 import json
 import os
 import subprocess
@@ -194,6 +195,9 @@ def test_powershell_destructive_blocked(command, reason):
         "Remove-Item -Recurse build",  # recurse without force, like `rm -r`
         "rm -Recurse build",  # alias, recurse only
         "Remove-Item -Recurse build; echo -Force",  # -Force belongs to echo
+        "rm -Recurse -Confirm build",  # -Confirm is a prompt, not -Force
+        "rm -Confirm build",  # letters r/f inside a long parameter are not flags
+        "Remove-Item -WhatIf -Recurse build",
     ],
 )
 def test_powershell_near_misses_allowed(command):
@@ -209,6 +213,10 @@ def test_powershell_near_misses_allowed(command):
         "git push origin --force main",
         "git push origin feature/x --force-with-lease=",
         "git push origin feature/x --force-with-lease=false",
+        "git push -f origin main",  # short force flag
+        "git push origin -f main",
+        "git push -vf origin feature/x",  # short flag cluster containing f
+        "git push origin main -f",
     ],
 )
 def test_force_push_token_spellings_blocked(command):
@@ -277,6 +285,64 @@ def test_guard_disabled_via_env():
     result = run_hook(
         {"command": "rm -rf /"},
         env_extra={"POLYGLOT_GUARD_DISABLED": "1"},
+    )
+    assert result.returncode == 0
+
+
+@pytest.mark.parametrize("value", ["0", "false", "yes", ""])
+def test_guard_disabled_only_by_exact_1(value):
+    # POLYGLOT_GUARD_DISABLED=0 must NOT disable the guard
+    result = run_hook(
+        {"command": "rm -rf /"},
+        env_extra={"POLYGLOT_GUARD_DISABLED": value},
+    )
+    assert result.returncode == 1
+
+
+def test_allow_protected_push_only_by_exact_1():
+    result = run_hook(
+        {"command": "git push origin main"},
+        env_extra={"POLYGLOT_GUARD_ALLOW_PROTECTED_PUSH": "0"},
+    )
+    assert result.returncode == 1
+
+
+def test_hook_fails_closed_on_empty_stdin():
+    # Empty stdin means a fallback interpreter in a `python x || python3 x`
+    # chain re-running the guard after the payload was consumed: fail closed.
+    result = subprocess.run(
+        [sys.executable, str(SCRIPT)],
+        input=b"",
+        capture_output=True,
+        check=False,
+    )
+    assert result.returncode == 1
+    assert b"empty stdin" in result.stderr
+
+
+def test_fallback_interpreter_cannot_bypass_block():
+    # The hook command is `python guard.py || python3 guard.py`: when the
+    # first run blocks (exit 1), the second runs on the consumed stdin and
+    # must fail closed too, so the chain still denies the tool call.
+    cmd = f'"{sys.executable}" "{SCRIPT}" || "{sys.executable}" "{SCRIPT}"'
+    result = subprocess.run(
+        cmd,
+        input=json.dumps({"command": "rm -rf /"}).encode(),
+        capture_output=True,
+        shell=True,
+        check=False,
+    )
+    assert result.returncode == 1
+
+
+def test_fallback_interpreter_chain_allows_safe_command():
+    cmd = f'"{sys.executable}" "{SCRIPT}" || "{sys.executable}" "{SCRIPT}"'
+    result = subprocess.run(
+        cmd,
+        input=json.dumps({"command": "ls"}).encode(),
+        capture_output=True,
+        shell=True,
+        check=False,
     )
     assert result.returncode == 0
 
@@ -554,3 +620,59 @@ def test_filename_containing_flag_letters_is_not_a_flag():
     # "draft.txt" contains both r and f; a recursive-only rm stays allowed
     result = run_hook({"command": "rm -r draft.txt"})
     assert result.returncode == 0
+
+
+# --- main() in process: payload reading and env gates ------------------------
+
+
+def run_main(monkeypatch, stdin_text, env=None):
+    monkeypatch.setattr(sys, "stdin", io.StringIO(stdin_text))
+    if env:
+        for key, value in env.items():
+            monkeypatch.setenv(key, value)
+    return guard.main()
+
+
+def test_main_in_process_empty_stdin_fails_closed(monkeypatch):
+    assert run_main(monkeypatch, "") == 1
+    assert run_main(monkeypatch, "   \n") == 1
+
+
+def test_main_in_process_garbage_fails_open(monkeypatch):
+    assert run_main(monkeypatch, "not json") == 0
+
+
+def test_main_in_process_blocks_and_allows(monkeypatch):
+    blocked = json.dumps({"command": "rm -rf /"})
+    assert run_main(monkeypatch, blocked) == 1
+    allowed = json.dumps({"command": "ls"})
+    assert run_main(monkeypatch, allowed) == 0
+    assert run_main(monkeypatch, json.dumps({})) == 0
+
+
+def test_main_in_process_env_gates(monkeypatch):
+    cmd = json.dumps({"command": "rm -rf /"})
+    assert run_main(monkeypatch, cmd, {"POLYGLOT_GUARD_DISABLED": "1"}) == 0
+    assert run_main(monkeypatch, cmd, {"POLYGLOT_GUARD_DISABLED": "0"}) == 1
+    push = json.dumps({"command": "git push origin main"})
+    assert (
+        run_main(monkeypatch, push, {"POLYGLOT_GUARD_ALLOW_PROTECTED_PUSH": "1"}) == 0
+    )
+    assert (
+        run_main(monkeypatch, push, {"POLYGLOT_GUARD_ALLOW_PROTECTED_PUSH": "0"}) == 1
+    )
+
+
+def test_extract_command_shapes():
+    assert guard.extract_command("rm -rf x") == "rm -rf x"
+    assert guard.extract_command({"cmd": "ls"}) == "ls"
+    assert guard.extract_command({"input": {"args": {"command": "pwd"}}}) == "pwd"
+    assert guard.extract_command(42) is None
+    assert guard.extract_command({"a": {"b": 1}}) is None
+
+
+def test_strip_commit_messages():
+    assert guard.strip_commit_messages('git commit -m "rm -rf /"') == "git commit -m "
+    assert guard.strip_commit_messages("git commit --message='x'") == (
+        "git commit --message="
+    )
