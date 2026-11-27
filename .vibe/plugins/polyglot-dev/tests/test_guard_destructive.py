@@ -97,7 +97,10 @@ def test_bulk_rm_allowed(command):
         ("git reset --hard HEAD~1", "git reset --hard: discards working tree"),
         ("git clean -fd", "git clean -f: deletes untracked files"),
         ("git push origin main --force", "git push --force: rewrites remote history"),
-        ("git push --force-with-lease=false", "git push --force: rewrites remote history"),
+        (
+            "git push --force-with-lease=false",
+            "git push --force: rewrites remote history",
+        ),
         ("git stash drop", "git stash drop/clear: loses stashed work"),
         ("git stash clear", "git stash drop/clear: loses stashed work"),
     ],
@@ -124,20 +127,59 @@ def test_force_with_lease_allowed():
 @pytest.mark.parametrize(
     "command, reason",
     [
-        ("Remove-Item -Recurse -Force build", "Remove-Item -Recurse -Force: irreversible bulk delete"),
-        ("Remove-Item -Force -Recurse build", "Remove-Item -Recurse -Force: irreversible bulk delete"),
-        ("Remove-Item build -Recurse -Force", "Remove-Item -Recurse -Force: irreversible bulk delete"),
-        ("Remove-Item -Path build -Recurse -Force", "Remove-Item -Recurse -Force: irreversible bulk delete"),
-        ("remove-item -recurse -force build", "Remove-Item -Recurse -Force: irreversible bulk delete"),
-        ("Remove-Item -Recurse -Force build; echo done", "Remove-Item -Recurse -Force: irreversible bulk delete"),
-        ("del -Recurse -Force build", "Remove-Item -Recurse -Force: irreversible bulk delete"),
-        ("erase -Recurse -Force build", "Remove-Item -Recurse -Force: irreversible bulk delete"),
-        ("rd -Recurse -Force build", "Remove-Item -Recurse -Force: irreversible bulk delete"),
-        ("ri -Recurse -Force build", "Remove-Item -Recurse -Force: irreversible bulk delete"),
-        ("rm -Recurse -Force build", "rm with recursive+force: irreversible bulk delete"),
-        ("Format-Volume -DriveLetter D", "Format-Volume: formats the volume, destroying all data on it"),
+        (
+            "Remove-Item -Recurse -Force build",
+            "Remove-Item -Recurse -Force: irreversible bulk delete",
+        ),
+        (
+            "Remove-Item -Force -Recurse build",
+            "Remove-Item -Recurse -Force: irreversible bulk delete",
+        ),
+        (
+            "Remove-Item build -Recurse -Force",
+            "Remove-Item -Recurse -Force: irreversible bulk delete",
+        ),
+        (
+            "Remove-Item -Path build -Recurse -Force",
+            "Remove-Item -Recurse -Force: irreversible bulk delete",
+        ),
+        (
+            "remove-item -recurse -force build",
+            "Remove-Item -Recurse -Force: irreversible bulk delete",
+        ),
+        (
+            "Remove-Item -Recurse -Force build; echo done",
+            "Remove-Item -Recurse -Force: irreversible bulk delete",
+        ),
+        (
+            "del -Recurse -Force build",
+            "Remove-Item -Recurse -Force: irreversible bulk delete",
+        ),
+        (
+            "erase -Recurse -Force build",
+            "Remove-Item -Recurse -Force: irreversible bulk delete",
+        ),
+        (
+            "rd -Recurse -Force build",
+            "Remove-Item -Recurse -Force: irreversible bulk delete",
+        ),
+        (
+            "ri -Recurse -Force build",
+            "Remove-Item -Recurse -Force: irreversible bulk delete",
+        ),
+        (
+            "rm -Recurse -Force build",
+            "rm with recursive+force: irreversible bulk delete",
+        ),
+        (
+            "Format-Volume -DriveLetter D",
+            "Format-Volume: formats the volume, destroying all data on it",
+        ),
         ("Clear-Disk -Number 0 -RemoveData", "Clear-Disk -RemoveData: wipes the disk"),
-        ("Clear-Disk -Number 0 -RemoveData -RemoveOEM", "Clear-Disk -RemoveData: wipes the disk"),
+        (
+            "Clear-Disk -Number 0 -RemoveData -RemoveOEM",
+            "Clear-Disk -RemoveData: wipes the disk",
+        ),
     ],
 )
 def test_powershell_destructive_blocked(command, reason):
@@ -249,11 +291,20 @@ def test_guard_disabled_via_env():
         ("find /var -type f -delete", "find -delete: irreversible bulk delete"),
         ("sudo find . -delete", "find -delete: irreversible bulk delete"),
         ("find . -name x -delete; echo done", "find -delete: irreversible bulk delete"),
-        ("dd if=/dev/zero of=/dev/sda bs=1M", "dd writing to a block device: destroys the disk"),
-        ("sudo dd if=image.iso of=/dev/sdb", "dd writing to a block device: destroys the disk"),
+        (
+            "dd if=/dev/zero of=/dev/sda bs=1M",
+            "dd writing to a block device: destroys the disk",
+        ),
+        (
+            "sudo dd if=image.iso of=/dev/sdb",
+            "dd writing to a block device: destroys the disk",
+        ),
         ("chmod -R 777 /var/www", "chmod -R 777: makes everything world-writable"),
         ("chmod -R 777 data", "chmod -R 777: makes everything world-writable"),
-        ("chmod -R 755 /", "chmod -R on an absolute path: recursive permission change outside the project"),
+        (
+            "chmod -R 755 /",
+            "chmod -R on an absolute path: recursive permission change outside the project",
+        ),
         ("shred -n 3 secret.txt", "shred: overwrites file contents irreversibly"),
         ("shred -u secret.txt", "shred: overwrites file contents irreversibly"),
         ("truncate -s 0 big.log", "truncate -s 0: wipes the file"),
@@ -399,19 +450,49 @@ def test_hook_allows_normal_command():
     "command, reason",
     [
         ("mkfs /dev/sda1", "mkfs: formats a filesystem, destroying all data on it"),
-        ("mkfs.ext4 /dev/nvme0n1p2", "mkfs: formats a filesystem, destroying all data on it"),
-        ("sudo mkfs.xfs /dev/sdb", "mkfs: formats a filesystem, destroying all data on it"),
+        (
+            "mkfs.ext4 /dev/nvme0n1p2",
+            "mkfs: formats a filesystem, destroying all data on it",
+        ),
+        (
+            "sudo mkfs.xfs /dev/sdb",
+            "mkfs: formats a filesystem, destroying all data on it",
+        ),
         ("wipefs -a /dev/sda", "wipefs/mkswap on a device: destroys signatures/data"),
         ("mkswap /dev/sda3", "wipefs/mkswap on a device: destroys signatures/data"),
         ("cat os.img > /dev/sdb", "redirect to a block device: overwrites the disk"),
-        ("echo data >> /dev/nvme0n1", "redirect to a block device: overwrites the disk"),
-        ("dd if=iso of=/dev/sdc bs=4M", "dd writing to a block device: destroys the disk"),
-        ("cp backup.img /dev/sda", "copying a file onto a block device: overwrites the disk"),
-        ("kubectl delete --all pods", "kubectl delete --all: removes every resource in scope"),
-        ("kubectl delete all --all-namespaces", "kubectl delete --all: removes every resource in scope"),
-        ("kubectl delete deployment x -n prod --all", "kubectl delete --all: removes every resource in scope"),
-        ("git push --delete origin feature", "git push --delete: removes a remote branch"),
-        ("git push origin --delete feature", "git push --delete: removes a remote branch"),
+        (
+            "echo data >> /dev/nvme0n1",
+            "redirect to a block device: overwrites the disk",
+        ),
+        (
+            "dd if=iso of=/dev/sdc bs=4M",
+            "dd writing to a block device: destroys the disk",
+        ),
+        (
+            "cp backup.img /dev/sda",
+            "copying a file onto a block device: overwrites the disk",
+        ),
+        (
+            "kubectl delete --all pods",
+            "kubectl delete --all: removes every resource in scope",
+        ),
+        (
+            "kubectl delete all --all-namespaces",
+            "kubectl delete --all: removes every resource in scope",
+        ),
+        (
+            "kubectl delete deployment x -n prod --all",
+            "kubectl delete --all: removes every resource in scope",
+        ),
+        (
+            "git push --delete origin feature",
+            "git push --delete: removes a remote branch",
+        ),
+        (
+            "git push origin --delete feature",
+            "git push --delete: removes a remote branch",
+        ),
         ("git push origin :main", "git push :ref: deletes the remote branch"),
     ],
 )
