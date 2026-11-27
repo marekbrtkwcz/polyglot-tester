@@ -40,6 +40,12 @@ versioning is semantic.
   diagnostics commands, lookup tables, and failure triage in the style of
   the existing ci-cd, go, javascript-typescript, and python references,
   so every knowledge folder now has a quick-reference companion.
+- `evals/activation-cases.md`: must-fire cases and a before/after gate for
+  edited skills — a description edit must not silence a case that fired
+  or wake one that stayed quiet (unless that was the stated intent, and
+  then the collision cases re-run); body-only edits gate on substance.
+  Ships with starter cases for the workflow backbone and a coverage rule
+  that ties every future description edit to its case.
 
 ### Changed
 

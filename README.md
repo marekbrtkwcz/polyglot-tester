@@ -235,6 +235,10 @@ and a pinned markdownlint pass over all docs — on every push and pull request
 - Activation collisions: `evals/collision-cases.md` lists the highest-risk
   near-neighbour skill pairs with the intended winner — re-run those cases
   when any description in a pair changes.
+- Skill activation: `evals/activation-cases.md` defines must-fire cases and
+  the before/after gate — a description edit needs a green gate (no
+  regression, no unintended leak), a body-only edit needs the substance
+  criteria to hold.
 
 ### Adding your own skill
 
