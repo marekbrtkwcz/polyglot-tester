@@ -38,3 +38,9 @@ description: Load this skill for advanced JS/TS testing: Vitest/Jest setup, mock
 
 - Measure with Vitest's built-in coverage (v8 or istanbul); gate on changed lines (diff coverage), not global percentage.
 - 100% coverage ≠ good tests — mutation testing (Stryker) reveals tests that pass without asserting.
+
+## Related skills in other plugins
+
+- `test-automation:writing-playwright-tests-best-practices`, `test-automation:api-playwright-test-developer` — Playwright UI/API test writing when the repo uses Playwright.
+- `test-automation:diagnosing-test-failures`, `test-automation:stabilizing-flaky-tests` — failure classification and flake fixing.
+- `qa-mcp` — Playwright MCP + Chrome DevTools MCP for live browser debugging, k6 MCP for load tests.

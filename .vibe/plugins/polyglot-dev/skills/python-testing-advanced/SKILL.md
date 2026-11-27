@@ -64,3 +64,9 @@ def test_sort_idempotent(xs):
 - One behavior per test; name describes the outcome (`test_refund_fails_when_amount_negative`).
 - Deterministic: fixed data, `freezegun` for time, no network (respx/httpx mock transport).
 - Tests must be able to fail — an assertion that can't fail is decoration.
+
+## Related skills in other plugins
+
+- `test-automation:writing-playwright-tests-best-practices`, `test-automation:api-playwright-test-developer` — Playwright UI/API test writing when the repo uses Playwright.
+- `test-automation:diagnosing-test-failures`, `test-automation:stabilizing-flaky-tests` — failure classification and flake fixing.
+- `qa-mcp` — Playwright MCP + Chrome DevTools MCP for live browser debugging, k6 MCP for load tests.

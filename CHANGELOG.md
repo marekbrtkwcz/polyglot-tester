@@ -28,6 +28,9 @@ versioning is semantic.
   (AWS, GitHub, Slack, Stripe, Google keys, private key blocks, generic
   api_key/secret/token assignments) and blocks the command. Override:
   `POLYGLOT_SECRETS_DISABLED=1`. 18 new test cases.
+- Cross-references to the `test-automation` and `qa-mcp` plugins added to
+  `testing-polyglot`, `debugging-polyglot`, `typescript-testing-advanced`,
+  `python-testing-advanced`, and `golang-testing-advanced`.
 
 ## [1.3.0] - 2026-11-27
 

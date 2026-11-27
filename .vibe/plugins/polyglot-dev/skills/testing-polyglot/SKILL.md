@@ -76,3 +76,9 @@ func TestSum(t *testing.T) {
 - Boundary cases: empty, one, many, zero/negative, unicode, max sizes.
 - A test that cannot fail proves nothing: every test must assert a real
   observable outcome.
+
+## Related skills in other plugins
+
+- `test-automation:writing-playwright-tests-best-practices`, `test-automation:api-playwright-test-developer` — Playwright UI/API test writing when the repo uses Playwright.
+- `test-automation:diagnosing-test-failures`, `test-automation:stabilizing-flaky-tests` — failure classification and flake fixing.
+- `qa-mcp` — Playwright MCP + Chrome DevTools MCP for live browser debugging, k6 MCP for load tests.

@@ -70,3 +70,9 @@ Run: `go test -fuzz=FuzzParse -fuzztime=30s ./pkg/`.
 ## CI gate
 
 `go test -race -count=1 ./...` — `-race` for the data race detector, `-count=1` to bypass the result cache. Add goleak in `TestMain` for packages that spawn goroutines.
+
+## Related skills in other plugins
+
+- `test-automation:writing-playwright-tests-best-practices`, `test-automation:api-playwright-test-developer` — Playwright UI/API test writing when the repo uses Playwright.
+- `test-automation:diagnosing-test-failures`, `test-automation:stabilizing-flaky-tests` — failure classification and flake fixing.
+- `qa-mcp` — Playwright MCP + Chrome DevTools MCP for live browser debugging, k6 MCP for load tests.

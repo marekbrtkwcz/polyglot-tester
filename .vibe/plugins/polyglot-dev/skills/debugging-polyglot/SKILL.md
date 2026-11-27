@@ -71,3 +71,9 @@ now, record the constraint — never silence the failure.
 Add the regression test that fails without the fix, then verify the whole
 affected suite (not just the new test) passes. Report: root cause, the fix,
 and the test that pins it.
+
+## Related skills in other plugins
+
+- `test-automation:writing-playwright-tests-best-practices`, `test-automation:api-playwright-test-developer` — Playwright UI/API test writing when the repo uses Playwright.
+- `test-automation:diagnosing-test-failures`, `test-automation:stabilizing-flaky-tests` — failure classification and flake fixing.
+- `qa-mcp` — Playwright MCP + Chrome DevTools MCP for live browser debugging, k6 MCP for load tests.
