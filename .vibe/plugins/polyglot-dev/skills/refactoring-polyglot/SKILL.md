@@ -1,6 +1,6 @@
 ---
 name: refactoring-polyglot
-description: Load this skill when refactoring code in JavaScript/TypeScript, Python, or Go — test-first discipline, one transformation per green step, mechanical rename/move tooling, and never mixing a refactor with a behavior change.
+description: Load this skill when refactoring code in JavaScript/TypeScript, Python, or Go — test-first discipline, one transformation per green step, mechanical rename/move tooling, and never mixing a refactor with a behavior change. When the task names one language prefer its golang-refactoring, python-refactoring, or typescript-refactoring skill.
 ---
 
 # Safe Refactoring (Polyglot)

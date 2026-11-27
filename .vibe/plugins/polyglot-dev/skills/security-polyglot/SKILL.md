@@ -1,6 +1,6 @@
 ---
 name: security-polyglot
-description: Load this skill when writing or reviewing security-sensitive code in JavaScript/TypeScript, Python, or Go — injection, secrets, crypto, HTTP hardening, and dependency auditing across all three languages.
+description: Load this skill when writing or reviewing security-sensitive code in JavaScript/TypeScript, Python, or Go — injection, secrets, crypto, HTTP hardening, and dependency auditing across all three languages. When the task names one language prefer its golang-security, python-security, or typescript-security skill; for a focused dependency-vulnerability audit prefer dependency-audit.
 ---
 
 # Security (Polyglot)

@@ -1,6 +1,6 @@
 ---
 name: dependency-audit
-description: Load this skill when auditing or updating project dependencies for vulnerabilities and drift in JavaScript/TypeScript, Python, or Go.
+description: Load this skill when auditing or updating project dependencies for vulnerabilities and drift in JavaScript/TypeScript, Python, or Go. For securing code beyond dependencies prefer security-polyglot.
 ---
 
 # Dependency Audit (Polyglot)

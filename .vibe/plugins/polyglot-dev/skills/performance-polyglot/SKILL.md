@@ -1,6 +1,6 @@
 ---
 name: performance-polyglot
-description: Load this skill when optimizing code in JavaScript/TypeScript, Python, or Go — measure-first discipline, per-language profiling tools, common wins, and locking the result with benchmarks in CI.
+description: Load this skill when optimizing code in JavaScript/TypeScript, Python, or Go — measure-first discipline, per-language profiling tools, common wins, and locking the result with benchmarks in CI. When the task names one language prefer its golang-performance, python-performance, or typescript-performance skill.
 ---
 
 # Performance (Polyglot)

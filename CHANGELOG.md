@@ -23,6 +23,12 @@ versioning is semantic.
   against `plugin.json`, and attaches `polyglot-dev-<version>.zip` — built
   with `git archive`, `tests/` excluded via `export-ignore` — to the GitHub
   release; the workflow fails if the zip still contains `tests/`.
+- Skill collision audit: the 11 descriptions in the highest-risk
+  near-neighbour groups (cross-language vs per-language twins, the testing
+  pair, logging vs observability, dependency audit vs security, review vs
+  workflow) now name the competing skill and say when to prefer it, and
+  `evals/collision-cases.md` records the collision cases with intended
+  winners for future behavioural runs.
 
 - PowerShell destructive-command patterns for the `powershell` shell tool:
   `Remove-Item` (and its `rm`/`del`/`erase`/`rd`/`ri` aliases) with both

@@ -1,6 +1,6 @@
 ---
 name: unit-testing-polyglot
-description: Load this skill when writing unit tests in JavaScript/TypeScript, Python, or Go — the fast, isolated layer: structure, assertions, mocks/doubles, deterministic data, and running just one test.
+description: Load this skill when writing unit tests in JavaScript/TypeScript, Python, or Go — the fast, isolated layer: structure, assertions, mocks/doubles, deterministic data, and running just one test. For suite-level concerns — framework choice, structure across layers, coverage — prefer testing-polyglot.
 ---
 
 # Unit Testing (Polyglot)

@@ -1,6 +1,6 @@
 ---
 name: stay-updated-polyglot
-description: Load this skill when upgrading runtimes, toolchains, or dependencies in JavaScript/TypeScript, Python, or Go — official sources per language, EOL schedules, and a safe one-thing-at-a-time upgrade routine.
+description: Load this skill when upgrading runtimes, toolchains, or dependencies in JavaScript/TypeScript, Python, or Go — official sources per language, EOL schedules, and a safe one-thing-at-a-time upgrade routine. When upgrading within a single known language prefer its golang-stay-updated, python-stay-updated, or typescript-stay-updated skill.
 ---
 
 # Staying Updated (Polyglot)

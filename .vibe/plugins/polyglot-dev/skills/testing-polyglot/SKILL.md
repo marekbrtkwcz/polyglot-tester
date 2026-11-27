@@ -1,6 +1,6 @@
 ---
 name: testing-polyglot
-description: Load this skill when writing or running tests in JavaScript, TypeScript, Python, or Go: framework choice, structure, deterministic test data, running commands, and coverage.
+description: Load this skill when writing or running tests in JavaScript, TypeScript, Python, or Go: framework choice, structure, deterministic test data, running commands, and coverage. For the fast, isolated unit layer alone prefer unit-testing-polyglot.
 ---
 
 # Testing (Polyglot)

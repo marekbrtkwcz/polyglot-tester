@@ -1,6 +1,6 @@
 ---
 name: error-handling-polyglot
-description: Load this skill when designing error handling in JavaScript/TypeScript, Python, or Go — error chaining, domain error types, expected vs unexpected failures, and logging discipline across languages.
+description: Load this skill when designing error handling in JavaScript/TypeScript, Python, or Go — error chaining, domain error types, expected vs unexpected failures, and logging discipline across languages. When the task names one language prefer its golang-error-handling, python-error-handling, or typescript-error-handling skill.
 ---
 
 # Error Handling (Polyglot)

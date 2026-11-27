@@ -1,6 +1,6 @@
 ---
 name: database-polyglot
-description: Load this skill when working with databases in JavaScript/TypeScript, Python, or Go — choosing a store, writing safe queries, transactions, migrations, and connection pooling across languages.
+description: Load this skill when working with databases in JavaScript/TypeScript, Python, or Go — choosing a store, writing safe queries, transactions, migrations, and connection pooling across languages. When the stack is already fixed, prefer the matching golang-database, python-database, or typescript-database skill for tool-specific depth.
 ---
 
 # Database Work (Polyglot)

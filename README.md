@@ -232,6 +232,9 @@ and a pinned markdownlint pass over all docs — on every push and pull request
   `display_name`, `enabled_tools`, `disabled_tools`) — the plugin validator
   rejects camelCase.
 - Add an agent: new TOML under `ai.mistral.vibe/agents/`.
+- Activation collisions: `evals/collision-cases.md` lists the highest-risk
+  near-neighbour skill pairs with the intended winner — re-run those cases
+  when any description in a pair changes.
 
 ### Adding your own skill
 
