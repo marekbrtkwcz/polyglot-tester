@@ -49,6 +49,8 @@ versioning is semantic.
 - Unit tests for `scripts/validate_plugin_schema.py` in `tests/` (schema
   fetch mocked); the CI test step now runs both `tests/` and the plugin
   test suite (143 tests).
+- Skill `unit-testing-polyglot`: the unit-test layer per language (Vitest/Jest,
+  pytest, Go table-driven) — structure, mocks, determinism, running one test.
 
 ## [1.3.0] - 2026-11-27
 

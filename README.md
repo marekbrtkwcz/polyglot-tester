@@ -29,6 +29,7 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 |---|---|---|
 | Skill | `polyglot-dev:feature-workflow` | End-to-end delivery loop: understand → plan → test-first implement → verify → review → hand off |
 | Skill | `polyglot-dev:testing-polyglot` | Writing and running tests per language: framework detection, structure, deterministic data, coverage |
+| Skill | `polyglot-dev:unit-testing-polyglot` | The fast isolated layer per language: Vitest/Jest, pytest, Go table-driven tests, mocks, single-test runs |
 | Skill | `polyglot-dev:code-review-polyglot` | Per-language review checklists (JS/TS, Python, Go) with a severity-ranked verdict format |
 | Skill | `polyglot-dev:debugging-polyglot` | Failure classification, reproduction loop, and per-language debugging guidance |
 | Skill | `polyglot-dev:git-workflow-polyglot` | Day-to-day git: commit conventions, branching, PRs, rebase, bisect, recovery |
