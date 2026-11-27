@@ -51,6 +51,12 @@ versioning is semantic.
   user approval (`permission = "ask"`), and a denylist blocks
   state-changing git commands plus `rm -rf`, so finding call sites no
   longer depends on guessing file paths with `read_file` alone.
+- The `code-reviewer` and `security-auditor` instructions now read their
+  per-language checklist from the plugin's own
+  `skills/code-review-polyglot/SKILL.md` and
+  `skills/security-polyglot/SKILL.md` instead of duplicating it, so the
+  agent instructions and the skills cannot drift apart; a one-line
+  fallback covers the review order when the skill file is not found.
 
 ### Fixed
 
