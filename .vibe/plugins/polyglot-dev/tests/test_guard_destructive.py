@@ -96,6 +96,35 @@ def test_force_with_lease_allowed():
     assert result.returncode == 0
 
 
+# --- commit messages are data, not commands ----------------------------------
+
+
+@pytest.mark.parametrize(
+    "command",
+    [
+        'git commit -m "document why rm -rf is dangerous"',
+        "git commit -m 'notes on git reset --hard pitfalls'",
+        'git commit --message="chore: mention git stash drop in docs"',
+        'git commit -m "rm -rf build && git clean -fd"',
+    ],
+)
+def test_commit_message_mentioning_blocked_commands_allowed(command):
+    result = run_hook({"command": command})
+    assert result.returncode == 0
+
+
+def test_quoted_command_not_after_dash_m_still_blocked():
+    # Quoted strings outside -m ARE executed: the guard must still fire.
+    result = run_hook({"command": 'bash -c "rm -rf build"'})
+    assert result.returncode == 1
+
+
+def test_destructive_command_next_to_commit_still_blocked():
+    command = 'git add -A && git commit -m "docs" && git clean -fd'
+    result = run_hook({"command": command})
+    assert result.returncode == 1
+
+
 # --- end-to-end hook behavior -------------------------------------------------
 
 

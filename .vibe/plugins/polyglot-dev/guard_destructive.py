@@ -48,6 +48,19 @@ def extract_command(payload):
 # first separator, so "rm -r dir; echo f" is not misread as rm -rf.
 RM_SEGMENT_SPLIT = re.compile(r"[;&|]")
 
+# Quoted strings passed to `git commit -m` / `--message=` are data, never
+# executed: strip them so a commit message that merely mentions a blocked
+# command does not trip the guard. Quoted strings elsewhere (e.g.
+# `bash -c "..."`) ARE executed and must stay in the scanned text.
+COMMIT_MESSAGE = re.compile(
+    r"(-m\s+|--message=)(\"(?:[^\"\\]|\\.)*\"|'(?:[^'\\]|\\.)*')"
+)
+
+
+def strip_commit_messages(command):
+    """Remove commit-message payloads from a command before scanning it."""
+    return COMMIT_MESSAGE.sub(r"\1", command)
+
 
 def is_bulk_rm(command):
     """True when any rm invocation in the command combines recursive and force.
@@ -89,15 +102,17 @@ def main():
     if not command:
         return 0
 
-    if is_bulk_rm(command):
+    scan_text = strip_commit_messages(command)
+
+    if is_bulk_rm(scan_text):
         sys.stderr.write(
             "blocked by polyglot-dev guard: rm with recursive+force: "
-            "irreversible bulk delete\ncommand: %s\n" % command[:500]
+            "irreversible bulk delete\ncommand: %s\n" % scan_text[:500]
         )
         return 1
 
     for pattern, reason in BLOCKED_PATTERNS:
-        if re.search(pattern, command):
+        if re.search(pattern, scan_text):
             sys.stderr.write(
                 "blocked by polyglot-dev guard: %s\ncommand: %s\n"
                 % (reason, command[:500])
