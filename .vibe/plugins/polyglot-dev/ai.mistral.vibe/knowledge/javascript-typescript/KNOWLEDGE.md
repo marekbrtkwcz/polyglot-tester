@@ -55,3 +55,13 @@ icon: code
 - Object spread is shallow; nested objects need structured cloning.
 - `parseInt` without radix; `0.1 + 0.2 !== 0.3` — use integer cents for money.
 - `JSON.parse` of untrusted input inside try/catch, never `eval`.
+
+## Official sources
+
+- https://www.typescriptlang.org — handbook, playground, release notes.
+- https://www.typescriptlang.org/docs/ — TS Handbook + reference (start here).
+- https://nodejs.org/en — Node.js downloads, API docs, release schedule.
+- https://nodejs.org/api/ — full Node API reference.
+- https://developer.mozilla.org (MDN) — JS language reference and web APIs.
+- https://tc39.es/ecma262/ — the ECMAScript specification.
+- https://www.npmjs.com — package registry (evaluate packages: maintenance, types, dep tree).
