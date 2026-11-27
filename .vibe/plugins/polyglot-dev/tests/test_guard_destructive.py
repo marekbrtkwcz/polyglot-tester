@@ -30,6 +30,14 @@ def run_hook(payload, env_extra=None):
     )
 
 
+def assert_blocked(result, reason):
+    """A blocked command exits 1 with the exact reason line on stderr."""
+    assert result.returncode == 1
+    assert result.stderr.startswith(b"blocked by polyglot-dev guard"), result.stderr
+    expected = f"blocked by polyglot-dev guard: {reason}".encode()
+    assert expected in result.stderr, (expected, result.stderr)
+
+
 # --- is_bulk_rm: blocked spellings -------------------------------------------
 
 
@@ -84,20 +92,25 @@ def test_bulk_rm_allowed(command):
 
 
 @pytest.mark.parametrize(
-    "command",
+    "command, reason",
     [
-        "git reset --hard HEAD~1",
-        "git clean -fd",
-        "git push origin main --force",
-        "git push --force-with-lease=false",  # not the safe lease form
-        "git stash drop",
-        "git stash clear",
+        ("git reset --hard HEAD~1", "git reset --hard: discards working tree"),
+        ("git clean -fd", "git clean -f: deletes untracked files"),
+        ("git push origin main --force", "git push --force: rewrites remote history"),
+        ("git push --force-with-lease=false", "git push --force: rewrites remote history"),
+        ("git stash drop", "git stash drop/clear: loses stashed work"),
+        ("git stash clear", "git stash drop/clear: loses stashed work"),
     ],
 )
-def test_git_patterns_blocked(command):
-    result = run_hook({"command": command})
-    assert result.returncode == 1
-    assert b"blocked by polyglot-dev guard" in result.stderr
+def test_git_patterns_blocked(command, reason):
+    assert_blocked(run_hook({"command": command}), reason)
+
+
+def test_rm_rf_blocked_with_reason():
+    assert_blocked(
+        run_hook({"command": "rm -rf build"}),
+        "rm with recursive+force: irreversible bulk delete",
+    )
 
 
 def test_force_with_lease_allowed():
@@ -109,28 +122,26 @@ def test_force_with_lease_allowed():
 
 
 @pytest.mark.parametrize(
-    "command",
+    "command, reason",
     [
-        "Remove-Item -Recurse -Force build",
-        "Remove-Item -Force -Recurse build",
-        "Remove-Item build -Recurse -Force",
-        "Remove-Item -Path build -Recurse -Force",
-        "remove-item -recurse -force build",
-        "Remove-Item -Recurse -Force build; echo done",
-        "del -Recurse -Force build",
-        "erase -Recurse -Force build",
-        "rd -Recurse -Force build",
-        "ri -Recurse -Force build",
-        "rm -Recurse -Force build",  # PS alias of Remove-Item
-        "Format-Volume -DriveLetter D",
-        "Clear-Disk -Number 0 -RemoveData",
-        "Clear-Disk -Number 0 -RemoveData -RemoveOEM",
+        ("Remove-Item -Recurse -Force build", "Remove-Item -Recurse -Force: irreversible bulk delete"),
+        ("Remove-Item -Force -Recurse build", "Remove-Item -Recurse -Force: irreversible bulk delete"),
+        ("Remove-Item build -Recurse -Force", "Remove-Item -Recurse -Force: irreversible bulk delete"),
+        ("Remove-Item -Path build -Recurse -Force", "Remove-Item -Recurse -Force: irreversible bulk delete"),
+        ("remove-item -recurse -force build", "Remove-Item -Recurse -Force: irreversible bulk delete"),
+        ("Remove-Item -Recurse -Force build; echo done", "Remove-Item -Recurse -Force: irreversible bulk delete"),
+        ("del -Recurse -Force build", "Remove-Item -Recurse -Force: irreversible bulk delete"),
+        ("erase -Recurse -Force build", "Remove-Item -Recurse -Force: irreversible bulk delete"),
+        ("rd -Recurse -Force build", "Remove-Item -Recurse -Force: irreversible bulk delete"),
+        ("ri -Recurse -Force build", "Remove-Item -Recurse -Force: irreversible bulk delete"),
+        ("rm -Recurse -Force build", "rm with recursive+force: irreversible bulk delete"),
+        ("Format-Volume -DriveLetter D", "Format-Volume: formats the volume, destroying all data on it"),
+        ("Clear-Disk -Number 0 -RemoveData", "Clear-Disk -RemoveData: wipes the disk"),
+        ("Clear-Disk -Number 0 -RemoveData -RemoveOEM", "Clear-Disk -RemoveData: wipes the disk"),
     ],
 )
-def test_powershell_destructive_blocked(command):
-    result = run_hook({"command": command})
-    assert result.returncode == 1
-    assert b"blocked by polyglot-dev guard" in result.stderr
+def test_powershell_destructive_blocked(command, reason):
+    assert_blocked(run_hook({"command": command}), reason)
 
 
 @pytest.mark.parametrize(
@@ -179,6 +190,12 @@ def test_force_push_allowed_spellings(command):
 # --- protected branches -------------------------------------------------------
 
 
+PROTECTED_REASON = (
+    "git push to a protected branch (main/master/release/*); "
+    "set POLYGLOT_GUARD_ALLOW_PROTECTED_PUSH=1 to allow"
+)
+
+
 @pytest.mark.parametrize(
     "command",
     [
@@ -190,9 +207,7 @@ def test_force_push_allowed_spellings(command):
     ],
 )
 def test_protected_push_blocked(command):
-    result = run_hook({"command": command})
-    assert result.returncode == 1
-    assert b"protected branch" in result.stderr
+    assert_blocked(run_hook({"command": command}), PROTECTED_REASON)
 
 
 @pytest.mark.parametrize(
@@ -228,26 +243,25 @@ def test_guard_disabled_via_env():
 
 
 @pytest.mark.parametrize(
-    "command",
+    "command, reason",
     [
-        "find . -name '*.log' -delete",
-        "find /var -type f -delete",
-        "sudo find . -delete",
-        "find . -name x -delete; echo done",
-        "dd if=/dev/zero of=/dev/sda bs=1M",
-        "sudo dd if=image.iso of=/dev/sdb",
-        "chmod -R 777 /var/www",
-        "chmod -R 755 /",
-        "shred -n 3 secret.txt",
-        "shred -u secret.txt",
-        "truncate -s 0 big.log",
-        "truncate -s 0B big.log",
+        ("find . -name '*.log' -delete", "find -delete: irreversible bulk delete"),
+        ("find /var -type f -delete", "find -delete: irreversible bulk delete"),
+        ("sudo find . -delete", "find -delete: irreversible bulk delete"),
+        ("find . -name x -delete; echo done", "find -delete: irreversible bulk delete"),
+        ("dd if=/dev/zero of=/dev/sda bs=1M", "dd writing to a block device: destroys the disk"),
+        ("sudo dd if=image.iso of=/dev/sdb", "dd writing to a block device: destroys the disk"),
+        ("chmod -R 777 /var/www", "chmod -R 777: makes everything world-writable"),
+        ("chmod -R 777 data", "chmod -R 777: makes everything world-writable"),
+        ("chmod -R 755 /", "chmod -R on an absolute path: recursive permission change outside the project"),
+        ("shred -n 3 secret.txt", "shred: overwrites file contents irreversibly"),
+        ("shred -u secret.txt", "shred: overwrites file contents irreversibly"),
+        ("truncate -s 0 big.log", "truncate -s 0: wipes the file"),
+        ("truncate -s 0B big.log", "truncate -s 0: wipes the file"),
     ],
 )
-def test_other_destructive_blocked(command):
-    result = run_hook({"command": command})
-    assert result.returncode == 1
-    assert b"blocked by polyglot-dev guard" in result.stderr
+def test_other_destructive_blocked(command, reason):
+    assert_blocked(run_hook({"command": command}), reason)
 
 
 @pytest.mark.parametrize(
@@ -382,28 +396,27 @@ def test_hook_allows_normal_command():
 
 
 @pytest.mark.parametrize(
-    "command",
+    "command, reason",
     [
-        "mkfs /dev/sda1",
-        "mkfs.ext4 /dev/nvme0n1p2",
-        "sudo mkfs.xfs /dev/sdb",
-        "wipefs -a /dev/sda",
-        "mkswap /dev/sda3",
-        "cat os.img > /dev/sdb",
-        "dd if=iso of=/dev/sdc bs=4M",  # already covered, must stay blocked
-        "cp backup.img /dev/sda",
-        "echo data >> /dev/nvme0n1",
-        "kubectl delete --all pods",
-        "kubectl delete all --all-namespaces",
-        "kubectl delete deployment x -n prod --all",
-        "git push --delete origin feature",
-        "git push origin --delete feature",
-        "git push origin :main",
+        ("mkfs /dev/sda1", "mkfs: formats a filesystem, destroying all data on it"),
+        ("mkfs.ext4 /dev/nvme0n1p2", "mkfs: formats a filesystem, destroying all data on it"),
+        ("sudo mkfs.xfs /dev/sdb", "mkfs: formats a filesystem, destroying all data on it"),
+        ("wipefs -a /dev/sda", "wipefs/mkswap on a device: destroys signatures/data"),
+        ("mkswap /dev/sda3", "wipefs/mkswap on a device: destroys signatures/data"),
+        ("cat os.img > /dev/sdb", "redirect to a block device: overwrites the disk"),
+        ("echo data >> /dev/nvme0n1", "redirect to a block device: overwrites the disk"),
+        ("dd if=iso of=/dev/sdc bs=4M", "dd writing to a block device: destroys the disk"),
+        ("cp backup.img /dev/sda", "copying a file onto a block device: overwrites the disk"),
+        ("kubectl delete --all pods", "kubectl delete --all: removes every resource in scope"),
+        ("kubectl delete all --all-namespaces", "kubectl delete --all: removes every resource in scope"),
+        ("kubectl delete deployment x -n prod --all", "kubectl delete --all: removes every resource in scope"),
+        ("git push --delete origin feature", "git push --delete: removes a remote branch"),
+        ("git push origin --delete feature", "git push --delete: removes a remote branch"),
+        ("git push origin :main", "git push :ref: deletes the remote branch"),
     ],
 )
-def test_new_destructive_commands_blocked(command):
-    result = run_hook({"command": command})
-    assert result.returncode == 1, command
+def test_new_destructive_commands_blocked(command, reason):
+    assert_blocked(run_hook({"command": command}), reason)
 
 
 @pytest.mark.parametrize(
@@ -422,3 +435,41 @@ def test_new_destructive_commands_blocked(command):
 def test_new_near_misses_allowed(command):
     result = run_hook({"command": command})
     assert result.returncode == 0, command
+
+
+# --- payload key priority: the right string must win ------------------------
+
+
+@pytest.mark.parametrize(
+    "payload",
+    [
+        {"description": "rm -rf build", "command": "ls"},
+        {"description": "rm -rf build", "cmd": "ls"},
+        {"z": "rm -rf build", "input": {"command": "ls"}},
+        {"z": "rm -rf build", "arguments": {"command": "ls"}},
+        {"z": "rm -rf build", "args": {"command": "ls"}},
+        {"z": "rm -rf build", "tool_input": {"command": "ls"}},
+        {"z": "rm -rf build", "toolInput": {"command": "ls"}},
+    ],
+)
+def test_payload_key_priority_keeps_safe_command_first(payload):
+    # the named command key wins over a sibling string that merely mentions
+    # a destructive command
+    result = run_hook(payload)
+    assert result.returncode == 0, payload
+
+
+def test_tool_input_preferred_over_tool_value():
+    result = run_hook({"tool": "bash", "tool_input": {"command": "rm -r -f build"}})
+    assert result.returncode == 1
+
+
+def test_payloads_without_command_pass():
+    assert run_hook({}).returncode == 0
+    assert run_hook({"count": 5}).returncode == 0
+
+
+def test_filename_containing_flag_letters_is_not_a_flag():
+    # "draft.txt" contains both r and f; a recursive-only rm stays allowed
+    result = run_hook({"command": "rm -r draft.txt"})
+    assert result.returncode == 0
