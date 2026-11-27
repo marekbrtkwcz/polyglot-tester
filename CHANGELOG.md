@@ -6,6 +6,8 @@ versioning is semantic.
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-11-27
+
 ### Added
 
 - Seven Go-specific skills covering the depth of the samber/cc-skills-golang
