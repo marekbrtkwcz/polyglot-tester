@@ -185,8 +185,10 @@ patterns, commit-message false-positive regressions, end-to-end hook behavior
 through stdin/stdout, and a property-based test (hypothesis) that checks
 `is_bulk_rm` against a reference model over generated flag combinations.
 CI runs the suite on Python 3.11–3.14, a ruff lint gate, `plugin.json` schema
-validation against the official Agent Plugins 1.0 schema, and a markdownlint
-pass over all docs — on every push and pull request (`.github/workflows/ci.yml`).
+validation against the official Agent Plugins 1.0 schema, a check that the
+component table below lists every skill (`scripts/check_readme_skills.py`),
+and a markdownlint pass over all docs — on every push and pull request
+(`.github/workflows/ci.yml`).
 
 ## Development
 

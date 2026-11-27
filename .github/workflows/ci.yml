@@ -20,6 +20,8 @@ jobs:
           cache: pip
       - name: Install dependencies
         run: python -m pip install pytest hypothesis jsonschema
+      - name: Check README documents every skill
+        run: python scripts/check_readme_skills.py
       - name: Run plugin tests (guard + structure)
         run: python -m pytest .vibe/plugins/polyglot-dev/tests/ tests/ -q
 

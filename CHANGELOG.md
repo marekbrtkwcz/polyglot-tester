@@ -13,6 +13,8 @@ versioning is semantic.
   `refactoring-polyglot`, `ci-cd-polyglot`, `docker-polyglot`, `stay-updated-polyglot`.
 - `typescript-refactoring`: the missing per-language refactoring skill for JS/TS
   (tsserver renames, `tsc --noEmit` gate, one green step at a time).
+- `scripts/check_readme_skills.py` + tests: CI now fails when a skill is missing
+  from the README component table or the table references a removed skill.
 
 ## [1.4.0] - 2026-11-27
 
