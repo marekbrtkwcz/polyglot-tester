@@ -46,6 +46,13 @@ versioning is semantic.
   then the collision cases re-run); body-only edits gate on substance.
   Ships with starter cases for the workflow backbone and a coverage rule
   that ties every future description edit to its case.
+- Cross-link sections in the umbrella skills: thirteen skills that had no
+  links to their per-language twins or the knowledge folders now carry a
+  `## Related` section (api-design, auth, code-review, database,
+  dependency-audit, events-and-queues, git-workflow, observability,
+  release-and-changelog, unit-testing), and security-polyglot,
+  refactoring-polyglot, and testing-polyglot gained knowledge-folder
+  pointers in their existing sections.
 
 ### Changed
 

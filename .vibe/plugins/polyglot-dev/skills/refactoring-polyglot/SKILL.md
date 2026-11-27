@@ -36,3 +36,7 @@ description: Load this skill when refactoring code in JavaScript/TypeScript, Pyt
 ## Per-language depth
 
 `golang-refactoring`, `python-refactoring`, `typescript-refactoring`.
+
+## Related
+
+- Knowledge `architecture` — target shapes (layered, hexagonal, feature slices) and the diagnostics that prove the dependency rule holds.

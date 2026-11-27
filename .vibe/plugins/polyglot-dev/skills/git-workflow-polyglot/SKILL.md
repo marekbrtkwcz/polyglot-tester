@@ -47,3 +47,8 @@ description: Load this skill for day-to-day git work in any project: commit conv
 - Never commit secrets, `.env` files, or build artifacts — check `.gitignore` first.
 - `git status` before every commit; review the staged diff (`git diff --staged`).
 - Push explicitly and deliberately; know which branch you are pushing to.
+
+## Related
+
+- `release-and-changelog` — tagging and release notes on top of the branch/commit flow.
+- `code-review-polyglot` — the review checklist to run before merging the PR.

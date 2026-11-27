@@ -51,3 +51,8 @@ nitpick past a real defect.
 
 Report each finding as `path:line — severity (blocker/major/minor) — issue —
 suggested fix`. End with: merge-ready, fix-first, or needs-rework.
+
+## Related
+
+- `security-polyglot` — a security-focused pass when the diff touches auth, input handling, or secrets.
+- `feature-workflow` — the delivery loop this review closes.

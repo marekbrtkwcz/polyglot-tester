@@ -38,3 +38,8 @@ description: Load this skill when adding or fixing logging, metrics, and tracing
 ## Health checks
 
 - `/health` (liveness: process up) vs `/ready` (readiness: dependencies reachable) — wire both into orchestrators.
+
+## Related
+
+- Per-language logging depth: `python-logging`, `golang-logging`.
+- `events-and-queues-polyglot` — broker lag and DLQ metrics for queue-backed systems.

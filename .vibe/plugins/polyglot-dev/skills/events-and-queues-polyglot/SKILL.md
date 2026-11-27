@@ -37,3 +37,7 @@ description: Load this skill when building event-driven or queue-based systems i
 - Integration: real broker in containers (Testcontainers) or localstack for SQS — verify publish → consume → effect.
 - Test the failure paths: duplicate delivery, malformed message → DLQ, broker down → backoff behavior.
 - Flake-proof: poll with timeout for eventual state; never `sleep(5)` and hope.
+
+## Related
+
+- `observability-polyglot` — lag, DLQ depth, and redelivery rate are the signals to watch once events flow.

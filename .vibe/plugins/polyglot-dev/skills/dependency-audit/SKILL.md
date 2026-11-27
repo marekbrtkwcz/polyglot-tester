@@ -37,3 +37,9 @@ description: Load this skill when auditing or updating project dependencies for 
 
 - A dependency that phones home or bundles native code deserves a look: check its repo activity, maintainer, and install scripts (`postinstall`).
 - Prefer lockfile + audit in CI as a recurring gate, not a one-off.
+
+## Related
+
+- `security-polyglot` — the broader security pass this audit feeds.
+- `stay-updated-polyglot` — safe dependency and toolchain upgrades once findings demand a bump.
+- Knowledge `security` — the dependency-auditing section with per-language toolchains.

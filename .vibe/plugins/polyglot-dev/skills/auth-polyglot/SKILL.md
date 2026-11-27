@@ -45,3 +45,8 @@ description: Load this skill when implementing or reviewing authentication and a
 - Timing-safe comparison for tokens (`subtle.compare` / `hmac.compare_digest` / `ConstantTimeCompare`).
 - Rate limiting + lockout on login, reset, and MFA endpoints; generic error messages (no user enumeration).
 - Secure password reset: single-use, expiring token sent out-of-band; invalidate sessions after reset.
+
+## Related
+
+- `security-polyglot` — the broader hardening pass (headers, injection, secrets) around auth.
+- Knowledge `security` — per-language checks for sessions, JWT, and crypto.

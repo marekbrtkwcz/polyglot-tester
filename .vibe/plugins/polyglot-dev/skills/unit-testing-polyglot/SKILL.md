@@ -58,3 +58,8 @@ func TestApplyDiscount(t *testing.T) {
 - Deterministic: fixed data (factories), no real clock/network, unique values per test.
 - A test that cannot fail proves nothing — assert a real observable outcome.
 - Fast feedback: keep the unit layer under a few seconds; slow integration belongs in the integration layer.
+
+## Related
+
+- `testing-polyglot` — the full strategy: levels, runner choice, coverage that means something.
+- Knowledge `testing` — determinism rules, flake policy, and the command reference.

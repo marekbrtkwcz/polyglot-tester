@@ -53,3 +53,7 @@ description: Load this skill when writing or reviewing security-sensitive code i
 ## Per-language depth
 
 `golang-security`, `python-security`, `typescript-security`; see also `auth-polyglot` for auth-specific controls.
+
+## Related
+
+- Knowledge `security` — the OWASP → per-language cheatsheet plus the audit pack's grep hunts and tool gates.

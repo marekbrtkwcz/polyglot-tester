@@ -82,3 +82,4 @@ func TestSum(t *testing.T) {
 - `test-automation:writing-playwright-tests-best-practices`, `test-automation:api-playwright-test-developer` — Playwright UI/API test writing when the repo uses Playwright.
 - `test-automation:diagnosing-test-failures`, `test-automation:stabilizing-flaky-tests` — failure classification and flake fixing.
 - `qa-mcp` — Playwright MCP + Chrome DevTools MCP for live browser debugging, k6 MCP for load tests.
+- Knowledge `testing` — strategy detail plus the run-one-test, coverage, and shuffle command reference.

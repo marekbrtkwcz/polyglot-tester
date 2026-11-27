@@ -40,3 +40,8 @@ description: Load this skill when working with databases in JavaScript/TypeScrip
 - Size pools conservatively; total app connections must stay under DB `max_connections`.
 - Monitor: connection wait time, slow queries, lock waits, replication lag.
 - Verify persisted state in tests directly in the DB (see `testing-database-state` concepts), not only via API responses.
+
+## Related
+
+- Per-language depth: `golang-database`, `python-database`, `typescript-database`.
+- Knowledge `databases` — concepts plus diagnostics (EXPLAIN reading, health queries, migration verification).

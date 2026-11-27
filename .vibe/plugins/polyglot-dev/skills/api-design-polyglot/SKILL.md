@@ -36,3 +36,8 @@ description: Load this skill when designing, versioning, or hardening HTTP/Graph
 
 - Auth on every endpoint; rate limiting; request/response logging with correlation IDs (see `observability-polyglot`).
 - Contract tests against the OpenAPI/proto spec so clients and server can't drift.
+
+## Related
+
+- `typescript-graphql`, `golang-graphql` — GraphQL schema and resolver depth when the API is GraphQL.
+- `auth-polyglot` — authentication and authorization controls for the endpoints designed here.

@@ -51,3 +51,9 @@ Pre-1.0 (`0.x.y`): MINOR may include breaking changes; say so explicitly in the 
 ## Rollback plan
 
 - A release must be reversible: know the previous tag, keep deploy artifacts, document the rollback command before shipping.
+
+## Related
+
+- `git-workflow-polyglot` — the tagging and branch mechanics releases build on.
+- `ci-cd-polyglot` — the workflow that ships and verifies the release tag.
+- Knowledge `ci-cd` — release pipeline shape and diagnostics.
