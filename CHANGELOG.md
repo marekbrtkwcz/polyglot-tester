@@ -20,6 +20,9 @@ versioning is semantic.
 - `release-drafter` workflow: auto-drafted release notes from merged PRs,
   categorized and version-resolved from labels.
 - Dependabot (weekly) for GitHub Actions versions.
+- Knowledge folder `architecture`: layered vs hexagonal vs feature-slice
+  architecture per language, dependency direction, per-language module layout,
+  and anti-patterns.
 
 ## [1.4.0] - 2026-11-27
 

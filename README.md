@@ -115,7 +115,7 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Agent | `polyglot-dev:refactorer` | Test-first refactoring in small green steps; never mixes refactor with behavior change |
 | Agent | `polyglot-dev:performance-profiler` | Picks the right profiler per stack, reads the output, reports bottlenecks with evidence |
 | Agent | `polyglot-dev:onboarder` | Read-only repo explorer producing a newcomer's map: stack, layout, commands, conventions |
-| Knowledge | `polyglot-dev:javascript-typescript`, `polyglot-dev:python`, `polyglot-dev:go`, `polyglot-dev:ci-cd`, `polyglot-dev:testing`, `polyglot-dev:docker`, `polyglot-dev:databases`, `polyglot-dev:security`, `polyglot-dev:cloud` | Toolchains, conventions, and diagnostics per language plus CI/CD, testing, containers, databases, security, cloud |
+| Knowledge | `polyglot-dev:javascript-typescript`, `polyglot-dev:python`, `polyglot-dev:go`, `polyglot-dev:ci-cd`, `polyglot-dev:testing`, `polyglot-dev:docker`, `polyglot-dev:databases`, `polyglot-dev:security`, `polyglot-dev:cloud`, `polyglot-dev:architecture` | Toolchains, conventions, and diagnostics per language plus CI/CD, testing, containers, databases, security, cloud, architecture patterns |
 | Hook | `guard-destructive-commands` | Pre-tool guard on `bash` (see below) |
 | Hook | `guard-secrets-in-git` | On `git add`/`git commit`, scans staged/unstaged/untracked content for secret patterns and blocks the command |
 
