@@ -1,0 +1,33 @@
+# Changelog
+
+All notable changes to the polyglot-dev plugin are documented here.
+The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
+versioning is semantic.
+
+## [1.1.0] - 2026-11-27
+
+### Added
+
+- Skill `debugging-polyglot`: failure classification, reproduction loop,
+  and per-language debugging (JS/TS, Python, Go).
+- Agent `polyglot-dev:explorer`: read-only code exploration and stack
+  detection before planning changes.
+- `reference.md` diagnostics cheatsheets in all three knowledge folders.
+- CI workflow (GitHub Actions) running the guard's pytest suite on push
+  and pull requests.
+- CHANGELOG.md and this release process.
+
+### Fixed
+
+- Guard false positive: commit messages passed via `git commit -m` are
+  data, not commands — a message that merely mentions a blocked command
+  (`rm -rf`, hard resets, force push) no longer blocks the commit.
+  Quoted commands elsewhere (e.g. `bash -c "..."`) are still scanned.
+  Regression tests included (34 → 40 cases).
+
+## [1.0.0]
+
+- Initial release: 3 skills (feature-workflow, testing-polyglot,
+  code-review-polyglot), 2 agents (code-reviewer, test-runner), 3 language
+  knowledge folders, and the destructive-command guard with a pytest
+  suite (34 cases).

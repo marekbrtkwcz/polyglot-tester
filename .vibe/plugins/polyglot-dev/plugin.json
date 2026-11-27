@@ -1,13 +1,15 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "polyglot-dev",
-  "version": "1.0.0",
-  "description": "Polyglot development toolkit for JavaScript, TypeScript, Python and Go: delivery workflow, testing, code review, language knowledge and helper agents.",
+  "version": "1.1.0",
+  "description": "Polyglot development toolkit for JavaScript, TypeScript, Python and Go: delivery workflow, testing, debugging, code review, language knowledge and helper agents.",
   "author": {
     "name": "MarekB"
   },
   "license": "MIT",
-  "keywords": ["javascript", "typescript", "python", "go", "development", "testing", "workflow"],
+  "keywords": ["javascript", "typescript", "python", "go", "development", "testing", "debugging", "workflow"],
+  "homepage": "https://github.com/marekbrtkwcz/polyglot-tester",
+  "repository": "https://github.com/marekbrtkwcz/polyglot-tester",
   "extensions": {
     "ai.mistral.vibe": {
       "schemaVersion": 1,

@@ -12,8 +12,10 @@ and a safety hook that blocks destructive shell commands before they run.
 | Skill | `polyglot-dev:feature-workflow` | End-to-end delivery loop: understand → plan → test-first implement → verify → review → hand off |
 | Skill | `polyglot-dev:testing-polyglot` | Writing and running tests per language: framework detection, structure, deterministic data, coverage |
 | Skill | `polyglot-dev:code-review-polyglot` | Per-language review checklists (JS/TS, Python, Go) with a severity-ranked verdict format |
+| Skill | `polyglot-dev:debugging-polyglot` | Failure classification, reproduction loop, and per-language debugging guidance |
 | Agent | `polyglot-dev:code-reviewer` | Read-only subagent reviewing diffs for correctness, security, and language-specific pitfalls |
 | Agent | `polyglot-dev:test-runner` | Detects the repo's runner, runs tests/lint/type checks, reports pass/fail with evidence |
+| Agent | `polyglot-dev:explorer` | Read-only code exploration: structure, call sites, stack detection before planning |
 | Knowledge | `polyglot-dev:javascript-typescript`, `polyglot-dev:python`, `polyglot-dev:go` | Toolchains and conventions per language |
 | Hook | `guard-destructive-commands` | Pre-tool guard on `bash` (see below) |
 
@@ -56,6 +58,8 @@ pip install pytest
 python -m pytest tests/ -q
 ```
 
-34 cases: every blocked flag spelling, allowed near-misses (`rm -r` without
+34+ cases: every blocked flag spelling, allowed near-misses (`rm -r` without
 force, `--` end-of-options, flags belonging to a chained command), the git
-patterns, and end-to-end hook behavior through stdin/stdout.
+patterns, commit-message false-positive regressions, and end-to-end hook
+behavior through stdin/stdout. CI runs the suite on every push and pull
+request (`.github/workflows/ci.yml`).
