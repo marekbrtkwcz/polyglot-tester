@@ -132,6 +132,19 @@ versioning is semantic.
 
 ### Fixed
 
+- Regression from the hook consolidation: `write_file`/`edit` payloads no
+  longer reach the shell guards. `hooks.toml` again routes file writes to
+  their own hook (`polyglot-dev-secrets-in-files` → `guard_secrets.py`),
+  and `extract_command` now skips file-content keys (`content`,
+  `new_string`, `old_string`, `path`, `file_path`) at every nesting level,
+  so a document mentioning `rm -rf` or `git push origin main` is never
+  parsed as a shell command.
+- `guard_all.py` imports its sibling guard modules inside the
+  `try/except ImportError` path fallback, so importing it from outside the
+  plugin directory no longer raises `ModuleNotFoundError` before the
+  `sys.path` fix runs.
+- `guard_all.py` added to `--paths-to-mutate` in the mutation workflow.
+
 - `pre-push-checks` is now a silent no-op when the plugin is installed in a
   project other than its own repository: it no longer prints `skipped` noise
   on every push there, and a missing pytest there no longer blocks the push.

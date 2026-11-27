@@ -22,7 +22,7 @@ jobs:
         continue-on-error: true
         run: |
           mutmut run \
-            --paths-to-mutate=".vibe/plugins/polyglot-dev/guard_destructive.py,.vibe/plugins/polyglot-dev/guard_secrets.py,.vibe/plugins/polyglot-dev/guard_commit_message.py,.vibe/plugins/polyglot-dev/prepush_checks.py" \
+            --paths-to-mutate=".vibe/plugins/polyglot-dev/guard_all.py,.vibe/plugins/polyglot-dev/guard_destructive.py,.vibe/plugins/polyglot-dev/guard_secrets.py,.vibe/plugins/polyglot-dev/guard_commit_message.py,.vibe/plugins/polyglot-dev/prepush_checks.py" \
             --tests-dir=".vibe/plugins/polyglot-dev/tests" \
             --runner="python -m pytest .vibe/plugins/polyglot-dev/tests/ -q" \
             --simple-output

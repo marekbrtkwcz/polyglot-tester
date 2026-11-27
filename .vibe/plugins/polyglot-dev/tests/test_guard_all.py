@@ -54,6 +54,27 @@ def test_allows_clean_write():
     assert run_hook({"path": "m.py", "content": "print('hi')\n"}).returncode == 0
 
 
+def test_write_payload_content_is_never_a_command():
+    # Regression: a write_file/edit payload must not reach the shell guards —
+    # file content mentioning destructive commands is data, not a command.
+    payload = {
+        "tool_input": {
+            "content": "Never run rm -rf / or git commit -m 'WIP: x' or git push origin main",
+            "path": "README.md",
+        }
+    }
+    result = run_hook(payload)
+    assert result.returncode == 0, result.stderr
+
+
+def test_write_payload_flat_shape_too():
+    payload = {
+        "content": "git reset --hard and git push origin main in docs",
+        "path": "docs/commands.md",
+    }
+    assert run_hook(payload).returncode == 0
+
+
 def test_first_block_wins():
     # destructive runs before the WIP check, as in the old hook order
     result = run_hook({"command": 'git commit -m "WIP: x" && rm -rf build'})

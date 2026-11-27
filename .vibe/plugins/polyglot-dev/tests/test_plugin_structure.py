@@ -193,24 +193,23 @@ def test_pre_tool_hooks_cover_whole_tool_class():
                     )
 
 
-def test_single_guard_entrypoint_hook():
-    # All guards run through one hook (one Python process per tool call);
-    # its match must still cover every shell and file-write tool variant.
+def test_one_process_guard_hooks():
+    # One Python process per tool call: a single hook for ALL shell tools
+    # via guard_all.py, plus one for file writes via guard_secrets.py (a
+    # call is either a shell command or a file write, never both). Each
+    # hook's match must cover its whole tool class.
     pre_tool = [h for h in _hooks() if h.get("type") == "pre_tool"]
-    assert len(pre_tool) == 1, (
-        f"expected one consolidated guard hook, got {[h.get('name') for h in pre_tool]}"
+    assert len(pre_tool) == 2, (
+        f"expected one shell hook + one write hook, got {[h.get('name') for h in pre_tool]}"
     )
-    hook = pre_tool[0]
-    assert "guard_all.py" in hook["command"], hook["command"]
-    for tool in (
-        "bash",
-        "git_bash",
-        "powershell",
-        "process_start",
-        "write_file",
-        "edit",
-    ):
-        assert tool in hook["match"], f"{hook.get('name')}: match missing {tool}"
+    shell = next(h for h in pre_tool if "bash" in h.get("match", ""))
+    writes = next(h for h in pre_tool if "write_file" in h.get("match", ""))
+    assert "guard_all.py" in shell["command"], shell["command"]
+    for tool in ("bash", "git_bash", "powershell", "process_start"):
+        assert tool in shell["match"], f"{shell.get('name')}: match missing {tool}"
+    assert "guard_secrets.py" in writes["command"], writes["command"]
+    for tool in ("write_file", "edit"):
+        assert tool in writes["match"], f"{writes.get('name')}: match missing {tool}"
 
 
 def test_hook_commands_fallback_to_python3():

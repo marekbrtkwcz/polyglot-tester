@@ -119,14 +119,18 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Agent | `polyglot-dev:performance-profiler` | Picks the right profiler per stack, reads the output, reports bottlenecks with evidence |
 | Agent | `polyglot-dev:onboarder` | Read-only repo explorer producing a newcomer's map: stack, layout, commands, conventions |
 | Knowledge | `polyglot-dev:javascript-typescript`, `polyglot-dev:python`, `polyglot-dev:go`, `polyglot-dev:ci-cd`, `polyglot-dev:testing`, `polyglot-dev:docker`, `polyglot-dev:databases`, `polyglot-dev:security`, `polyglot-dev:cloud`, `polyglot-dev:architecture` | Toolchains, conventions, and diagnostics per language plus CI/CD, testing, containers, databases, security, cloud, architecture patterns |
-| Hook | `polyglot-dev-guards` | One `pre_tool` hook on every shell tool and file write, run as a single Python process (`guard_all.py`): destructive commands, secrets in git and in written files, WIP commit subjects, pre-push checks (see below) |
+| Hook | `polyglot-dev-guards` | One `pre_tool` hook on every shell tool (`bash`/`git_bash`/`powershell`/`process_start`), a single Python process (`guard_all.py`) running destructive-command, secrets-in-git, WIP-commit, and pre-push checks (see below) |
+| Hook | `polyglot-dev-secrets-in-files` | Before `write_file`/`edit`, scans the text about to be written for secret patterns (single process, `guard_secrets.py`) |
 
 ## The destructive-command guard
 
-All guards run in ONE Python process per tool call: `hooks.toml` declares a
-single `pre_tool` hook (`polyglot-dev-guards`, matching `bash`/`git_bash`/
-`powershell`/`process_start`/`write_file`/`edit`) whose `guard_all.py`
-entrypoint reads the payload once and runs every check described below.
+Each tool call spawns ONE Python process: `hooks.toml` declares a `pre_tool`
+hook for all shell tools (`polyglot-dev-guards` → `guard_all.py`, which reads
+the payload once and runs every check described below) and a separate one for
+file writes (`polyglot-dev-secrets-in-files` → `guard_secrets.py`) — a call
+is either a shell command or a file write, never both. File contents are
+never parsed as shell commands (`extract_command` skips `content`/`path`/
+`new_string`/`old_string` keys).
 
 `guard_destructive.py` guards every shell tool call — `bash`, `git_bash`, `powershell`, including background `process_start` commands — and blocks:
 

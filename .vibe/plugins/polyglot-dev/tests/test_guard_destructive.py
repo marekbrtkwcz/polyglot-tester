@@ -535,6 +535,23 @@ def test_hook_passes_unrecognized_payload():
     assert result.returncode == 0
 
 
+def test_extract_command_never_returns_file_contents():
+    # write_file/edit payloads carry no command; their content/path keys
+    # must be skipped even in the generic fallback scan
+    assert (
+        guard.extract_command(
+            {"tool_input": {"content": "rm -rf /", "path": "README.md"}}
+        )
+        is None
+    )
+    assert (
+        guard.extract_command({"content": "git push origin main", "path": "x"}) is None
+    )
+    assert guard.extract_command({"new_string": "rm -rf /", "file_path": "x"}) is None
+    # a real command key still wins
+    assert guard.extract_command({"content": "rm -rf /", "command": "ls"}) == "ls"
+
+
 def test_hook_never_blocks_on_unparseable_stdin():
     result = subprocess.run(
         [sys.executable, str(SCRIPT)],

@@ -118,8 +118,18 @@ COMMIT_MESSAGE = re.compile(
 )
 
 
+# Payload keys that carry file contents or paths, never a shell command:
+# a write_file/edit payload has no command, and its text is data — a README
+# mentioning `rm -rf` must not be scanned as a shell line.
+FILE_CONTENT_KEYS = ("content", "new_string", "old_string", "path", "file_path")
+
+
 def extract_command(payload):
-    """Find the command string in an unknown JSON shape."""
+    """Find the command string in an unknown JSON shape.
+
+    File-content keys are skipped at every nesting level, so a write/edit
+    payload yields None instead of its own text.
+    """
     if isinstance(payload, str):
         return payload
     if not isinstance(payload, dict):
@@ -132,7 +142,9 @@ def extract_command(payload):
         found = extract_command(payload.get(key))
         if found:
             return found
-    for value in payload.values():
+    for key, value in payload.items():
+        if key in FILE_CONTENT_KEYS:
+            continue
         found = extract_command(value)
         if found:
             return found

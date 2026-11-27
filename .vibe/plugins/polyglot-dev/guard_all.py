@@ -1,9 +1,11 @@
 """Single-process entrypoint for all polyglot-dev pre-tool guards.
 
 hooks.toml used to run four separate `python x.py || python3 x.py`
-processes on every shell tool call (plus one for write_file/edit); this
-module reads the payload ONCE and runs every check in one interpreter,
-cutting the interpreter startup cost to a single process per tool call.
+processes on every shell tool call; this module reads the payload ONCE and
+runs every check in one interpreter, cutting the startup cost to a single
+process per shell call. write_file/edit payloads are routed to
+guard_secrets.py by their own hook, and even if one arrives here,
+extract_command never mistakes file content for a shell command.
 
 Checks run in the same order the separate hooks used to run, and the first
 blocking check wins. Each guard module keeps its own script and env
@@ -18,9 +20,8 @@ chain whose first run already consumed the payload.
 
 import sys
 
-from guard_destructive import EMPTY, read_payload
-
 try:
+    from guard_destructive import EMPTY, read_payload
     import guard_commit_message
     import guard_destructive
     import guard_secrets
@@ -29,6 +30,7 @@ except ImportError:  # pragma: no cover - hook always runs from the plugin dir
     import os
 
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from guard_destructive import EMPTY, read_payload
     import guard_commit_message
     import guard_destructive
     import guard_secrets

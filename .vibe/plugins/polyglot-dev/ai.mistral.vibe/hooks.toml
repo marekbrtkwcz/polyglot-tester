@@ -1,6 +1,13 @@
 [[hooks]]
 name = "polyglot-dev-guards"
 type = "pre_tool"
-match = "re:bash|git_bash|powershell|process_start|write_file|edit"
+match = "re:bash|git_bash|powershell|process_start"
 command = "python guard_all.py || python3 guard_all.py"
+strict = true
+
+[[hooks]]
+name = "polyglot-dev-secrets-in-files"
+type = "pre_tool"
+match = "re:write_file|edit"
+command = "python guard_secrets.py || python3 guard_secrets.py"
 strict = true
