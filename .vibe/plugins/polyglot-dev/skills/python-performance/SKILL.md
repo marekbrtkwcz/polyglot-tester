@@ -1,6 +1,6 @@
 ---
 name: python-performance
-description: Load this skill when optimizing Python: profiling with cProfile, memory profiling, caching, data structure choices, and knowing when to leave CPython.
+description: Load this skill when optimizing Python: profiling with cProfile, memory profiling, caching, data structure choices, and knowing when to leave CPython. If the language is not Python, prefer golang-performance or typescript-performance.
 ---
 
 # Python Performance

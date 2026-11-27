@@ -1,6 +1,6 @@
 ---
 name: golang-stay-updated
-description: Load this skill when upgrading the Go toolchain or modernizing a codebase: reading release notes, bumping the go directive, and applying new language features safely.
+description: Load this skill when upgrading the Go toolchain or modernizing a codebase: reading release notes, bumping the go directive, and applying new language features safely. If the language is not Go, prefer python-stay-updated or typescript-stay-updated.
 ---
 
 # Staying Current with Go

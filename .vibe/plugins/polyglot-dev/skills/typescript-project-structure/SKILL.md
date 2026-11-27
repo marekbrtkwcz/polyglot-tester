@@ -1,6 +1,6 @@
 ---
 name: typescript-project-structure
-description: Load this skill for JS/TS project layout and toolchain: package.json hygiene, tsconfig, monorepos (npm/pnpm workspaces, Nx, Turborepo), lint/format gates, and folder conventions.
+description: Load this skill for JS/TS project layout and toolchain: package.json hygiene, tsconfig, monorepos (npm/pnpm workspaces, Nx, Turborepo), lint/format gates, and folder conventions. If the language is not JavaScript/TypeScript, prefer golang-project-structure or python-project-structure.
 ---
 
 # Project Structure & Toolchain (JS/TS)

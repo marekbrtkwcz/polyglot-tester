@@ -1,6 +1,6 @@
 ---
 name: python-error-handling
-description: Load this skill when designing error handling in Python: custom exceptions, exception chaining with raise-from, traceback reading, and logging errors correctly.
+description: Load this skill when designing error handling in Python: custom exceptions, exception chaining with raise-from, traceback reading, and logging errors correctly. If the language is not Python, prefer golang-error-handling or typescript-error-handling.
 ---
 
 # Python Error Handling
@@ -13,7 +13,9 @@ description: Load this skill when designing error handling in Python: custom exc
 ```python
 class AppError(Exception): ...
 
+
 class NotFoundError(AppError): ...
+
 
 class ValidationError(AppError): ...
 ```

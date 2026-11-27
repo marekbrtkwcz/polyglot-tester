@@ -1,6 +1,6 @@
 ---
 name: typescript-idioms
-description: Load this skill when writing idiomatic JavaScript/TypeScript: modern syntax, module patterns, array/object idioms, and the small habits that make JS code read cleanly.
+description: Load this skill when writing idiomatic JavaScript/TypeScript: modern syntax, module patterns, array/object idioms, and the small habits that make JS code read cleanly. If the language is not JavaScript/TypeScript, prefer golang-language-idioms or python-idioms.
 ---
 
 # TypeScript/JavaScript Idioms

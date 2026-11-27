@@ -25,7 +25,7 @@ def test_parse_cases_reads_both_case_files():
     activation = esm.parse_cases(esm.EVALS / "activation-cases.md")
     collision = esm.parse_cases(esm.EVALS / "collision-cases.md")
     assert len(activation) == 11
-    assert len(collision) == 14
+    assert len(collision) == 15
     assert activation[0]["winner"] == "feature-workflow"
     assert collision[0]["winner"] == "golang-error-handling"
     assert all(c["prompt"] and c["id"] for c in activation + collision)
@@ -66,5 +66,5 @@ def test_main_outputs_valid_json_with_all_cases():
         check=True,
     )
     data = json.loads(result.stdout)
-    assert len(data) == 25
+    assert len(data) == 26
     assert all("mechanical_pick" in case and "winner_rank" in case for case in data)

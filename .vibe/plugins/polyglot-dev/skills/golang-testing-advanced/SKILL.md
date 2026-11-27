@@ -1,6 +1,6 @@
 ---
 name: golang-testing-advanced
-description: Load this skill when writing serious Go tests beyond basics: table-driven tests, testify, mocks, fuzzing, benchmarks, race/leak checks, and test organization.
+description: Load this skill when writing serious Go tests beyond basics: table-driven tests, testify, mocks, fuzzing, benchmarks, race/leak checks, and test organization. If the language is not Go, prefer python-testing-advanced or typescript-testing-advanced.
 ---
 
 # Go Testing (Advanced)

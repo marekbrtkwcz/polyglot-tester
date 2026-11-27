@@ -1,6 +1,6 @@
 ---
 name: python-stay-updated
-description: Load this skill when upgrading Python or its toolchain: version EOL schedule, reading release notes, safe migration between versions, and deprecation handling.
+description: Load this skill when upgrading Python or its toolchain: version EOL schedule, reading release notes, safe migration between versions, and deprecation handling. If the language is not Python, prefer golang-stay-updated or typescript-stay-updated.
 ---
 
 # Staying Updated (Python)

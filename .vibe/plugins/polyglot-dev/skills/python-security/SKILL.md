@@ -1,6 +1,6 @@
 ---
 name: python-security
-description: Load this skill when writing security-sensitive Python: injection (SQL, eval, pickle, YAML), path traversal, secrets handling, and the bandit/Safety toolchain.
+description: Load this skill when writing security-sensitive Python: injection (SQL, eval, pickle, YAML), path traversal, secrets handling, and the bandit/Safety toolchain. If the language is not Python, prefer golang-security or typescript-security.
 ---
 
 # Python Security

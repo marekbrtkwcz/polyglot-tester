@@ -1,6 +1,6 @@
 ---
 name: python-web-and-apis
-description: Load this skill when building web services or APIs in Python: choosing FastAPI/Django/Flask, async SQLAlchemy, migrations with Alembic, GraphQL with Strawberry (schema/resolver depth: `python-graphql`), and background tasks.
+description: Load this skill when building web services or APIs in Python: choosing FastAPI/Django/Flask, async SQLAlchemy, migrations with Alembic, GraphQL with Strawberry (schema/resolver depth: `python-graphql`), and background tasks. If the language is not Python, prefer golang-web-and-apis or typescript-web-and-dom.
 ---
 
 # Python Web & APIs
@@ -22,9 +22,11 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
+
 class CreateUser(BaseModel):
     name: str
     email: str  # pydantic validates (EmailStr with email-validator)
+
 
 @app.post("/users", status_code=201)
 async def create_user(
@@ -52,6 +54,7 @@ async def create_user(
 
 ```python
 import strawberry
+
 
 @strawberry.type
 class Query:

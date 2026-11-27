@@ -1,6 +1,6 @@
 ---
 name: golang-performance
-description: Load this skill when optimizing Go code: profiling with pprof, allocation reduction, escape analysis, string/builder tricks, and benchmarking discipline.
+description: Load this skill when optimizing Go code: profiling with pprof, allocation reduction, escape analysis, string/builder tricks, and benchmarking discipline. If the language is not Go, prefer python-performance or typescript-performance.
 ---
 
 # Go Performance

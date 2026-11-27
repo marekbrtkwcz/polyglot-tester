@@ -1,6 +1,6 @@
 ---
 name: typescript-refactoring
-description: Load this skill when refactoring JavaScript/TypeScript code safely: test-first, small green steps, IDE rename via tsserver, and keeping tsc --noEmit and the linter green at every step.
+description: Load this skill when refactoring JavaScript/TypeScript code safely: test-first, small green steps, IDE rename via tsserver, and keeping tsc --noEmit and the linter green at every step. If the language is not JavaScript/TypeScript, prefer golang-refactoring or python-refactoring.
 ---
 
 # Safe Refactoring (JS/TS)

@@ -8,6 +8,14 @@ versioning is semantic.
 
 ### Added
 
+- Twin deferral sentences in the 41 per-language skill descriptions across
+  the 14 same-topic twin groups (concurrency, context, database,
+  error-handling, graphql, idioms, logging, performance, project-structure,
+  refactoring, security, stay-updated, testing, web/apis): each now says
+  "If the language is not <Lang>, prefer <sibling skills>", so a
+  language-ambiguous prompt defers to the right twin instead of waking a
+  random one. `evals/collision-cases.md` gains case 15 (language-ambiguous
+  prompt, umbrella must win) and the known-limitation note is updated.
 - Collection cross-wiring from the qualitative audit: all 55 per-language
   skills (`golang-*`, `python-*`, `typescript-*`) now link their language
   knowledge folder (`go`, `python`, `javascript-typescript`) in a `## Related`

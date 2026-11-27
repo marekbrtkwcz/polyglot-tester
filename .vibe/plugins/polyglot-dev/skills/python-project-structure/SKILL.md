@@ -1,6 +1,6 @@
 ---
 name: python-project-structure
-description: Load this skill when starting or reorganizing a Python project: src layout, pyproject.toml, uv/venv, ruff, packaging, and pre-commit hooks.
+description: Load this skill when starting or reorganizing a Python project: src layout, pyproject.toml, uv/venv, ruff, packaging, and pre-commit hooks. If the language is not Python, prefer golang-project-structure or typescript-project-structure.
 ---
 
 # Python Project Structure

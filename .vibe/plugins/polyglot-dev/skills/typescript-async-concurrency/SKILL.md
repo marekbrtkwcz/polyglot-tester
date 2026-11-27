@@ -1,6 +1,6 @@
 ---
 name: typescript-async-concurrency
-description: Load this skill for async JavaScript/TypeScript: the event loop, promises, async/await pitfalls, parallelism vs sequential awaits, cancellation with AbortController, and worker threads.
+description: Load this skill for async JavaScript/TypeScript: the event loop, promises, async/await pitfalls, parallelism vs sequential awaits, cancellation with AbortController, and worker threads. If the language is not JavaScript/TypeScript, prefer golang-concurrency or python-concurrency.
 ---
 
 # Async & Concurrency in JS/TS

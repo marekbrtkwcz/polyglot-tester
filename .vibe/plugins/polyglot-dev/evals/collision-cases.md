@@ -21,6 +21,7 @@ trial; disagreeing trials are recorded, not discarded.
 | 5 | "We're seeing N+1 queries from Prisma in the orders endpoint" | `typescript-database` | `database-polyglot` |
 | 6 | "Should the new notification service stay on Postgres or move to DynamoDB?" | `database-polyglot` | any `*-database` twin |
 | 7 | "Profile the Python ingestion job — it eats 8 GB and takes four minutes, users say it got worse after the last release" | `python-performance` | `performance-polyglot` |
+| 15 | "Our services are written in different languages and every one of them queries the database in a loop — where do we even start?" | `database-polyglot` | any `*-database` twin |
 
 ## Testing pair
 
@@ -59,8 +60,11 @@ Per case, scored per trial:
 - for pairs 1–7: the response does not apply another language's tooling
   (e.g. testify in a Python answer, pytest in a Go answer)
 
-## Known limitation
+## Twin deferral (2026-11-27)
 
-The per-language twins do not yet name their cross-language sibling, so a
-request spanning two languages may still wake the wrong twin. If trials
-show that, add the reverse pointer to the twin's description.
+The per-language twins now name their cross-language siblings in their
+descriptions ("If the language is not Go, prefer ..."), so a
+language-ambiguous request should wake the umbrella skill, not a random
+twin — case 15 covers this. If trials still show the wrong twin waking on a
+language-ambiguous prompt, re-run this file's cases before editing the
+descriptions again.

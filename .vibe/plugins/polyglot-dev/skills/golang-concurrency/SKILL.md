@@ -1,6 +1,6 @@
 ---
 name: golang-concurrency
-description: Load this skill when writing or reviewing concurrent Go code: goroutines, channels, sync primitives, errgroup, context cancellation, and leak prevention.
+description: Load this skill when writing or reviewing concurrent Go code: goroutines, channels, sync primitives, errgroup, context cancellation, and leak prevention. If the language is not Go, prefer python-concurrency or typescript-async-concurrency.
 ---
 
 # Go Concurrency

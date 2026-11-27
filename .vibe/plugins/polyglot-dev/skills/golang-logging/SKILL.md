@@ -1,6 +1,6 @@
 ---
 name: golang-logging
-description: Load this skill when choosing or standardizing logging in Go: log/slog in depth, structured attributes, levels, context propagation, and when zap/zerolog beat the stdlib.
+description: Load this skill when choosing or standardizing logging in Go: log/slog in depth, structured attributes, levels, context propagation, and when zap/zerolog beat the stdlib. If the language is not Go, prefer python-logging or typescript-logging.
 ---
 
 # Go Logging

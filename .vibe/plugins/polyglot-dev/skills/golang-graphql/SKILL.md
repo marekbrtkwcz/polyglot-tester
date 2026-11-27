@@ -1,6 +1,6 @@
 ---
 name: golang-graphql
-description: Load this skill when building GraphQL APIs in Go: choosing a server library, schema design, resolvers, dataloaders, and error handling.
+description: Load this skill when building GraphQL APIs in Go: choosing a server library, schema design, resolvers, dataloaders, and error handling. If the language is not Go, prefer python-graphql or typescript-graphql.
 ---
 
 # Go GraphQL

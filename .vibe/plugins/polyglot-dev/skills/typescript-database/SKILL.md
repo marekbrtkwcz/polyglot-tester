@@ -1,6 +1,6 @@
 ---
 name: typescript-database
-description: Load this skill when working with databases from Node.js/TypeScript: Prisma vs Drizzle vs pg, connection pooling, transactions, migrations, and query safety.
+description: Load this skill when working with databases from Node.js/TypeScript: Prisma vs Drizzle vs pg, connection pooling, transactions, migrations, and query safety. If the language is not JavaScript/TypeScript, prefer golang-database or python-database.
 ---
 
 # Databases in TypeScript/Node

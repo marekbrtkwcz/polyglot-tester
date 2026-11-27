@@ -1,6 +1,6 @@
 ---
 name: golang-project-structure
-description: Load this skill when starting or reorganizing a Go project: standard layout, package naming, code style, modern Go idioms, and documentation conventions.
+description: Load this skill when starting or reorganizing a Go project: standard layout, package naming, code style, modern Go idioms, and documentation conventions. If the language is not Go, prefer python-project-structure or typescript-project-structure.
 ---
 
 # Go Project Structure & Style

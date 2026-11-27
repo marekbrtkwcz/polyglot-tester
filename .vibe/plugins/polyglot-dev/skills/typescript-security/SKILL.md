@@ -1,6 +1,6 @@
 ---
 name: typescript-security
-description: Load this skill for JS/TS application security: XSS and injection, prototype pollution, unsafe deserialization, secrets handling, dependency auditing (npm audit), and safe HTTP headers.
+description: Load this skill for JS/TS application security: XSS and injection, prototype pollution, unsafe deserialization, secrets handling, dependency auditing (npm audit), and safe HTTP headers. If the language is not JavaScript/TypeScript, prefer golang-security or python-security.
 ---
 
 # Security in JS/TS

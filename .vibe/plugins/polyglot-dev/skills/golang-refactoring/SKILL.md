@@ -1,6 +1,6 @@
 ---
 name: golang-refactoring
-description: Load this skill when refactoring Go code safely: extracting functions, renaming, splitting packages, and the test-first discipline that makes refactors safe.
+description: Load this skill when refactoring Go code safely: extracting functions, renaming, splitting packages, and the test-first discipline that makes refactors safe. If the language is not Go, prefer python-refactoring or typescript-refactoring.
 ---
 
 # Go Refactoring

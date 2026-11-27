@@ -1,6 +1,6 @@
 ---
 name: python-concurrency
-description: Load this skill when writing concurrent or async Python: choosing asyncio vs threads vs processes, the GIL, task cancellation, and thread-safety.
+description: Load this skill when writing concurrent or async Python: choosing asyncio vs threads vs processes, the GIL, task cancellation, and thread-safety. If the language is not Python, prefer golang-concurrency or typescript-async-concurrency.
 ---
 
 # Python Concurrency
@@ -25,6 +25,7 @@ description: Load this skill when writing concurrent or async Python: choosing a
 async def main():
     results = await asyncio.gather(fetch(a), fetch(b), fetch(c))  # concurrent
     # return_exceptions=True to not fail-fast on first error
+
 
 async with aiohttp.ClientSession() as session:
     ...  # one session per app

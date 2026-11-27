@@ -1,6 +1,6 @@
 ---
 name: python-logging
-description: Load this skill when setting up or standardizing logging in Python: the logging module, structlog, levels, formatters/filters, and correlation IDs.
+description: Load this skill when setting up or standardizing logging in Python: the logging module, structlog, levels, formatters/filters, and correlation IDs. If the language is not Python, prefer golang-logging or typescript-logging.
 ---
 
 # Python Logging

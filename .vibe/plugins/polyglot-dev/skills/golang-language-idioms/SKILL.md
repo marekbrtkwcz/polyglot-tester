@@ -1,6 +1,6 @@
 ---
 name: golang-language-idioms
-description: Load this skill when writing idiomatic Go at the language level: guard clauses and control flow, declarations (var vs :=, iota, shadowing), generics, and function style (ordering, signatures, Stringer).
+description: Load this skill when writing idiomatic Go at the language level: guard clauses and control flow, declarations (var vs :=, iota, shadowing), generics, and function style (ordering, signatures, Stringer). If the language is not Go, prefer python-idioms or typescript-idioms.
 ---
 
 # Go Language Idioms

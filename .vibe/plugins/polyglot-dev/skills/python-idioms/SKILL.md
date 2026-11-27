@@ -1,6 +1,6 @@
 ---
 name: python-idioms
-description: Load this skill when writing idiomatic Python: pythonic constructs, EAFP, context managers, dataclasses, f-strings, and the dunder methods worth knowing.
+description: Load this skill when writing idiomatic Python: pythonic constructs, EAFP, context managers, dataclasses, f-strings, and the dunder methods worth knowing. If the language is not Python, prefer golang-language-idioms or typescript-idioms.
 ---
 
 # Python Idioms

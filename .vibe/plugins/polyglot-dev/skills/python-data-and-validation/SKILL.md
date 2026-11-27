@@ -19,6 +19,7 @@ description: Load this skill when modeling and validating data in Python: pydant
 ```python
 from pydantic import BaseModel, Field, EmailStr, field_validator
 
+
 class Signup(BaseModel):
     email: EmailStr
     password: str = Field(min_length=12)
@@ -30,6 +31,7 @@ class Signup(BaseModel):
         if v.lower() in {"password", "123456789012"}:
             raise ValueError("too common")
         return v
+
 
 user = Signup.model_validate(payload)  # raises ValidationError with all errors
 json_str = user.model_dump_json()
@@ -43,6 +45,7 @@ json_str = user.model_dump_json()
 
 ```python
 from typing import Protocol
+
 
 class Repository(Protocol):
     def get(self, id: int) -> User | None: ...

@@ -1,6 +1,6 @@
 ---
 name: python-context
-description: Load this skill when managing request-scoped or ambient state in Python: contextvars in async code, context managers for resources, and avoiding global state.
+description: Load this skill when managing request-scoped or ambient state in Python: contextvars in async code, context managers for resources, and avoiding global state. If the language is not Python, prefer golang-context.
 ---
 
 # Python Context & Ambient State

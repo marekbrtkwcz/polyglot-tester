@@ -1,6 +1,6 @@
 ---
 name: typescript-testing-advanced
-description: Load this skill for advanced JS/TS testing: Vitest/Jest setup, mocking strategies, fake timers, property-based testing with fast-check, coverage that matters, and avoiding tautological tests.
+description: Load this skill for advanced JS/TS testing: Vitest/Jest setup, mocking strategies, fake timers, property-based testing with fast-check, coverage that matters, and avoiding tautological tests. If the language is not JavaScript/TypeScript, prefer golang-testing-advanced or python-testing-advanced.
 ---
 
 # Advanced Testing in JS/TS

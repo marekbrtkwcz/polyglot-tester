@@ -1,6 +1,6 @@
 ---
 name: golang-context
-description: Load this skill when working with context in Go: cancellation, deadlines, values, and the rules that keep request-scoped data flowing correctly.
+description: Load this skill when working with context in Go: cancellation, deadlines, values, and the rules that keep request-scoped data flowing correctly. If the language is not Go, prefer python-context.
 ---
 
 # Go Context

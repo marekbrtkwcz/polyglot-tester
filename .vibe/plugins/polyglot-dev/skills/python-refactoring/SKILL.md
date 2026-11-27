@@ -1,6 +1,6 @@
 ---
 name: python-refactoring
-description: Load this skill when refactoring Python code safely: test-first, small steps, rename/extract via jedi/rope or the IDE, keeping mypy and ruff green at every step.
+description: Load this skill when refactoring Python code safely: test-first, small steps, rename/extract via jedi/rope or the IDE, keeping mypy and ruff green at every step. If the language is not Python, prefer golang-refactoring or typescript-refactoring.
 ---
 
 # Safe Refactoring (Python)

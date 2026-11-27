@@ -1,6 +1,6 @@
 ---
 name: typescript-logging
-description: Load this skill when choosing or standardizing logging in JavaScript/TypeScript: pino vs winston, structured fields, levels, correlation IDs via AsyncLocalStorage, redaction, and testing logs.
+description: Load this skill when choosing or standardizing logging in JavaScript/TypeScript: pino vs winston, structured fields, levels, correlation IDs via AsyncLocalStorage, redaction, and testing logs. If the language is not JavaScript/TypeScript, prefer golang-logging or python-logging.
 ---
 
 # TypeScript Logging

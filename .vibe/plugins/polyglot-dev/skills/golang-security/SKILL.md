@@ -1,6 +1,6 @@
 ---
 name: golang-security
-description: Load this skill when writing or reviewing security-sensitive Go code: input validation, SQL/command injection, path traversal, secrets, crypto, and HTTP security headers.
+description: Load this skill when writing or reviewing security-sensitive Go code: input validation, SQL/command injection, path traversal, secrets, crypto, and HTTP security headers. If the language is not Go, prefer python-security or typescript-security.
 ---
 
 # Go Security

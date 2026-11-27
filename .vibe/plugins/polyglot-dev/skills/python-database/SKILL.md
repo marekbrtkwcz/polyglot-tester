@@ -1,6 +1,6 @@
 ---
 name: python-database
-description: Load this skill when working with databases from Python: SQLAlchemy 2.x (sync and async), psycopg3/asyncpg, Alembic migrations, pooling, transactions, and query safety.
+description: Load this skill when working with databases from Python: SQLAlchemy 2.x (sync and async), psycopg3/asyncpg, Alembic migrations, pooling, transactions, and query safety. If the language is not Python, prefer golang-database or typescript-database.
 ---
 
 # Databases in Python

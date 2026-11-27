@@ -1,6 +1,6 @@
 ---
 name: python-testing-advanced
-description: Load this skill when writing serious pytest suites: fixtures and scopes, parametrize, monkeypatch, mocking strategy, hypothesis property tests, and coverage discipline.
+description: Load this skill when writing serious pytest suites: fixtures and scopes, parametrize, monkeypatch, mocking strategy, hypothesis property tests, and coverage discipline. If the language is not Python, prefer golang-testing-advanced or typescript-testing-advanced.
 ---
 
 # Python Testing (Advanced)
@@ -9,6 +9,7 @@ description: Load this skill when writing serious pytest suites: fixtures and sc
 
 ```python
 import pytest
+
 
 @pytest.fixture(scope="module")  # function < class < module < session
 def db():
@@ -47,6 +48,7 @@ def test_parse(raw, expected): ...
 
 ```python
 from hypothesis import given, strategies as st
+
 
 @given(st.lists(st.integers()))
 def test_sort_idempotent(xs):

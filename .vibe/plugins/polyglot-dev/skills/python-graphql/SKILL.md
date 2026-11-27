@@ -1,6 +1,6 @@
 ---
 name: python-graphql
-description: Load this skill when building GraphQL APIs in Python: choosing Strawberry, Ariadne or Graphene, schema design, resolvers, DataLoader for N+1, typed errors, depth/complexity limits, and testing.
+description: Load this skill when building GraphQL APIs in Python: choosing Strawberry, Ariadne or Graphene, schema design, resolvers, DataLoader for N+1, typed errors, depth/complexity limits, and testing. If the language is not Python, prefer golang-graphql or typescript-graphql.
 ---
 
 # Python GraphQL
@@ -13,6 +13,7 @@ description: Load this skill when building GraphQL APIs in Python: choosing Stra
 
 ```python
 import strawberry
+
 
 @strawberry.type
 class Query:

@@ -1,6 +1,6 @@
 ---
 name: typescript-error-handling
-description: Load this skill for error handling in JS/TS: Error subclasses, cause chaining, sync vs async errors, unhandled rejection handling, and a Result type for expected failures.
+description: Load this skill for error handling in JS/TS: Error subclasses, cause chaining, sync vs async errors, unhandled rejection handling, and a Result type for expected failures. If the language is not JavaScript/TypeScript, prefer golang-error-handling or python-error-handling.
 ---
 
 # Error Handling in JS/TS

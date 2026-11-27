@@ -1,6 +1,6 @@
 ---
 name: typescript-performance
-description: Load this skill for JS/TS performance: profiling in Node and the browser, bundle size control, memory leaks, rendering performance, and measuring before optimizing.
+description: Load this skill for JS/TS performance: profiling in Node and the browser, bundle size control, memory leaks, rendering performance, and measuring before optimizing. If the language is not JavaScript/TypeScript, prefer golang-performance or python-performance.
 ---
 
 # Performance in JS/TS

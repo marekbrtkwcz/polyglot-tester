@@ -1,6 +1,6 @@
 ---
 name: typescript-graphql
-description: Load this skill when building or consuming GraphQL APIs in TypeScript: server choice (graphql-yoga, Apollo, Pothos), schema design, resolvers, dataloaders for N+1, errors, and depth/complexity limits.
+description: Load this skill when building or consuming GraphQL APIs in TypeScript: server choice (graphql-yoga, Apollo, Pothos), schema design, resolvers, dataloaders for N+1, errors, and depth/complexity limits. If the language is not JavaScript/TypeScript, prefer golang-graphql or python-graphql.
 ---
 
 # GraphQL in TypeScript

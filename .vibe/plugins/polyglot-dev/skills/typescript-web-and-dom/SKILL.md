@@ -1,6 +1,6 @@
 ---
 name: typescript-web-and-dom
-description: Load this skill for browser-side JS/TS: DOM APIs, fetch and networking, storage, events, accessibility basics, and framework-agnostic browser patterns.
+description: Load this skill for browser-side JS/TS: DOM APIs, fetch and networking, storage, events, accessibility basics, and framework-agnostic browser patterns. If the language is not JavaScript/TypeScript, prefer golang-web-and-apis or python-web-and-apis.
 ---
 
 # Web & DOM (Browser JS/TS)

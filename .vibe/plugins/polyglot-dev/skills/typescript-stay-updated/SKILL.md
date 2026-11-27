@@ -1,6 +1,6 @@
 ---
 name: typescript-stay-updated
-description: Load this skill to stay current with JavaScript/TypeScript: ECMAScript proposals, TS release notes, Node LTS schedule, and a safe upgrade routine for tooling and dependencies.
+description: Load this skill to stay current with JavaScript/TypeScript: ECMAScript proposals, TS release notes, Node LTS schedule, and a safe upgrade routine for tooling and dependencies. If the language is not JavaScript/TypeScript, prefer golang-stay-updated or python-stay-updated.
 ---
 
 # Staying Updated (JS/TS)

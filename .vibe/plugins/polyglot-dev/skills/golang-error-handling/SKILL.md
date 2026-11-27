@@ -1,6 +1,6 @@
 ---
 name: golang-error-handling
-description: Load this skill when writing or reviewing error handling in Go: wrapping with context, sentinel errors, errors.Is/As, and API error design.
+description: Load this skill when writing or reviewing error handling in Go: wrapping with context, sentinel errors, errors.Is/As, and API error design. If the language is not Go, prefer python-error-handling or typescript-error-handling.
 ---
 
 # Go Error Handling

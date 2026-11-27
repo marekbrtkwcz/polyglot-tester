@@ -1,6 +1,6 @@
 ---
 name: golang-web-and-apis
-description: Load this skill when building HTTP services or APIs in Go: net/http vs gin/echo/fiber, routing, middleware, request validation, graceful shutdown, and JSON handling.
+description: Load this skill when building HTTP services or APIs in Go: net/http vs gin/echo/fiber, routing, middleware, request validation, graceful shutdown, and JSON handling. If the language is not Go, prefer python-web-and-apis or typescript-web-and-dom.
 ---
 
 # Web & APIs in Go
