@@ -43,6 +43,13 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Skill | `polyglot-dev:events-and-queues-polyglot` | Kafka/SQS/RabbitMQ, idempotent consumers, backoff+DLQ, message contracts, async testing |
 | Skill | `polyglot-dev:observability-polyglot` | Structured logs, RED/USE metrics, traces, correlation IDs, symptom-based alerting per language |
 | Skill | `polyglot-dev:docs-polyglot` | READMEs, docstrings, ADRs, API docs, changelogs — docs a new teammate can follow verbatim |
+| Skill | `polyglot-dev:security-polyglot` | Injection, secrets, crypto, HTTP hardening, dependency auditing across JS/TS, Python, Go |
+| Skill | `polyglot-dev:performance-polyglot` | Measure-first optimization: profilers, common wins, benchmarks in CI per language |
+| Skill | `polyglot-dev:error-handling-polyglot` | Error chaining (`%w` / `raise from` / `cause`), domain error types, log-once discipline |
+| Skill | `polyglot-dev:refactoring-polyglot` | Test-first refactoring: one green step at a time, tool-driven renames, no behavior mixing |
+| Skill | `polyglot-dev:ci-cd-polyglot` | CI/CD setup per stack: gates, matrices, caching, secrets, merge gating, release automation |
+| Skill | `polyglot-dev:docker-polyglot` | Dockerfiles and multi-stage builds per language, compose, rootless Podman, image scanning, tagging |
+| Skill | `polyglot-dev:stay-updated-polyglot` | Official sources, EOL schedules, and a safe one-thing-at-a-time upgrade routine per language |
 | Skill | `polyglot-dev:golang-error-handling` | Go errors: `%w` wrapping, sentinels, `errors.Is/As`, API error design |
 | Skill | `polyglot-dev:golang-concurrency` | Goroutines, channels, errgroup, context, race/leak prevention |
 | Skill | `polyglot-dev:golang-testing-advanced` | Table-driven tests, testify, mocks, fuzzing, benchmarks, goleak |
@@ -95,6 +102,7 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Skill | `polyglot-dev:typescript-ecosystem-and-packages` | npm/pnpm/yarn, semver, exports map, publishing with provenance, evaluating dependencies |
 | Skill | `polyglot-dev:typescript-build-and-bundling` | tsc vs bundlers, ESM+CJS+d.ts for libs, attw, Vite/esbuild/tsup, code splitting |
 | Skill | `polyglot-dev:typescript-stay-updated` | TS/ES/Node release tracking, safe upgrade routine, baseline-wide features, dep hygiene |
+| Skill | `polyglot-dev:typescript-refactoring` | Test-first TS refactoring: tsserver renames, `tsc --noEmit` gate, extract/component moves |
 | Agent | `polyglot-dev:code-reviewer` | Read-only subagent reviewing diffs for correctness, security, and language-specific pitfalls |
 | Agent | `polyglot-dev:test-runner` | Detects the repo's runner, runs tests/lint/type checks, reports pass/fail with evidence |
 | Agent | `polyglot-dev:explorer` | Read-only code exploration: structure, call sites, stack detection before planning |

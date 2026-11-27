@@ -4,6 +4,16 @@ All notable changes to the polyglot-dev plugin are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning is semantic.
 
+## [Unreleased]
+
+### Added
+
+- Seven cross-language skills closing the symmetry gaps between the per-language sets:
+  `security-polyglot`, `performance-polyglot`, `error-handling-polyglot`,
+  `refactoring-polyglot`, `ci-cd-polyglot`, `docker-polyglot`, `stay-updated-polyglot`.
+- `typescript-refactoring`: the missing per-language refactoring skill for JS/TS
+  (tsserver renames, `tsc --noEmit` gate, one green step at a time).
+
 ## [1.4.0] - 2026-11-27
 
 ### Added
