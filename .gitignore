@@ -2,6 +2,6 @@ __pycache__/
 *.pyc
 .pytest_cache/
 .coverage
-.mutmut-cache/
+.mutmut-cache
 .ruff_cache/
 .hypothesis/
