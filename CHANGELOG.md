@@ -35,6 +35,11 @@ versioning is semantic.
   `-Recurse` and `-Force`, `Format-Volume`, `Clear-Disk -RemoveData`.
   Near-misses keep bash parity: `-Recurse` without `-Force` passes like
   `rm -r`.
+- `reference.md` companions for the six knowledge folders that lacked
+  them (architecture, cloud, databases, docker, security, testing) —
+  diagnostics commands, lookup tables, and failure triage in the style of
+  the existing ci-cd, go, javascript-typescript, and python references,
+  so every knowledge folder now has a quick-reference companion.
 
 ### Changed
 
