@@ -302,6 +302,16 @@ def test_protected_push_force_refspec_destination(command):
 def test_segment_after_ignores_separators_inside_quotes():
     assert guard.segment_after('git commit -m "a; b" && echo hi', 11) == '-m "a; b" '
     assert guard.segment_after("rm -r dir; echo f", 3) == "-r dir"
+    # an escaped quote does not close the string: the ; stays inside
+    assert (
+        guard.segment_after('git commit -m "WIP: \\"a; b"', 11) == '-m "WIP: \\"a; b"'
+    )
+
+
+def test_protected_push_option_value_with_n_is_not_dry_run():
+    # -o=no-ci contains "n" but is not the -n dry-run flag
+    assert guard.is_protected_push("git push -o=no-ci origin main") is True
+    assert guard.is_protected_push("git push -n origin main") is False
 
 
 def test_protected_push_allowed_via_env():

@@ -168,6 +168,14 @@ versioning is semantic.
   `commit_stages_worktree` strips quoted `-m` payloads first, so
   `git commit -m "fix -a flag"` no longer triggers an unstaged scan.
 - README test count updated to 282.
+- `segment_after` is escape-aware inside quotes: `\"` no longer closes the
+  string, so `git commit -m "WIP: \"a; b"` can no longer slip past the WIP
+  guard through a separator after an escaped quote.
+- The dry-run check in `is_protected_push` uses a full short-flag match
+  (`-n` clusters only), so option values like `-o=no-ci` are no longer
+  misread as `--dry-run`.
+- README no longer hardcodes the exact test count ("280+ cases"), so it
+  does not drift on every PR that adds cases.
 
 ## [1.5.0] - 2026-11-27
 

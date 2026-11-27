@@ -152,10 +152,16 @@ def segment_after(command, start):
     """
     chars = []
     quote = None
-    for ch in command[start:]:
+    text = command[start:]
+    i = 0
+    while i < len(text):
+        ch = text[i]
         if quote is not None:
             chars.append(ch)
-            if ch == quote:
+            if ch == "\\" and i + 1 < len(text):
+                chars.append(text[i + 1])  # escaped char (e.g. \") never closes
+                i += 1
+            elif ch == quote:
                 quote = None
         elif ch in ("'", '"'):
             quote = ch
@@ -164,6 +170,7 @@ def segment_after(command, start):
             break
         else:
             chars.append(ch)
+        i += 1
     return "".join(chars)
 
 
@@ -251,12 +258,7 @@ def is_protected_push(command):
     for match in re.finditer(r"\bgit\s+push\b", command):
         tokens = segment_after(command, match.end()).split()
         if any(
-            token == "--dry-run"
-            or (
-                token.startswith("-")
-                and not token.startswith("--")
-                and "n" in token[1:]
-            )
+            token == "--dry-run" or re.fullmatch(r"-[a-zA-Z]*n[a-zA-Z]*", token)
             for token in tokens
         ):
             continue  # dry-run (-n / --dry-run): nothing changes on the remote

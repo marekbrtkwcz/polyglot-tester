@@ -98,6 +98,10 @@ def test_quoted_flags_of_other_tools_do_not_leak_into_commit():
     assert wip_guard.is_wip_commit('pytest -m "wip; x" && git commit -m "ok"') is False
 
 
+def test_blocks_wip_subject_with_escaped_quote_before_separator():
+    assert wip_guard.is_wip_commit('git commit -m "WIP: \\"a; b"') is True
+
+
 def test_subject_from_file(tmp_path):
     msg = tmp_path / "msg.txt"
     msg.write_text("\nWIP: from file\n", encoding="utf-8")
