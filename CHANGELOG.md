@@ -19,6 +19,10 @@ versioning is semantic.
   a language (MD040), tables use a consistent column style (MD060), bare URLs
   are angle-wrapped (MD034), the unescaped `|safe` table cell is fixed
   (MD056), and MD024 allows the repeated Keep-a-Changelog section headings.
+- Release workflow: pushing a `vX.Y.Z` tag runs the tests, verifies the tag
+  against `plugin.json`, and attaches `polyglot-dev-<version>.zip` — built
+  with `git archive`, `tests/` excluded via `export-ignore` — to the GitHub
+  release; the workflow fails if the zip still contains `tests/`.
 
 - PowerShell destructive-command patterns for the `powershell` shell tool:
   `Remove-Item` (and its `rm`/`del`/`erase`/`rd`/`ri` aliases) with both

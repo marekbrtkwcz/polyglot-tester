@@ -182,6 +182,11 @@ Override: `POLYGLOT_PREPUSH_DISABLED=1`.
 
 ## Install
 
+Easiest: download `polyglot-dev-<version>.zip` from
+[Releases](https://github.com/marekbrtkwcz/polyglot-tester/releases) — built
+automatically from each `vX.Y.Z` tag, without `tests/` — and unpack the
+`polyglot-dev/` folder into one of the locations below.
+
 Project scope (trusted folder only):
 
 ```text
@@ -265,4 +270,7 @@ Conventions:
 - Lint & format: `python -m ruff check --isolated --select E4,E7,E9,F .vibe/plugins/polyglot-dev/`
   and `python -m ruff format --check .vibe/plugins/polyglot-dev/`
 - Release: bump `plugin.json` + `CHANGELOG.md` (Keep a Changelog), commit
-  `Release vX.Y.Z`, tag `vX.Y.Z`, push branch and tag.
+  `Release vX.Y.Z`, tag `vX.Y.Z`, push branch and tag. The Release workflow
+  (`.github/workflows/release.yml`) runs the tests, checks the tag against
+  `plugin.json`, and attaches `polyglot-dev-<version>.zip` (no `tests/`) to
+  the GitHub release.
