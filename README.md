@@ -176,7 +176,9 @@ without inline messages (editor flow) pass. Override: `POLYGLOT_WIP_DISABLED=1`.
 plain `git push`: the README/skills drift check and the plugin structure
 test suite. A failing check blocks the push with the output on stderr;
 history-rewriting pushes are left to the destructive-command guard. The hook
-fails open when python/pytest are unavailable. Override: `POLYGLOT_PREPUSH_DISABLED=1`.
+fails open when python/pytest are unavailable, and stays a silent no-op when
+the plugin is installed in a project other than its own repository.
+Override: `POLYGLOT_PREPUSH_DISABLED=1`.
 
 ## Install
 

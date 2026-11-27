@@ -26,6 +26,12 @@ versioning is semantic.
 
 ### Fixed
 
+- `pre-push-checks` is now a silent no-op when the plugin is installed in a
+  project other than its own repository: it no longer prints `skipped` noise
+  on every push there, and a missing pytest there no longer blocks the push.
+  In its own repository it resolves the repo root from the hook payload's
+  `cwd`, so the checks also run when Vibe executes the hook from its
+  read-only plugin snapshot.
 - `rm` flag detection in the destructive-command guard is now
   case-insensitive: the GNU uppercase spelling `rm -Rf` and the capitalized
   PowerShell `-Recurse`/`-Force` parameters no longer bypass it.
