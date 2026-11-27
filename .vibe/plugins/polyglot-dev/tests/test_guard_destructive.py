@@ -315,3 +315,49 @@ def test_hook_never_blocks_on_unparseable_stdin():
 def test_hook_allows_normal_command():
     result = run_hook({"command": "npm test"})
     assert result.returncode == 0
+
+
+# --- mkfs / block-device writes / kubectl --all / push --delete -------------
+
+
+@pytest.mark.parametrize(
+    "command",
+    [
+        "mkfs /dev/sda1",
+        "mkfs.ext4 /dev/nvme0n1p2",
+        "sudo mkfs.xfs /dev/sdb",
+        "wipefs -a /dev/sda",
+        "mkswap /dev/sda3",
+        "cat os.img > /dev/sdb",
+        "dd if=iso of=/dev/sdc bs=4M",  # already covered, must stay blocked
+        "cp backup.img /dev/sda",
+        "echo data >> /dev/nvme0n1",
+        "kubectl delete --all pods",
+        "kubectl delete all --all-namespaces",
+        "kubectl delete deployment x -n prod --all",
+        "git push --delete origin feature",
+        "git push origin --delete feature",
+        "git push origin :main",
+    ],
+)
+def test_new_destructive_commands_blocked(command):
+    result = run_hook({"command": command})
+    assert result.returncode == 1, command
+
+
+@pytest.mark.parametrize(
+    "command",
+    [
+        "echo hi > /dev/null",
+        "cat log 2> /dev/null",
+        "dd if=file of=backup.img",  # regular file output is fine
+        "kubectl delete pod my-pod",
+        "kubectl delete pod my-pod -n dev",
+        "git push origin main:feature",  # local:remote push is not a delete
+        "git push origin feature",
+        "git push --force-with-lease origin feature",
+    ],
+)
+def test_new_near_misses_allowed(command):
+    result = run_hook({"command": command})
+    assert result.returncode == 0, command

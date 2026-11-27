@@ -19,6 +19,10 @@ versioning is semantic.
 - Three new agents: `security-auditor` (read-only), `doc-writer`,
   `refactorer` (test-first, small green steps).
 - Three new knowledge folders: `testing`, `docker`, `databases`.
+- Guard blocks more destructive commands: `mkfs`, `wipefs`/`mkswap` on a
+  device, redirects and `cp`/`mv`/`tee` onto block devices (`/dev/sd*`,
+  `/dev/nvme*`, ...), `kubectl delete --all[--namespaces]`, and
+  `git push --delete` / `git push :ref`. 23 new test cases.
 
 ## [1.3.0] - 2026-11-27
 

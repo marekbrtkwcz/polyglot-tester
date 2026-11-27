@@ -107,6 +107,11 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 - `git push` to `main`, `master`, or `release/*`
 - `find ... -delete`, `dd ... of=/dev/<device>`, `chmod -R 777` or `chmod -R` on
   an absolute path, `shred`, `truncate -s 0`
+- `mkfs` (any filesystem), `wipefs`/`mkswap` on a device, redirects or
+  `cp`/`mv`/`tee` onto a block device (`/dev/sd*`, `/dev/nvme*`, `/dev/mmcblk*`,
+  `/dev/vd*`, `/dev/xvd*`, `/dev/hd*`)
+- `kubectl delete --all` / `--all-namespaces`
+- `git push --delete` and the `git push origin :branch` delete-refspec form
 
 Unrecognized or unreadable payloads always pass through: the guard can never
 brick a session. Failures exit non-zero with the reason on stderr.

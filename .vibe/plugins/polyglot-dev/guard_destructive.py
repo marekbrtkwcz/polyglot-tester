@@ -25,6 +25,13 @@ BLOCKED_PATTERNS = [
     (r"\bchmod\s+(-[a-zA-Z]*R[a-zA-Z]*|--recursive)\b[^;|&]*\s/\S*", "chmod -R on an absolute path: recursive permission change outside the project"),
     (r"\bshred\s", "shred: overwrites file contents irreversibly"),
     (r"\btruncate\b[^;|&]*\s-s\s*0[a-zA-Z]*\b", "truncate -s 0: wipes the file"),
+    (r"\bmkfs(?:\.[a-z0-9]+)?\b", "mkfs: formats a filesystem, destroying all data on it"),
+    (r"\b(?:wipefs|mkswap)\b[^;|&]*\s/dev/\S+", "wipefs/mkswap on a device: destroys signatures/data"),
+    (r"\d?>>?\s*/dev/(?:sd[a-z]|hd[a-z]|vd[a-z]|xvd[a-z]|nvme\d+n\d+|mmcblk\d+)\w*", "redirect to a block device: overwrites the disk"),
+    (r"\b(?:cp|mv|tee|install)\b[^;|&]*\s/dev/(?:sd[a-z]|hd[a-z]|vd[a-z]|xvd[a-z]|nvme\d+n\d+|mmcblk\d+)\w*(?:\s|$)", "copying a file onto a block device: overwrites the disk"),
+    (r"\bkubectl\s+delete\b[^;|&]*\s--all(?:-namespaces)?\b", "kubectl delete --all: removes every resource in scope"),
+    (r"\bgit\s+push\b[^;|&]*\s--delete\b", "git push --delete: removes a remote branch"),
+    (r"\bgit\s+push\b[^;|&]*\s(?::\S+)", "git push :ref: deletes the remote branch"),
 ]
 
 # git push to a protected branch, unless explicitly allowed via env.
