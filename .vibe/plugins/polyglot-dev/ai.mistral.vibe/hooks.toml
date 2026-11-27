@@ -1,0 +1,6 @@
+[[hooks]]
+name = "guard-destructive-commands"
+type = "pre_tool"
+match = "bash"
+command = "python guard_destructive.py"
+strict = true
