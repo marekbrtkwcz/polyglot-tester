@@ -62,6 +62,21 @@ jobs:
       - name: Validate plugin.json against the official schema
         run: python scripts/validate_plugin_schema.py
 
+  skill-evals:
+    # Stage 2 (advisory, per ai-quality:testing-agent-skills): deterministic
+    # selection baseline over all eval cases. Behavioural scoring needs a
+    # model judge and is intentionally not wired here yet; this job must
+    # never fail the build.
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Run mechanical skill-matching baseline over all eval cases
+        run: python scripts/eval_skill_matching.py --top 3
+
   docs-lint:
     runs-on: ubuntu-latest
     steps:

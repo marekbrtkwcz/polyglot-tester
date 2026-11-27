@@ -8,6 +8,14 @@ versioning is semantic.
 
 ### Added
 
+- Eval coverage and wiring (audit finding 4): 12 new must-fire activation
+  cases (A12–A23), one per per-language twin group with the language named,
+  gating the twin deferral sentences — coverage is now 23/79 skills
+  (backlog accounting in `evals/activation-cases.md`). The deterministic
+  matcher `scripts/eval_skill_matching.py` now also runs in CI as an
+  advisory `skill-evals` job (`continue-on-error: true`) over all 38 cases;
+  behavioural model scoring remains a manual step (run record in
+  `evals/runs/2026-11-27-twin-group-cases-and-ci.md`).
 - Twin deferral sentences in the 41 per-language skill descriptions across
   the 14 same-topic twin groups (concurrency, context, database,
   error-handling, graphql, idioms, logging, performance, project-structure,

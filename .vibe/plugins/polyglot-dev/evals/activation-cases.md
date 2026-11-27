@@ -76,8 +76,36 @@ Per case, scored per trial (same as the collision cases):
 | A10 | "Our Python GraphQL API runs one query per list item — fix the N+1 and make the schema safe against deeply nested queries" | `python-graphql` | `python-web-and-apis` |
 | A11 | "Standardize logging across our Node services so one request ID traces a call through all of them, and make sure tokens never reach the logs" | `typescript-logging` | `observability-polyglot` |
 
+## Per-language twins (language named in the prompt)
+
+One must-fire case per twin group gates the deferral sentences added to
+the twin descriptions (2026-11-27): the prompt names a language, the
+matching twin must fire, and the cross-language siblings must not
+dominate. The graphql and logging groups are already covered by A10/A11.
+
+| # | Prompt (as a user would type it) | Must fire | Must not dominate |
+| --- | --- | --- | --- |
+| A12 | "Our Go service leaks goroutines on every request — find and fix the leak" | `golang-concurrency` | `python-concurrency`, `typescript-async-concurrency` |
+| A13 | "Pass request-scoped values through our Python services without global state" | `python-context` | `golang-context` |
+| A14 | "Our Django ORM fires one query per row in the list endpoint" | `python-database` | `golang-database`, `typescript-database` |
+| A15 | "Callers in our Express app can't tell a 404 from a 500 — give them typed errors" | `typescript-error-handling` | `golang-error-handling`, `python-error-handling` |
+| A16 | "Make this TypeScript codebase read idiomatic — modern syntax and small habits" | `typescript-idioms` | `golang-language-idioms`, `python-idioms` |
+| A17 | "Our FastAPI endpoint got slower after the last release — profile it and prove the fix" | `python-performance` | `golang-performance`, `typescript-performance` |
+| A18 | "Reorganize our Go module into a standard layout with a lint gate" | `golang-project-structure` | `python-project-structure`, `typescript-project-structure` |
+| A19 | "Rename this function across our whole Python codebase, safely" | `python-refactoring` | `golang-refactoring`, `typescript-refactoring` |
+| A20 | "Audit our Node API for injection and leaked secrets before launch" | `typescript-security` | `golang-security`, `python-security` |
+| A21 | "Bump our TypeScript toolchain safely — ES proposals, release notes, Node LTS" | `typescript-stay-updated` | `golang-stay-updated`, `python-stay-updated` |
+| A22 | "Add property-based tests and benchmarks to our Go package" | `golang-testing-advanced` | `python-testing-advanced`, `typescript-testing-advanced` |
+| A23 | "Build a JSON API in Go with middleware order and graceful shutdown" | `golang-web-and-apis` | `python-web-and-apis`, `typescript-web-and-dom` |
+
 ## Backlog
 
-The starter set covers the workflow backbone only. Extend per the
-coverage rule as skills are edited: one must-fire case rides along with
-the edit that needs it — do not batch-write cases nobody has scored.
+Coverage accounting (2026-11-27): 23 of 79 skills have a must-fire case
+(A1–A23): 9 backbone/umbrella skills (A1–A9) and 14 twin skills. Still
+owed: 27 twin skills (the other languages in each group) and 29 non-twin
+skills — 56 total.
+Extend per the coverage rule as skills are edited: one must-fire case
+rides along with the edit that needs it — do not batch-write cases nobody
+has scored. Behavioural scoring needs a model judge; the deterministic
+matcher in `scripts/eval_skill_matching.py` is the CI baseline and abstains
+on user-style prompts by design.
