@@ -1,11 +1,11 @@
 ---
 name: docker
-description: Docker and container workflows: Dockerfile best practices, multi-stage builds, compose for local dev, image security, and registry/tagging discipline.
-display_name: Docker
+description: Container workflows with Docker and Podman: Dockerfile best practices, multi-stage builds, compose for local dev, rootless containers, image security, and registry/tagging discipline.
+display_name: Containers (Docker/Podman)
 icon: container
 ---
 
-# Docker Reference
+# Containers Reference (Docker & Podman)
 
 ## Dockerfile best practices
 
@@ -31,6 +31,22 @@ icon: container
 - Tag images with git SHA (always) + semver tag on release; never push `latest` from a random branch.
 - Immutable tags: once pushed, never overwrite — rebuild and push a new tag.
 
+## Podman
+
+- Drop-in Docker replacement: same CLI (`alias docker=podman`), same image format (OCI), so Dockerfiles and most commands work unchanged.
+- **Rootless by default**: containers run as your user, no daemon — smaller attack surface, the usual choice on shared machines and in CI.
+- `podman compose` (via podman-compose or the built-in `podman compose` using compose spec) for local stacks; `podman play kube` for Kubernetes YAML.
+- Pods: `podman pod create` groups containers sharing network/namespace — the Podman-native answer to compose services.
+- Systemd integration: `podman generate systemd` turns containers/pods into units (`--new` for resilience on restart).
+- Registries: same as Docker (docker.io, ghcr.io, ...); login via `podman login`.
+
+## Docker vs Podman — when which
+
+- Docker: when the team/CI already standardizes on the Docker daemon, or needs Docker-specific tooling (Docker Desktop, Swarm).
+- Podman: rootless environments, hardened hosts, Kubernetes-centric workflows (pods, `play kube`), rootless CI runners.
+
 ## Official sources
 
-- Docker docs: docs.docker.com · Dockerfile reference: docs.docker.com/reference/dockerfile · Compose spec: github.com/compose-spec/compose-spec · Trivy: aquasecurity.github.io/trivy
+- Docker docs: docs.docker.com · Dockerfile reference: docs.docker.com/reference/dockerfile · Compose spec: github.com/compose-spec/compose-spec
+- Podman: podman.io · Podman CLI reference: docs.podman.io/en/latest/Commands.html · podman-compose: github.com/containers/podman-compose
+- Image scanning: Trivy (aquasecurity.github.io/trivy), Grype (github.com/anchore/grype), docker scout
