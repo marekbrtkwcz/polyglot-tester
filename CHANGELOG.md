@@ -23,6 +23,13 @@ versioning is semantic.
 - Knowledge folder `architecture`: layered vs hexagonal vs feature-slice
   architecture per language, dependency direction, per-language module layout,
   and anti-patterns.
+- New hook `guard-wip-commit-message` (`guard_commit_message.py`): blocks
+  `git commit` with a WIP/DO NOT MERGE subject from `-m` or `-F`. Override:
+  `POLYGLOT_WIP_DISABLED=1`. 12 test cases.
+- New hook `pre-push-checks` (`prepush_checks.py`): before a plain `git push`,
+  runs `scripts/check_readme_skills.py` and the structure test suite; fails
+  open when tooling is missing. Override: `POLYGLOT_PREPUSH_DISABLED=1`.
+  5 test cases.
 
 ## [1.4.0] - 2026-11-27
 

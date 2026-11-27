@@ -11,3 +11,17 @@ type = "pre_tool"
 match = "bash"
 command = "python guard_secrets.py"
 strict = true
+
+[[hooks]]
+name = "guard-wip-commit-message"
+type = "pre_tool"
+match = "bash"
+command = "python guard_commit_message.py"
+strict = true
+
+[[hooks]]
+name = "pre-push-checks"
+type = "pre_tool"
+match = "bash"
+command = "python prepush_checks.py"
+strict = true

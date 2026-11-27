@@ -118,6 +118,8 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Knowledge | `polyglot-dev:javascript-typescript`, `polyglot-dev:python`, `polyglot-dev:go`, `polyglot-dev:ci-cd`, `polyglot-dev:testing`, `polyglot-dev:docker`, `polyglot-dev:databases`, `polyglot-dev:security`, `polyglot-dev:cloud`, `polyglot-dev:architecture` | Toolchains, conventions, and diagnostics per language plus CI/CD, testing, containers, databases, security, cloud, architecture patterns |
 | Hook | `guard-destructive-commands` | Pre-tool guard on `bash` (see below) |
 | Hook | `guard-secrets-in-git` | On `git add`/`git commit`, scans staged/unstaged/untracked content for secret patterns and blocks the command |
+| Hook | `guard-wip-commit-message` | Blocks `git commit` with a WIP/DO NOT MERGE subject (see below) |
+| Hook | `pre-push-checks` | Before `git push`, runs the README-drift check and structure tests (see below) |
 
 ## The destructive-command guard
 
@@ -156,6 +158,21 @@ generic `api_key`/`secret`/`token` assignments. Findings are reported masked
 (first/last characters only) and the command is blocked.
 
 Override for a deliberate, informed case: `POLYGLOT_SECRETS_DISABLED=1`.
+
+## The WIP commit guard
+
+`guard_commit_message.py` (`pre_tool` on `bash`) blocks `git commit` whose
+subject starts with `WIP`/`[WIP]`/`DO NOT MERGE` — taken from the first
+`-m`/`--message` argument or the first line of a `-F` message file. Commits
+without inline messages (editor flow) pass. Override: `POLYGLOT_WIP_DISABLED=1`.
+
+## The pre-push checks
+
+`prepush_checks.py` (`pre_tool` on `bash`) runs fast local checks before a
+plain `git push`: the README/skills drift check and the plugin structure
+test suite. A failing check blocks the push with the output on stderr;
+history-rewriting pushes are left to the destructive-command guard. The hook
+fails open when python/pytest are unavailable. Override: `POLYGLOT_PREPUSH_DISABLED=1`.
 
 ## Install
 
