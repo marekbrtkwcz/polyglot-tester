@@ -26,6 +26,20 @@ icon: database
 - Test up AND down; backfills batched and idempotent.
 - Tools: Alembic (Python), Prisma Migrate / Drizzle (JS/TS), golang-migrate / atlas (Go).
 
+## ORM vs raw SQL
+
+- ORM when the domain model is rich and queries are mostly CRUD by object graph; raw SQL (or a query builder) for reporting, bulk updates, and anything with complex joins/aggregations.
+- Hybrid is normal: ORM for the hot path, hand-written parameterized SQL for the heavy queries — keep both behind one data-access layer.
+- Never let the ORM generate queries you haven't reviewed on hot paths (`EXPLAIN ANALYZE` the generated SQL).
+
+## ORM patterns & pitfalls
+
+- Patterns: Data Mapper (SQLAlchemy ORM, Drizzle, sqlc — preferred) vs Active Record (Django ORM, Prisma to a degree, GORM) — Data Mapper keeps domain logic out of the persistence layer.
+- **N+1**: always eager-load relations that are accessed in a loop (dataloaders in GraphQL, `select_related`/`prefetch_related` in Django, `joinedload`/`preload` in SQLAlchemy/GORM, `Include` in EF).
+- Lazy loading in a loop is the classic silent perf bug — make loading explicit.
+- Unit of Work / session lifecycle: one session/transaction per request or use case; dispose it in teardown, even on error.
+- Migrations must match the ORM models — generate from models, review the diff, never hand-edit generated migrations blindly.
+
 ## Per-language drivers/ORMs
 
 - **JS/TS**: `pg` + pool, Prisma, Drizzle, Knex — all support bound parameters.
