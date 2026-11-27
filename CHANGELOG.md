@@ -8,6 +8,12 @@ versioning is semantic.
 
 ### Added
 
+- Two per-language skills closing the parity gaps: `python-graphql`
+  (Strawberry/Ariadne/Graphene, schema design, DataLoader, depth limits) and
+  `typescript-logging` (pino vs winston, AsyncLocalStorage correlation IDs,
+  redaction). Each ships with its must-fire activation case and collision row
+  per the `evals/activation-cases.md` coverage rule; `observability-polyglot`,
+  `api-design-polyglot` and `python-web-and-apis` cross-link to them.
 - `requirements-dev.txt`: one dependency source for CI and local development
   instead of ad-hoc `pip install` lines in three CI jobs.
 - Structure tests: skill descriptions must stay within Vibe's 1024-character

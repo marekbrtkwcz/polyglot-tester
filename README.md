@@ -85,6 +85,7 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Skill | `polyglot-dev:python-project-structure` | src layout, pyproject, uv, ruff/mypy gates, pre-commit, packaging |
 | Skill | `polyglot-dev:python-logging` | logging module, structlog, levels, JSON in prod, correlation IDs |
 | Skill | `polyglot-dev:python-web-and-apis` | FastAPI/Django/Flask choice, async SQLAlchemy, Alembic, Strawberry, Celery |
+| Skill | `polyglot-dev:python-graphql` | Strawberry/Ariadne/Graphene choice, schema design, DataLoader for N+1, typed errors, depth limits, testing |
 | Skill | `polyglot-dev:python-database` | SQLAlchemy 2.x sync/async, psycopg3/asyncpg, Alembic up/down, pooling, transactions |
 | Skill | `polyglot-dev:python-refactoring` | Test-first refactoring: rename/extract/move via jedi/rope, one green step at a time |
 | Skill | `polyglot-dev:python-stay-updated` | Python EOL schedule, What's New, deprecation-driven upgrades, dependency bumps |
@@ -103,6 +104,7 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Skill | `polyglot-dev:typescript-web-and-dom` | DOM APIs, fetch + AbortController, storage, events, IntersectionObserver, a11y basics |
 | Skill | `polyglot-dev:typescript-database` | Prisma vs Drizzle vs pg, pool sizing, transactions, migrations, N+1 |
 | Skill | `polyglot-dev:typescript-graphql` | yoga/Apollo/Pothos, dataloaders, typed errors, depth limits, codegen client |
+| Skill | `polyglot-dev:typescript-logging` | pino vs winston, structured fields, correlation IDs via AsyncLocalStorage, redaction, testing logs |
 | Skill | `polyglot-dev:typescript-ecosystem-and-packages` | npm/pnpm/yarn, semver, exports map, publishing with provenance, evaluating dependencies |
 | Skill | `polyglot-dev:typescript-build-and-bundling` | tsc vs bundlers, ESM+CJS+d.ts for libs, attw, Vite/esbuild/tsup, code splitting |
 | Skill | `polyglot-dev:typescript-stay-updated` | TS/ES/Node release tracking, safe upgrade routine, baseline-wide features, dep hygiene |

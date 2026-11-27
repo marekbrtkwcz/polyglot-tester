@@ -69,6 +69,13 @@ Per case, scored per trial (same as the collision cases):
 | --- | --- | --- | --- |
 | A9 | "Our support bot invents refund rules that don't exist — plug it into a real model and make it answer only from our own docs" | `ai-integration-polyglot` | `debugging-polyglot` |
 
+## Language-specific depth
+
+| # | Prompt (as a user would type it) | Must fire | Must not dominate |
+| --- | --- | --- | --- |
+| A10 | "Our Python GraphQL API runs one query per list item — fix the N+1 and make the schema safe against deeply nested queries" | `python-graphql` | `python-web-and-apis` |
+| A11 | "Standardize logging across our Node services so one request ID traces a call through all of them, and make sure tokens never reach the logs" | `typescript-logging` | `observability-polyglot` |
+
 ## Backlog
 
 The starter set covers the workflow backbone only. Extend per the

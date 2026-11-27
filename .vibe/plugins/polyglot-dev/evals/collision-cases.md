@@ -29,12 +29,19 @@ trial; disagreeing trials are recorded, not discarded.
 | 8 | "Write a few quick tests for `calculate_discount` — it's a pure function, edge cases matter" | `unit-testing-polyglot` | `testing-polyglot` |
 | 9 | "Nothing runs in CI and we have no idea what's covered — get the test story of this repo under control" | `testing-polyglot` | `unit-testing-polyglot` |
 
+## GraphQL depth vs web framework
+
+| # | Prompt (as a user would type it) | Winner | Must stay quiet |
+| --- | --- | --- | --- |
+| 13 | "Design the schema, resolvers and batching for the new GraphQL API our FastAPI service will expose" | `python-graphql` | `python-web-and-apis` |
+
 ## Logging vs observability
 
 | # | Prompt (as a user would type it) | Winner | Must stay quiet |
 | --- | --- | --- | --- |
 | 10 | "Thread a request ID through our FastAPI logs so support can trace a ticket" | `python-logging` | `observability-polyglot` |
 | 11 | "We need dashboards: latency per endpoint, error rate, and an alert when checkout starts failing" | `observability-polyglot` | `python-logging` |
+| 14 | "Standardize log format across our Express services and trace one request ID through all of them" | `typescript-logging` | `observability-polyglot` |
 
 ## Review vs workflow
 

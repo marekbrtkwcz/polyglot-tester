@@ -1,6 +1,6 @@
 ---
 name: python-web-and-apis
-description: Load this skill when building web services or APIs in Python: choosing FastAPI/Django/Flask, async SQLAlchemy, migrations with Alembic, GraphQL with Strawberry, and background tasks.
+description: Load this skill when building web services or APIs in Python: choosing FastAPI/Django/Flask, async SQLAlchemy, migrations with Alembic, GraphQL with Strawberry (schema/resolver depth: `python-graphql`), and background tasks.
 ---
 
 # Python Web & APIs
@@ -63,6 +63,7 @@ class Query:
 ```
 
 - Schema-first, typed resolvers, DataLoader for N+1 (`strawberry.dataloader`).
+- For full GraphQL depth — schema design, typed errors, depth limits, testing — load `python-graphql`.
 
 ## API hygiene
 
