@@ -57,6 +57,10 @@ versioning is semantic.
   `skills/security-polyglot/SKILL.md` instead of duplicating it, so the
   agent instructions and the skills cannot drift apart; a one-line
   fallback covers the review order when the skill file is not found.
+- `test-runner` can now run just the tests related to the changed files
+  (mapped by naming convention and package) before the full suite, and it
+  reports the runner's coverage summary when the repo already supports
+  coverage without adding any new dependency.
 
 ### Fixed
 

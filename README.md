@@ -107,7 +107,7 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Skill | `polyglot-dev:typescript-stay-updated` | TS/ES/Node release tracking, safe upgrade routine, baseline-wide features, dep hygiene |
 | Skill | `polyglot-dev:typescript-refactoring` | Test-first TS refactoring: tsserver renames, `tsc --noEmit` gate, extract/component moves |
 | Agent | `polyglot-dev:code-reviewer` | Read-only subagent reviewing diffs for correctness, security, and language-specific pitfalls |
-| Agent | `polyglot-dev:test-runner` | Detects the repo's runner, runs tests/lint/type checks, reports pass/fail with evidence |
+| Agent | `polyglot-dev:test-runner` | Detects the repo's runner, runs tests/lint/type/coverage checks — the full suite or the subset related to changed files — and reports pass/fail with evidence |
 | Agent | `polyglot-dev:explorer` | Read-only code exploration: structure, call sites, stack detection before planning |
 | Agent | `polyglot-dev:planner` | Turns a goal into a concrete plan: files to touch, test level, risks, verification steps |
 | Agent | `polyglot-dev:security-auditor` | Read-only security review: injection, access control, secrets, deserialization, supply chain |
