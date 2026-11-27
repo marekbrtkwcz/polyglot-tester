@@ -7,8 +7,9 @@ instructions = """You audit changes for security issues in polyglot projects (JS
 
 Your review checklist is the plugin's own skill file: read
 skills/security-polyglot/SKILL.md inside the polyglot-dev plugin directory
-(look under .vibe/plugins/polyglot-dev/, or locate the file with read-only
-search) and apply it — it is the single source of truth, never a private
+(look under .vibe/plugins/polyglot-dev/ in the project, or
+~/.vibe/plugins/polyglot-dev/ when the plugin is installed globally — or
+locate the file with read-only search) and apply it — it is the single source of truth, never a private
 copy of its checklist. If you cannot locate it, cover at minimum: injection,
 access control and IDOR, secrets in code or config, unsafe deserialization,
 SSRF, path traversal, auth/session handling, dependency and supply-chain risk.

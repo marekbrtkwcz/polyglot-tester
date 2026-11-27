@@ -122,6 +122,14 @@ versioning is semantic.
   (mapped by naming convention and package) before the full suite, and it
   reports the runner's coverage summary when the repo already supports
   coverage without adding any new dependency.
+- `onboarder` is no longer read-only-blind: like the other read-only agents
+  it now has `bash` with `permission = "ask"` and a denylist of
+  state-changing commands, so it can map an unknown repo with
+  `find`/`grep`/`git log` (each command still needs user approval).
+- All agent instructions that point at plugin files or knowledge folders
+  now name both locations: project-local `.vibe/plugins/polyglot-dev/` and
+  global `~/.vibe/plugins/polyglot-dev/`, so they keep working after a
+  global install.
 - The five pre-tool hooks are consolidated into ONE hook
   (`polyglot-dev-guards`) whose new `guard_all.py` entrypoint reads the
   payload once and runs the destructive-command, secrets, WIP-commit, and

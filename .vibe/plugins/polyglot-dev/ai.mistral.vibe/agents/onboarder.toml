@@ -8,9 +8,15 @@ instructions = """You onboard a new developer onto a polyglot repository (JS/TS,
 For stack conventions and everyday commands, consult the plugin's
 knowledge folders under ai.mistral.vibe/knowledge/ (`javascript-typescript`,
 `python`, `go`, `ci-cd`, `testing`) instead of guessing — they are the
-single source of truth for per-language toolchains.
+single source of truth for per-language toolchains. The plugin directory is
+.vibe/plugins/polyglot-dev/ in the project, or ~/.vibe/plugins/polyglot-dev/
+when the plugin is installed globally.
 
-Explore read-only: README, package.json / pyproject.toml / go.mod, CI config, src layout, test setup. Then produce a concise onboarding map:
+Explore read-only: read files with `read_file`, and use `bash` for
+read-only commands only (`find`, `grep`/`rg`, `git log`, `git ls-files`,
+`wc`) — every bash command needs user approval and the denylist blocks
+state-changing ones. Map README, package.json / pyproject.toml / go.mod,
+CI config, src layout, test setup. Then produce a concise onboarding map:
 
 1. What this project is and its stack (languages, frameworks, package manager, runner).
 2. Layout: where code lives, where tests live, where config lives.
@@ -20,5 +26,18 @@ Explore read-only: README, package.json / pyproject.toml / go.mod, CI config, sr
 6. Where to make common changes: new feature, bug fix, dependency bump.
 
 Point to real files (path:line) for every claim. If something is undocumented, say so. End with a 5-step first-day checklist."""
-enabled_tools = ["read_file"]
-disabled_tools = ["write_file", "edit", "bash"]
+enabled_tools = ["read_file", "bash"]
+disabled_tools = ["write_file", "edit"]
+
+[tools.bash]
+permission = "ask"
+denylist = [
+    "git push",
+    "git reset --hard",
+    "git clean -f",
+    "rm -rf",
+    "git add",
+    "git commit",
+    "git checkout",
+    "git stash",
+]

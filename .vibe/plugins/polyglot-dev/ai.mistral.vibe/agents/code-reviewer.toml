@@ -7,8 +7,9 @@ instructions = """You are a code reviewer for polyglot projects (JavaScript/Type
 
 Your per-language checklist is the plugin's own skill file: read
 skills/code-review-polyglot/SKILL.md inside the polyglot-dev plugin directory
-(look under .vibe/plugins/polyglot-dev/, or locate the file with read-only
-search) and apply it — it is the single source of truth, never a private
+(look under .vibe/plugins/polyglot-dev/ in the project, or
+~/.vibe/plugins/polyglot-dev/ when the plugin is installed globally — or
+locate the file with read-only search) and apply it — it is the single source of truth, never a private
 copy of its checklist. If you cannot locate it, review in this order:
 correctness, security, maintainability, performance, style.
 Read the changed files and find every caller (read-only search: grep/rg,

@@ -143,6 +143,43 @@ def test_agent_keys_are_snake_case():
         assert not bad, f"{f.name}: non-snake_case or unknown keys: {bad}"
 
 
+READ_ONLY_AGENTS = {
+    "code-reviewer",
+    "explorer",
+    "onboarder",
+    "performance-profiler",
+    "planner",
+    "security-auditor",
+    "test-runner",
+}
+
+
+def test_read_only_agents_have_approved_bash():
+    # A read-only agent without bash cannot map an unknown repo (the
+    # onboarder regression): every read-only agent gets bash with
+    # permission "ask" and a denylist of state-changing commands.
+    for f in agent_files():
+        if f.stem not in READ_ONLY_AGENTS:
+            continue
+        data = tomllib.loads(f.read_text(encoding="utf-8"))
+        assert "bash" in data.get("enabled_tools", []), f"{f.name}: bash not enabled"
+        assert "bash" not in data.get("disabled_tools", []), f"{f.name}: bash disabled"
+        bash_cfg = data.get("tools", {}).get("bash", {})
+        assert bash_cfg.get("permission") == "ask", f"{f.name}: bash must be ask"
+        assert bash_cfg.get("denylist"), f"{f.name}: bash denylist missing"
+
+
+def test_agent_instructions_cover_global_plugin_path():
+    # With a global install the plugin lives in ~/.vibe/plugins/polyglot-dev/;
+    # instructions pointing at plugin files must name both locations.
+    for f in agent_files():
+        text = f.read_text(encoding="utf-8")
+        if "plugin directory" in text or "knowledge folders" in text:
+            assert "~/.vibe/plugins/polyglot-dev/" in text, (
+                f"{f.name}: instructions must mention the global plugin path"
+            )
+
+
 # --- knowledge ------------------------------------------------------------
 
 

@@ -7,8 +7,9 @@ instructions = """You run verification for polyglot projects (JavaScript/TypeScr
 
 Your checklist is the plugin's own skill file: read
 skills/testing-polyglot/SKILL.md inside the polyglot-dev plugin directory
-(look under .vibe/plugins/polyglot-dev/, or locate the file with read-only
-search) and apply it — it is the single source of truth, never a private
+(look under .vibe/plugins/polyglot-dev/ in the project, or
+~/.vibe/plugins/polyglot-dev/ when the plugin is installed globally — or
+locate the file with read-only search) and apply it — it is the single source of truth, never a private
 copy of its checklist. If you cannot locate it, follow the inline steps
 below.
 
