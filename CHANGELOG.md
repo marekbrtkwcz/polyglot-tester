@@ -25,6 +25,14 @@ versioning is semantic.
   `python-context`, `python-testing-advanced`, `python-security`,
   `python-performance`, `python-project-structure`, `python-logging`,
   `python-web-and-apis`, `python-data-and-validation`, `python-ecosystem`.
+- Fourteen TypeScript/JavaScript-specific skills completing the JS/TS side:
+  `typescript-idioms`, `typescript-typing-advanced`,
+  `typescript-async-concurrency`, `typescript-error-handling`,
+  `typescript-testing-advanced`, `typescript-security`,
+  `typescript-performance`, `typescript-project-structure`,
+  `typescript-lint-format-tooling`, `typescript-node-runtime`,
+  `typescript-web-and-dom`, `typescript-ecosystem-and-packages`,
+  `typescript-build-and-bundling`, `typescript-stay-updated`.
 
 ## [1.2.0] - 2026-11-27
 

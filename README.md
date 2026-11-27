@@ -48,6 +48,20 @@ and a safety hook that blocks destructive shell commands before they run.
 | Skill | `polyglot-dev:python-web-and-apis` | FastAPI/Django/Flask choice, async SQLAlchemy, Alembic, Strawberry, Celery |
 | Skill | `polyglot-dev:python-data-and-validation` | pydantic v2 vs attrs vs dataclasses, Protocols, boundary validation |
 | Skill | `polyglot-dev:python-ecosystem` | Evaluating PyPI packages, curated picks (httpx, typer, polars, respx...) |
+| Skill | `polyglot-dev:typescript-idioms` | Modern JS/TS idioms: const/arrow/destructuring, immutable updates, guard clauses |
+| Skill | `polyglot-dev:typescript-typing-advanced` | Strict tsconfig, generics, utility types, type guards, branded types, discriminated unions |
+| Skill | `polyglot-dev:typescript-async-concurrency` | Event loop, promise pitfalls, Promise.all vs sequential await, AbortController, worker threads |
+| Skill | `polyglot-dev:typescript-error-handling` | Error subclasses, `cause` chaining, unhandled rejections, Result type for expected failures |
+| Skill | `polyglot-dev:typescript-testing-advanced` | Vitest/Jest, mocking boundaries, fake timers, fast-check, meaningful coverage |
+| Skill | `polyglot-dev:typescript-security` | XSS/injection, prototype pollution, schema validation, secrets, npm audit, HTTP headers |
+| Skill | `polyglot-dev:typescript-performance` | Profiling, bundle size, memory leaks, Web Vitals, streams in Node |
+| Skill | `polyglot-dev:typescript-project-structure` | package.json hygiene, tsconfig, workspaces/Nx/Turborepo, folder conventions, gates |
+| Skill | `polyglot-dev:typescript-lint-format-tooling` | Biome vs ESLint+Prettier, type-aware linting, pre-commit hooks, CI gates that can fail |
+| Skill | `polyglot-dev:typescript-node-runtime` | Node versions, ESM/CJS, streams/buffers, CLI tools, env validation, graceful shutdown |
+| Skill | `polyglot-dev:typescript-web-and-dom` | DOM APIs, fetch + AbortController, storage, events, IntersectionObserver, a11y basics |
+| Skill | `polyglot-dev:typescript-ecosystem-and-packages` | npm/pnpm/yarn, semver, exports map, publishing with provenance, evaluating dependencies |
+| Skill | `polyglot-dev:typescript-build-and-bundling` | tsc vs bundlers, ESM+CJS+d.ts for libs, attw, Vite/esbuild/tsup, code splitting |
+| Skill | `polyglot-dev:typescript-stay-updated` | TS/ES/Node release tracking, safe upgrade routine, baseline-wide features, dep hygiene |
 | Agent | `polyglot-dev:code-reviewer` | Read-only subagent reviewing diffs for correctness, security, and language-specific pitfalls |
 | Agent | `polyglot-dev:test-runner` | Detects the repo's runner, runs tests/lint/type checks, reports pass/fail with evidence |
 | Agent | `polyglot-dev:explorer` | Read-only code exploration: structure, call sites, stack detection before planning |
