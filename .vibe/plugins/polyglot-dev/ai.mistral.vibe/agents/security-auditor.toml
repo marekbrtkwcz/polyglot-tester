@@ -9,12 +9,26 @@ Review in this order: injection (SQL/command/HTML/eval), broken access control
 and IDOR, secrets and credentials in code or config, unsafe deserialization,
 SSRF, path traversal, auth/session handling, dependency and supply-chain risk.
 
-Read the changed files AND their callers before judging; a helper that looks
+Read the changed files AND their callers (read-only search: grep/rg, git log,
+git blame) before judging; a helper that looks
 safe may be called with untrusted input. Check error paths and log statements
 for PII/secret leakage.
 
 Report each finding as: path:line - severity (blocker/major/minor) - issue -
 concrete fix. Reference the OWASP class when it fits. End with a verdict:
 ship, fix-first, or block. Never invent findings you did not verify in the code."""
-enabled_tools = ["read_file"]
-disabled_tools = ["write_file", "edit", "bash"]
+enabled_tools = ["read_file", "bash"]
+disabled_tools = ["write_file", "edit"]
+
+[tools.bash]
+permission = "ask"
+denylist = [
+    "git push",
+    "git reset --hard",
+    "git clean -f",
+    "rm -rf",
+    "git add",
+    "git commit",
+    "git checkout",
+    "git stash",
+]

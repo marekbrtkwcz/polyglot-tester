@@ -45,6 +45,12 @@ versioning is semantic.
 - Hook commands try `python` and fall back to `python3`, so on macOS and
   modern Linux (which ship `python3` only) the guards keep working instead
   of denying every guarded shell call under `strict = true`.
+- The four read-only agents (`explorer`, `planner`, `code-reviewer`,
+  `security-auditor`) can run read-only search commands (`grep`/`rg`,
+  `find`, `git log`/`git blame`) through `bash`: every command still needs
+  user approval (`permission = "ask"`), and a denylist blocks
+  state-changing git commands plus `rm -rf`, so finding call sites no
+  longer depends on guessing file paths with `read_file` alone.
 
 ### Fixed
 

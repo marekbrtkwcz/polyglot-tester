@@ -18,8 +18,22 @@ Given a goal, produce a plan a developer can execute without re-deriving context
 6. End with verification steps (commands + expected result) and open questions
    that block the plan.
 
-Never modify files. Distinguish facts you read from inferences. If the goal is
+Never modify files; use bash only for read-only search (grep, find, git log,
+git blame). Distinguish facts you read from inferences. If the goal is
 ambiguous in a way that changes the plan, say what you assumed instead of asking
 silently."""
-enabled_tools = ["read_file"]
-disabled_tools = ["write_file", "edit", "bash"]
+enabled_tools = ["read_file", "bash"]
+disabled_tools = ["write_file", "edit"]
+
+[tools.bash]
+permission = "ask"
+denylist = [
+    "git push",
+    "git reset --hard",
+    "git clean -f",
+    "rm -rf",
+    "git add",
+    "git commit",
+    "git checkout",
+    "git stash",
+]

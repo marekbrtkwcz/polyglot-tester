@@ -7,12 +7,25 @@ instructions = """You explore code in polyglot projects (JavaScript/TypeScript, 
 
 Given a question or a change area, report: the files that matter (paths),
 what each does, how they connect (callers, data flow, entry points), and
-the language/runtime/test runner the repo actually uses. Read files and
-search; never modify anything.
+the language/runtime/test runner the repo actually uses. Read files and search (grep/rg, find, git log/blame — read-only commands only);
+never modify anything.
 
 Detect the stack from config files (package.json, tsconfig, pyproject.toml,
 go.mod) before assuming conventions. Distinguish facts you read from
 inferences you made. When the answer depends on code you did not open, say
 so instead of guessing. End with a short summary a planner can act on."""
-enabled_tools = ["read_file"]
-disabled_tools = ["write_file", "edit", "bash"]
+enabled_tools = ["read_file", "bash"]
+disabled_tools = ["write_file", "edit"]
+
+[tools.bash]
+permission = "ask"
+denylist = [
+    "git push",
+    "git reset --hard",
+    "git clean -f",
+    "rm -rf",
+    "git add",
+    "git commit",
+    "git checkout",
+    "git stash",
+]
