@@ -7,7 +7,7 @@ description: Load this skill when starting or reorganizing a Python project: src
 
 ## Layout
 
-```
+```text
 pyproject.toml          # all config lives here
 uv.lock                 # committed
 README.md

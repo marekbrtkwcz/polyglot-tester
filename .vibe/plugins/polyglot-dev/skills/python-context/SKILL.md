@@ -11,6 +11,7 @@ description: Load this skill when managing request-scoped or ambient state in Py
 
 ```python
 from contextvars import ContextVar
+
 request_id: ContextVar[str] = ContextVar("request_id")
 
 # middleware sets it once per request:

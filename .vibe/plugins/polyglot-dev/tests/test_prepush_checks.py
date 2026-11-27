@@ -42,7 +42,10 @@ def test_skips_force_push():
 
 
 def test_env_override_disables_push_checks():
-    proc = run_hook({"command": "git push origin main"}, env_extra={"POLYGLOT_PREPUSH_DISABLED": "1"})
+    proc = run_hook(
+        {"command": "git push origin main"},
+        env_extra={"POLYGLOT_PREPUSH_DISABLED": "1"},
+    )
     assert proc.returncode == 0
 
 
@@ -54,7 +57,11 @@ def test_plain_push_runs_checks_and_passes_on_clean_repo():
 
 def test_hook_fails_open_on_garbage():
     proc = subprocess.run(
-        [sys.executable, str(SCRIPT)], input=b"not json", capture_output=True, cwd=PLUGIN_DIR, check=False
+        [sys.executable, str(SCRIPT)],
+        input=b"not json",
+        capture_output=True,
+        cwd=PLUGIN_DIR,
+        check=False,
     )
     assert proc.returncode == 0
 

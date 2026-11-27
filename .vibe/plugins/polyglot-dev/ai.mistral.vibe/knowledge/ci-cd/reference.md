@@ -5,7 +5,7 @@ Companion to the workflow skills: the commands that answer "why did CI fail".
 ## Reading a failing run
 
 | Question | Where |
-|---|---|
+| --- | --- |
 | Which step failed? | Workflow run page → job → step annotation |
 | Full log of one step? | Click the step → "Raw logs" |
 | Why did my check not run? | `on:` triggers — push to non-listed branch, or `paths:` filter |

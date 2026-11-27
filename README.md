@@ -29,7 +29,7 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 ## Components
 
 | Component | Name | What it does |
-|---|---|---|
+| --- | --- | --- |
 | Skill | `polyglot-dev:feature-workflow` | End-to-end delivery loop: understand → plan → test-first implement → verify → review → hand off |
 | Skill | `polyglot-dev:testing-polyglot` | Writing and running tests per language: framework detection, structure, deterministic data, coverage |
 | Skill | `polyglot-dev:unit-testing-polyglot` | The fast isolated layer per language: Vitest/Jest, pytest, Go table-driven tests, mocks, single-test runs |
@@ -184,13 +184,13 @@ Override: `POLYGLOT_PREPUSH_DISABLED=1`.
 
 Project scope (trusted folder only):
 
-```
+```text
 <project>/.vibe/plugins/polyglot-dev/   # this directory, minus tests/
 ```
 
 User global (available in every project):
 
-```
+```text
 ~/.vibe/plugins/polyglot-dev/
 ```
 
@@ -204,20 +204,21 @@ Then run `/reload` in your Vibe session.
 
 The guard is the only component with executable logic, and it is tested:
 
-```
-pip install pytest
+```bash
+pip install -r requirements-dev.txt
 python -m pytest tests/ -q
 ```
 
-80+ cases: every blocked flag spelling, allowed near-misses (`rm -r` without
+197 cases: every blocked flag spelling, allowed near-misses (`rm -r` without
 force, `--` end-of-options, flags belonging to a chained command), the git
 patterns, commit-message false-positive regressions, end-to-end hook behavior
 through stdin/stdout, and a property-based test (hypothesis) that checks
 `is_bulk_rm` against a reference model over generated flag combinations.
-CI runs the suite on Python 3.11–3.14, a ruff lint gate, `plugin.json` schema
+CI runs the suite on Linux across Python 3.11–3.14 plus a Windows job,
+enforces a coverage gate, a ruff lint and format gate, `plugin.json` schema
 validation against the official Agent Plugins 1.0 schema, a check that the
 component table below lists every skill (`scripts/check_readme_skills.py`),
-and a markdownlint pass over all docs — on every push and pull request
+and a pinned markdownlint pass over all docs — on every push and pull request
 (`.github/workflows/ci.yml`).
 
 ## Development
@@ -231,7 +232,7 @@ and a markdownlint pass over all docs — on every push and pull request
 
 A skill is one folder with one file:
 
-```
+```text
 .vibe/plugins/polyglot-dev/skills/<skill-name>/SKILL.md
 ```
 
@@ -261,6 +262,7 @@ Conventions:
   `CHANGELOG.md` under `[Unreleased]`.
 - Run tests: `python -m pytest .vibe/plugins/polyglot-dev/tests/ -q`
   (optional `hypothesis` enables the property-based test).
-- Lint: `python -m ruff check --isolated --select E4,E7,E9,F .vibe/plugins/polyglot-dev/`
+- Lint & format: `python -m ruff check --isolated --select E4,E7,E9,F .vibe/plugins/polyglot-dev/`
+  and `python -m ruff format --check .vibe/plugins/polyglot-dev/`
 - Release: bump `plugin.json` + `CHANGELOG.md` (Keep a Changelog), commit
   `Release vX.Y.Z`, tag `vX.Y.Z`, push branch and tag.

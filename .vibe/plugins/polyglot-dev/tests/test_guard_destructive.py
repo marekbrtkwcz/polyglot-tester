@@ -66,14 +66,14 @@ def test_bulk_rm_blocked(command):
 @pytest.mark.parametrize(
     "command",
     [
-        "rm build",               # single target, no flags
-        "rm -f build.log",        # force without recursive
-        "rm -r build",            # recursive without force
-        "rm -- build",            # end of options, no flags
-        "rm -r build; echo -f",   # -f belongs to echo, not rm
-        "rm -r dir -- --force",   # after --, --force is a path
-        "transform --force",      # rm is a substring, not a word
-        "grep rm readme",         # rm as a plain argument
+        "rm build",  # single target, no flags
+        "rm -f build.log",  # force without recursive
+        "rm -r build",  # recursive without force
+        "rm -- build",  # end of options, no flags
+        "rm -r build; echo -f",  # -f belongs to echo, not rm
+        "rm -r dir -- --force",  # after --, --force is a path
+        "transform --force",  # rm is a substring, not a word
+        "grep rm readme",  # rm as a plain argument
     ],
 )
 def test_bulk_rm_allowed(command):
@@ -281,7 +281,20 @@ if given is not None:
 
     @given(
         flags=st.lists(
-            st.sampled_from(["-r", "-f", "-rf", "-fr", "-v", "-i", "--recursive", "--force", "--", "-"]),
+            st.sampled_from(
+                [
+                    "-r",
+                    "-f",
+                    "-rf",
+                    "-fr",
+                    "-v",
+                    "-i",
+                    "--recursive",
+                    "--force",
+                    "--",
+                    "-",
+                ]
+            ),
             max_size=5,
         ),
         path=st.sampled_from(["build", "dist", ".", "/tmp/x"]),
@@ -301,7 +314,9 @@ if given is not None:
                     return True
             return False
 
-        expected = has(option_tokens, "--recursive", "r") and has(option_tokens, "--force", "f")
+        expected = has(option_tokens, "--recursive", "r") and has(
+            option_tokens, "--force", "f"
+        )
         assert guard.is_bulk_rm(command) is expected
 
 

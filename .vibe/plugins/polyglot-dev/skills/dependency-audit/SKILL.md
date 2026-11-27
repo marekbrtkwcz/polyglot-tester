@@ -8,7 +8,7 @@ description: Load this skill when auditing or updating project dependencies for 
 ## Find known vulnerabilities
 
 | Language | Command |
-|---|---|
+| --- | --- |
 | JS/TS (npm) | `npm audit` / `npm audit --omit=dev` |
 | JS/TS (pnpm/yarn/bun) | `pnpm audit` / `yarn audit` / `bun audit` |
 | Python | `pip-audit` (install: `pip install pip-audit`); or `safety check` |
@@ -20,7 +20,7 @@ description: Load this skill when auditing or updating project dependencies for 
 ## Check for outdated dependencies
 
 | Language | Command |
-|---|---|
+| --- | --- |
 | JS/TS | `npm outdated` / `pnpm outdated` / `bun outdated` |
 | Python | `pip list --outdated` or `uv pip list --outdated` |
 | Go | `go list -m -u all` |

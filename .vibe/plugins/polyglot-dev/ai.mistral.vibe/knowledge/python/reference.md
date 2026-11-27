@@ -6,7 +6,7 @@ Companion to the `debugging-polyglot` skill: the commands that answer
 ## Pin down a failure
 
 | Question | How |
-|---|---|
+| --- | --- |
 | Full failing frame? | `pytest --tb=long -x` |
 | One case only? | `pytest tests/test_x.py::test_name -v` |
 | What is the state at failure? | `pytest --pdb`, or `breakpoint()` in source |

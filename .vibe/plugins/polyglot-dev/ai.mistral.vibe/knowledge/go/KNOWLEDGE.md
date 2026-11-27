@@ -26,7 +26,7 @@ icon: code
 ## Everyday commands
 
 | Task | Command |
-|---|---|
+| --- | --- |
 | build | `go build ./...` |
 | test | `go test ./...` |
 | test (CI) | `go test -race -count=1 ./...` |
@@ -48,9 +48,9 @@ icon: code
 
 ## Official sources
 
-- https://go.dev — downloads, tour, blog, release notes.
-- https://go.dev/doc/effective_go — Effective Go (read before writing idiomatic Go).
-- https://go.dev/ref/spec — the language specification.
-- https://pkg.go.dev — standard library + package docs (evaluate third-party packages here).
-- https://go.dev/doc/devel/release — per-version release notes; read before upgrading the toolchain.
-- https://github.com/golang/go/wiki/CodeReviewComments — code review guidelines.
+- <https://go.dev> — downloads, tour, blog, release notes.
+- <https://go.dev/doc/effective_go> — Effective Go (read before writing idiomatic Go).
+- <https://go.dev/ref/spec> — the language specification.
+- <https://pkg.go.dev> — standard library + package docs (evaluate third-party packages here).
+- <https://go.dev/doc/devel/release> — per-version release notes; read before upgrading the toolchain.
+- <https://github.com/golang/go/wiki/CodeReviewComments> — code review guidelines.

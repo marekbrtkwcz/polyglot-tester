@@ -7,7 +7,7 @@ description: Load this skill when working with context in Go: cancellation, dead
 
 ## The four rules
 
-1. `ctx` is always the **first parameter**: `func Do(ctx context.Context, ...) `.
+1. `ctx` is always the **first parameter**: `func Do(ctx context.Context, ...)`.
 2. Never store ctx in a struct field of a long-lived object — pass it per call. (Request-scoped services may hold it; data structs never.)
 3. Never pass `nil` ctx — use `context.Background()` or `TODO()` at the top level.
 4. Cancellation must be **propagated**: check `ctx.Err()` in loops and pass ctx to every blocking call.

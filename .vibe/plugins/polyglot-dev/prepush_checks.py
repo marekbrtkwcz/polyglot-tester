@@ -37,7 +37,13 @@ FORCE_PUSH = re.compile(r"--force(?:-with-lease(?:=\S*)?)?|--delete|\s:\S+")
 REPO_ROOT = Path(__file__).resolve().parents[3]
 CHECKS = [
     [sys.executable, "scripts/check_readme_skills.py"],
-    [sys.executable, "-m", "pytest", ".vibe/plugins/polyglot-dev/tests/test_plugin_structure.py", "-q"],
+    [
+        sys.executable,
+        "-m",
+        "pytest",
+        ".vibe/plugins/polyglot-dev/tests/test_plugin_structure.py",
+        "-q",
+    ],
 ]
 # Both must exist under the repo root for the checks to run; any other
 # project that installs the plugin lacks them, and the hook stays quiet.
@@ -75,7 +81,14 @@ def run_checks(repo_root):
             results.append((label, True, "skipped (pytest not installed)"))
             continue
         try:
-            proc = subprocess.run(cmd, capture_output=True, text=True, cwd=repo_root, timeout=120, check=False)
+            proc = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                cwd=repo_root,
+                timeout=120,
+                check=False,
+            )
             output = (proc.stdout + proc.stderr).strip()
             results.append((label, proc.returncode == 0, output))
         except Exception as exc:  # noqa: BLE001 - fail open
@@ -94,7 +107,9 @@ def main():
     if not command or not GIT_PUSH.search(command):
         return 0
     if FORCE_PUSH.search(command):
-        return 0  # history-rewriting push: handled (blocked) by guard-destructive-commands
+        return (
+            0  # history-rewriting push: handled (blocked) by guard-destructive-commands
+        )
     repo_root = payload_cwd(payload) or REPO_ROOT
     if not is_own_repo(repo_root):
         return 0  # another project: the checks are not ours to run
@@ -106,7 +121,9 @@ def main():
             failed = True
             sys.stderr.write(f"pre-push FAILED: {label}\n{output}\n")
     if failed:
-        sys.stderr.write("push blocked — fix the failures or use POLYGLOT_PREPUSH_DISABLED=1\n")
+        sys.stderr.write(
+            "push blocked — fix the failures or use POLYGLOT_PREPUSH_DISABLED=1\n"
+        )
         return 1
     return 0
 

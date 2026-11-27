@@ -8,6 +8,18 @@ versioning is semantic.
 
 ### Added
 
+- `requirements-dev.txt`: one dependency source for CI and local development
+  instead of ad-hoc `pip install` lines in three CI jobs.
+- Structure tests: skill descriptions must stay within Vibe's 1024-character
+  limit and follow the "Load this skill ..." trigger convention.
+- CI hardening: a `windows-latest` test job, a 75% coverage gate over the
+  guards and scripts, and a `ruff format --check` gate (the plugin's Python
+  files and the Python code blocks inside skills are now formatted).
+- Docs lint under pinned `markdownlint-cli2` 0.24.2: bare code fences declare
+  a language (MD040), tables use a consistent column style (MD060), bare URLs
+  are angle-wrapped (MD034), the unescaped `|safe` table cell is fixed
+  (MD056), and MD024 allows the repeated Keep-a-Changelog section headings.
+
 - PowerShell destructive-command patterns for the `powershell` shell tool:
   `Remove-Item` (and its `rm`/`del`/`erase`/`rd`/`ri` aliases) with both
   `-Recurse` and `-Force`, `Format-Volume`, `Clear-Disk -RemoveData`.

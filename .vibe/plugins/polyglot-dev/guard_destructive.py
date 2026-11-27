@@ -21,24 +21,60 @@ BLOCKED_PATTERNS = [
     (r"\bgit\s+clean\s+-[a-z]*f", "git clean -f: deletes untracked files"),
     (r"\bgit\s+stash\s+(drop|clear)", "git stash drop/clear: loses stashed work"),
     (r"\bfind\b[^;|&]*\s--?delete\b", "find -delete: irreversible bulk delete"),
-    (r"\bdd\b[^;|&]*\bof=/dev/(?!null\b)\S*", "dd writing to a block device: destroys the disk"),
-    (r"\bchmod\s+(-[a-zA-Z]*R[a-zA-Z]*|--recursive)\b[^;|&]*\s777\b", "chmod -R 777: makes everything world-writable"),
-    (r"\bchmod\s+(-[a-zA-Z]*R[a-zA-Z]*|--recursive)\b[^;|&]*\s/\S*", "chmod -R on an absolute path: recursive permission change outside the project"),
+    (
+        r"\bdd\b[^;|&]*\bof=/dev/(?!null\b)\S*",
+        "dd writing to a block device: destroys the disk",
+    ),
+    (
+        r"\bchmod\s+(-[a-zA-Z]*R[a-zA-Z]*|--recursive)\b[^;|&]*\s777\b",
+        "chmod -R 777: makes everything world-writable",
+    ),
+    (
+        r"\bchmod\s+(-[a-zA-Z]*R[a-zA-Z]*|--recursive)\b[^;|&]*\s/\S*",
+        "chmod -R on an absolute path: recursive permission change outside the project",
+    ),
     (r"\bshred\s", "shred: overwrites file contents irreversibly"),
     (r"\btruncate\b[^;|&]*\s-s\s*0[a-zA-Z]*\b", "truncate -s 0: wipes the file"),
-    (r"\bmkfs(?:\.[a-z0-9]+)?\b", "mkfs: formats a filesystem, destroying all data on it"),
-    (r"\b(?:wipefs|mkswap)\b[^;|&]*\s/dev/\S+", "wipefs/mkswap on a device: destroys signatures/data"),
-    (r"\d?>>?\s*/dev/(?:sd[a-z]|hd[a-z]|vd[a-z]|xvd[a-z]|nvme\d+n\d+|mmcblk\d+)\w*", "redirect to a block device: overwrites the disk"),
-    (r"\b(?:cp|mv|tee|install)\b[^;|&]*\s/dev/(?:sd[a-z]|hd[a-z]|vd[a-z]|xvd[a-z]|nvme\d+n\d+|mmcblk\d+)\w*(?:\s|$)", "copying a file onto a block device: overwrites the disk"),
-    (r"\bkubectl\s+delete\b[^;|&]*\s--all(?:-namespaces)?\b", "kubectl delete --all: removes every resource in scope"),
-    (r"\bgit\s+push\b[^;|&]*\s--delete\b", "git push --delete: removes a remote branch"),
+    (
+        r"\bmkfs(?:\.[a-z0-9]+)?\b",
+        "mkfs: formats a filesystem, destroying all data on it",
+    ),
+    (
+        r"\b(?:wipefs|mkswap)\b[^;|&]*\s/dev/\S+",
+        "wipefs/mkswap on a device: destroys signatures/data",
+    ),
+    (
+        r"\d?>>?\s*/dev/(?:sd[a-z]|hd[a-z]|vd[a-z]|xvd[a-z]|nvme\d+n\d+|mmcblk\d+)\w*",
+        "redirect to a block device: overwrites the disk",
+    ),
+    (
+        r"\b(?:cp|mv|tee|install)\b[^;|&]*\s/dev/(?:sd[a-z]|hd[a-z]|vd[a-z]|xvd[a-z]|nvme\d+n\d+|mmcblk\d+)\w*(?:\s|$)",
+        "copying a file onto a block device: overwrites the disk",
+    ),
+    (
+        r"\bkubectl\s+delete\b[^;|&]*\s--all(?:-namespaces)?\b",
+        "kubectl delete --all: removes every resource in scope",
+    ),
+    (
+        r"\bgit\s+push\b[^;|&]*\s--delete\b",
+        "git push --delete: removes a remote branch",
+    ),
     (r"\bgit\s+push\b[^;|&]*\s(?::\S+)", "git push :ref: deletes the remote branch"),
     # PowerShell equivalents, for the `powershell` shell tool on native
     # Windows. Long parameters only: -Recurse without -Force passes, like
     # `rm -r` does; `rm -Recurse -Force` is already caught by is_bulk_rm.
-    (r"(?i:\b(?:remove-item|del|erase|rd|ri)\b(?=[^;|&]*\s-[a-z]*recurse)(?=[^;|&]*\s-[a-z]*force))", "Remove-Item -Recurse -Force: irreversible bulk delete"),
-    (r"(?i:\bformat-volume\b)", "Format-Volume: formats the volume, destroying all data on it"),
-    (r"(?i:\bclear-disk\b[^;|&]*\s-remove[a-z]*)", "Clear-Disk -RemoveData: wipes the disk"),
+    (
+        r"(?i:\b(?:remove-item|del|erase|rd|ri)\b(?=[^;|&]*\s-[a-z]*recurse)(?=[^;|&]*\s-[a-z]*force))",
+        "Remove-Item -Recurse -Force: irreversible bulk delete",
+    ),
+    (
+        r"(?i:\bformat-volume\b)",
+        "Format-Volume: formats the volume, destroying all data on it",
+    ),
+    (
+        r"(?i:\bclear-disk\b[^;|&]*\s-remove[a-z]*)",
+        "Clear-Disk -RemoveData: wipes the disk",
+    ),
 ]
 
 # git push to a protected branch, unless explicitly allowed via env.
@@ -167,7 +203,10 @@ def main():
     checks = [
         (is_bulk_rm(scan_text), "rm with recursive+force: irreversible bulk delete"),
         (is_force_push(scan_text), "git push --force: rewrites remote history"),
-        (is_protected_push(scan_text), "git push to a protected branch (main/master/release/*); set POLYGLOT_GUARD_ALLOW_PROTECTED_PUSH=1 to allow"),
+        (
+            is_protected_push(scan_text),
+            "git push to a protected branch (main/master/release/*); set POLYGLOT_GUARD_ALLOW_PROTECTED_PUSH=1 to allow",
+        ),
     ]
     for pattern, reason in BLOCKED_PATTERNS:
         checks.append((bool(re.search(pattern, scan_text)), reason))

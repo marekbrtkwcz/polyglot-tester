@@ -25,16 +25,34 @@ except ImportError:  # pragma: no cover - hook always runs from the plugin dir
 
 SECRET_PATTERNS = [
     ("AWS access key", re.compile(r"\b(?:AKIA|ASIA|ABIA|ACCA)[0-9A-Z]{16}\b")),
-    ("GitHub token", re.compile(r"\b(?:ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9]{36,}\b|github_pat_[A-Za-z0-9_]{22,}")),
+    (
+        "GitHub token",
+        re.compile(
+            r"\b(?:ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9]{36,}\b|github_pat_[A-Za-z0-9_]{22,}"
+        ),
+    ),
     ("Slack token", re.compile(r"\bxox[baprs]-[A-Za-z0-9-]{10,}\b")),
     ("Stripe key", re.compile(r"\b[sr]k_(?:live|test)_[0-9A-Za-z]{16,}\b")),
     ("Google API key", re.compile(r"\bAIza[0-9A-Za-z_\-]{35}\b")),
     ("npm token", re.compile(r"\bnpm_[A-Za-z0-9]{36}\b")),
     ("GitLab PAT", re.compile(r"\bglpat-[A-Za-z0-9_\-]{20}\b")),
     ("SendGrid key", re.compile(r"\bSG\.[A-Za-z0-9_\-]{22}\.[A-Za-z0-9_\-]{43}\b")),
-    ("Slack webhook", re.compile(r"\bhttps://hooks\.slack\.com/services/T[A-Z0-9]+/B[A-Z0-9]+/[A-Za-z0-9]+\b")),
-    ("JWT", re.compile(r"\beyJ[A-Za-z0-9_\-]{8,}\.[A-Za-z0-9_\-]{8,}\.[A-Za-z0-9_\-]{8,}\b")),
-    ("Private key block", re.compile(r"-----BEGIN (?:RSA |EC |DSA |OPENSSH |PGP )?PRIVATE KEY-----")),
+    (
+        "Slack webhook",
+        re.compile(
+            r"\bhttps://hooks\.slack\.com/services/T[A-Z0-9]+/B[A-Z0-9]+/[A-Za-z0-9]+\b"
+        ),
+    ),
+    (
+        "JWT",
+        re.compile(
+            r"\beyJ[A-Za-z0-9_\-]{8,}\.[A-Za-z0-9_\-]{8,}\.[A-Za-z0-9_\-]{8,}\b"
+        ),
+    ),
+    (
+        "Private key block",
+        re.compile(r"-----BEGIN (?:RSA |EC |DSA |OPENSSH |PGP )?PRIVATE KEY-----"),
+    ),
     (
         "generic secret assignment",
         re.compile(
@@ -46,7 +64,9 @@ SECRET_PATTERNS = [
 
 GIT_TRIGGER = re.compile(r"\bgit\s+(?:add|commit)\b")
 
-SKIP_PATHS = re.compile(r"(?:^|/)(?:package-lock\.json|pnpm-lock\.yaml|yarn\.lock|go\.sum|Cargo\.lock|.*\.min\.js)$")
+SKIP_PATHS = re.compile(
+    r"(?:^|/)(?:package-lock\.json|pnpm-lock\.yaml|yarn\.lock|go\.sum|Cargo\.lock|.*\.min\.js)$"
+)
 
 
 def git_output(args, cwd=None):

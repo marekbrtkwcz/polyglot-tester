@@ -43,7 +43,7 @@ addopts = "-q --tb=short"
 ## Everyday commands
 
 | Task | uv |
-|---|---|
+| --- | --- |
 | sync deps | `uv sync` |
 | run tests | `uv run pytest` |
 | lint | `uv run ruff check .` |
@@ -59,9 +59,9 @@ addopts = "-q --tb=short"
 
 ## Official sources
 
-- https://www.python.org — downloads, release schedule, PSF.
-- https://docs.python.org/3/ — language reference + stdlib docs (start here).
-- https://docs.python.org/3/whatsnew/ — per-version changes; read before upgrading.
-- https://peps.python.org/pep-0008/ — style guide (PEP 8).
-- https://peps.python.org/pep-0020/ — Zen of Python (`import this`).
-- https://pypi.org — package index (pair with the `python-ecosystem` skill for evaluating packages).
+- <https://www.python.org> — downloads, release schedule, PSF.
+- <https://docs.python.org/3/> — language reference + stdlib docs (start here).
+- <https://docs.python.org/3/whatsnew/> — per-version changes; read before upgrading.
+- <https://peps.python.org/pep-0008/> — style guide (PEP 8).
+- <https://peps.python.org/pep-0020/> — Zen of Python (`import this`).
+- <https://pypi.org> — package index (pair with the `python-ecosystem` skill for evaluating packages).

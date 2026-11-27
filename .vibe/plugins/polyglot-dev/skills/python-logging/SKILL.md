@@ -9,6 +9,7 @@ description: Load this skill when setting up or standardizing logging in Python:
 
 ```python
 import logging
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s %(levelname)s %(name)s %(message)s",
@@ -28,6 +29,7 @@ logger = logging.getLogger(__name__)  # per-module logger — the idiom
 
 ```python
 import structlog
+
 structlog.configure(processors=[structlog.processors.JSONRenderer()])
 log = structlog.get_logger()
 log.info("user_login", user_id=u.id, ip=request.remote_addr)  # kwargs = fields

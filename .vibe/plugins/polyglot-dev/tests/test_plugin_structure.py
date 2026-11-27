@@ -41,6 +41,7 @@ def parse_frontmatter(path: Path) -> dict:
 
 # --- skills ---------------------------------------------------------------
 
+
 def test_every_skill_dir_has_skill_md():
     dirs = skill_dirs()
     assert dirs, "no skills found"
@@ -53,6 +54,25 @@ def test_skill_frontmatter_has_name_and_description():
         fields = parse_frontmatter(d / "SKILL.md")
         assert fields.get("name"), f"{d.name}: frontmatter missing 'name'"
         assert fields.get("description"), f"{d.name}: frontmatter missing 'description'"
+
+
+def test_skill_descriptions_within_vibe_limit():
+    # Vibe refuses to load a skill whose description exceeds 1024 characters.
+    for d in skill_dirs():
+        description = parse_frontmatter(d / "SKILL.md")["description"]
+        assert len(description) <= 1024, (
+            f"{d.name}: description is {len(description)} chars, Vibe limit is 1024"
+        )
+
+
+def test_skill_descriptions_are_written_as_triggers():
+    # The README convention: a description is a trigger sentence from the
+    # user's point of view — "Load this skill when/for/to ...".
+    for d in skill_dirs():
+        description = parse_frontmatter(d / "SKILL.md")["description"]
+        assert description.startswith("Load this skill "), (
+            f"{d.name}: description should start with 'Load this skill ...': {description[:60]}"
+        )
 
 
 def test_skill_name_matches_directory():
@@ -77,6 +97,7 @@ def test_skill_names_are_kebab_case():
 
 
 # --- plugin.json ----------------------------------------------------------
+
 
 def test_plugin_json_is_valid():
     data = json.loads((PLUGIN_ROOT / "plugin.json").read_text(encoding="utf-8"))
@@ -124,6 +145,7 @@ def test_agent_keys_are_snake_case():
 
 # --- knowledge ------------------------------------------------------------
 
+
 def test_every_knowledge_dir_has_knowledge_md():
     dirs = sorted(d for d in KNOWLEDGE_DIR.iterdir() if d.is_dir())
     assert dirs, "no knowledge folders found"
@@ -132,6 +154,7 @@ def test_every_knowledge_dir_has_knowledge_md():
 
 
 # --- hooks ----------------------------------------------------------------
+
 
 def test_hooks_toml_parseable_with_required_fields():
     data = tomllib.loads((VIBE_DIR / "hooks.toml").read_text(encoding="utf-8"))

@@ -8,7 +8,7 @@ description: Load this skill when working with databases in Go: choosing between
 ## Choose the layer
 
 | Layer | When |
-|---|---|
+| --- | --- |
 | `database/sql` + driver | Simple queries, full control, zero magic |
 | **sqlc** | Complex SQL — write SQL, get type-safe generated Go. Best default for serious apps |
 | sqlx | `database/sql` with struct scanning (`StructScan`) convenience |

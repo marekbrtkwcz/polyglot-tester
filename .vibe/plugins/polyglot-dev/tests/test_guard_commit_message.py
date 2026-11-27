@@ -84,12 +84,18 @@ def test_hook_passes_normal_commit():
 
 
 def test_env_override_disables():
-    proc = run_hook({"command": 'git commit -m "WIP: x"'}, env_extra={"POLYGLOT_WIP_DISABLED": "1"})
+    proc = run_hook(
+        {"command": 'git commit -m "WIP: x"'}, env_extra={"POLYGLOT_WIP_DISABLED": "1"}
+    )
     assert proc.returncode == 0
 
 
 def test_hook_fails_open_on_garbage():
     proc = subprocess.run(
-        [sys.executable, str(SCRIPT)], input=b"not json", capture_output=True, cwd=PLUGIN_DIR, check=False
+        [sys.executable, str(SCRIPT)],
+        input=b"not json",
+        capture_output=True,
+        cwd=PLUGIN_DIR,
+        check=False,
     )
     assert proc.returncode == 0

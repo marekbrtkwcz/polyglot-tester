@@ -12,7 +12,11 @@ description: Load this skill when designing error handling in Python: custom exc
 
 ```python
 class AppError(Exception): ...
+
+
 class NotFoundError(AppError): ...
+
+
 class ValidationError(AppError): ...
 ```
 

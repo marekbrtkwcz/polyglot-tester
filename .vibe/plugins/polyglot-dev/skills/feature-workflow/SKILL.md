@@ -38,7 +38,7 @@ A language-agnostic delivery loop. Use the knowledge folders
 Run the checks that can actually fail because of this change:
 
 | Language | Format/Lint | Type check | Tests |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | JS/TS | `biome check .` (or repo linter) | `tsc --noEmit` | `npm test` / `bun test` |
 | Python | `ruff check .` / `ruff format --check .` | `mypy --strict` (if configured) | `pytest` |
 | Go | `gofmt -l .` | `go vet ./...` | `go test ./...` |

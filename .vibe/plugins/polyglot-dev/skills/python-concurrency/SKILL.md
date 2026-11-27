@@ -8,7 +8,7 @@ description: Load this skill when writing concurrent or async Python: choosing a
 ## Choose the model by the bottleneck
 
 | Bottleneck | Model | Tools |
-|---|---|---|
+| --- | --- | --- |
 | I/O (network, disk, DB) | **asyncio** | `async`/`await`, `asyncio.gather`, `aiohttp`, `asyncpg` |
 | CPU-bound work | **processes** | `concurrent.futures.ProcessPoolExecutor`, `multiprocessing` |
 | Blocking legacy libs in async code | **threads** | `asyncio.to_thread`, `ThreadPoolExecutor` |
@@ -26,7 +26,9 @@ async def main():
     results = await asyncio.gather(fetch(a), fetch(b), fetch(c))  # concurrent
     # return_exceptions=True to not fail-fast on first error
 
-async with aiohttp.ClientSession() as session: ...  # one session per app
+
+async with aiohttp.ClientSession() as session:
+    ...  # one session per app
 ```
 
 - One `event loop` per thread; `asyncio.run(main())` at the top level.
@@ -38,6 +40,7 @@ async with aiohttp.ClientSession() as session: ...  # one session per app
 
 ```python
 from concurrent.futures import ThreadPoolExecutor, as_completed
+
 with ThreadPoolExecutor(max_workers=10) as ex:
     futures = [ex.submit(work, item) for item in items]
     for f in as_completed(futures):

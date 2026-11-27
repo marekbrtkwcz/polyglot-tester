@@ -27,7 +27,7 @@ Flat structs with explicit fields beat deep embedding hierarchies. If a struct h
 ## Patterns worth knowing
 
 | Pattern | When | Sketch |
-|---|---|---|
+| --- | --- | --- |
 | Functional options | Config with many optional fields | `func NewServer(opts ...Option)` with `type Option func(*Server)` |
 | Repository | Isolate storage from domain | interface in domain, impl in `internal/store` |
 | Middleware/chain | HTTP/gRPC cross-cutting | `func(next Handler) Handler` |

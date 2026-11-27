@@ -7,7 +7,7 @@ description: Load this skill when starting or reorganizing a Go project: standar
 
 ## Layout (standard Go project layout)
 
-```
+```text
 cmd/myapp/main.go        # one folder per binary
 internal/                # private packages — compiler-enforced
 pkg/                     # public packages other modules may import

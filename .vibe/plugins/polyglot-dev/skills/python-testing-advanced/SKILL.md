@@ -10,6 +10,7 @@ description: Load this skill when writing serious pytest suites: fixtures and sc
 ```python
 import pytest
 
+
 @pytest.fixture(scope="module")  # function < class < module < session
 def db():
     engine = create_engine(TEST_URL)
@@ -24,11 +25,14 @@ def db():
 ## Parametrize
 
 ```python
-@pytest.mark.parametrize("raw,expected", [
-    ("1", 1),
-    ("-5", -5),
-    pytest.param("abc", None, marks=pytest.mark.xfail),
-])
+@pytest.mark.parametrize(
+    "raw,expected",
+    [
+        ("1", 1),
+        ("-5", -5),
+        pytest.param("abc", None, marks=pytest.mark.xfail),
+    ],
+)
 def test_parse(raw, expected): ...
 ```
 
@@ -44,6 +48,7 @@ def test_parse(raw, expected): ...
 
 ```python
 from hypothesis import given, strategies as st
+
 
 @given(st.lists(st.integers()))
 def test_sort_idempotent(xs):

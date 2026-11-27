@@ -26,7 +26,7 @@ description: Load this skill for JS/TS project layout and toolchain: package.jso
 
 ## Folder convention
 
-```
+```text
 src/
   features/<name>/   # vertical slice: component + logic + tests
   shared/            # ui, lib, hooks, utils used across features

@@ -6,7 +6,7 @@ Companion to the `debugging-polyglot` skill: the commands that answer
 ## Pin down a failure
 
 | Question | How |
-|---|---|
+| --- | --- |
 | What exactly failed? | Read the stack bottom-up; first frame in your code = entry point |
 | One test only? | `npx vitest run path/to/file.test.ts -t "test name"` |
 | Is it types or runtime? | `npx tsc --noEmit` first — half of "runtime bugs" are type bugs |

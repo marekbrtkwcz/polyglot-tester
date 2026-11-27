@@ -6,7 +6,7 @@ Companion to the `debugging-polyglot` skill: the commands that answer
 ## Pin down a failure
 
 | Question | How |
-|---|---|
+| --- | --- |
 | One test, full output? | `go test ./pkg/... -run TestName -count=1 -v` |
 | Cache lying to you? | `-count=1` — the default cache can hide a fix |
 | Data race? | `go test -race ./...` (always on in CI) |
@@ -38,6 +38,7 @@ Companion to the `debugging-polyglot` skill: the commands that answer
 - Static analysis: `staticcheck ./...` or `golangci-lint run`.
 
 ## CI debugging (Go)
+
 - Cache issues: `go clean -modcache` locally to reproduce a cold CI run.
 - Version mismatch: CI `setup-go` `go-version` vs local `go version`; modules may require a minimum (`go.mod` `go` directive).
 - Vulnerability gate: `govulncheck ./...` as its own CI job.

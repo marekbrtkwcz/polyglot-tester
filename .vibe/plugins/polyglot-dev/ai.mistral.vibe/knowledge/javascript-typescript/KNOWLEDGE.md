@@ -43,7 +43,7 @@ icon: code
 ## Everyday commands
 
 | Task | npm | bun |
-|---|---|---|
+| --- | --- | --- |
 | install | `npm ci` | `bun install` |
 | test | `npm test` | `bun test` |
 | typecheck | `npx tsc --noEmit` | `bunx tsc --noEmit` |
@@ -58,10 +58,10 @@ icon: code
 
 ## Official sources
 
-- https://www.typescriptlang.org — handbook, playground, release notes.
-- https://www.typescriptlang.org/docs/ — TS Handbook + reference (start here).
-- https://nodejs.org/en — Node.js downloads, API docs, release schedule.
-- https://nodejs.org/api/ — full Node API reference.
-- https://developer.mozilla.org (MDN) — JS language reference and web APIs.
-- https://tc39.es/ecma262/ — the ECMAScript specification.
-- https://www.npmjs.com — package registry (evaluate packages: maintenance, types, dep tree).
+- <https://www.typescriptlang.org> — handbook, playground, release notes.
+- <https://www.typescriptlang.org/docs/> — TS Handbook + reference (start here).
+- <https://nodejs.org/en> — Node.js downloads, API docs, release schedule.
+- <https://nodejs.org/api/> — full Node API reference.
+- <https://developer.mozilla.org> (MDN) — JS language reference and web APIs.
+- <https://tc39.es/ecma262/> — the ECMAScript specification.
+- <https://www.npmjs.com> — package registry (evaluate packages: maintenance, types, dep tree).

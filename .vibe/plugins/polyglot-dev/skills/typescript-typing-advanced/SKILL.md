@@ -34,6 +34,7 @@ description: Load this skill for advanced TypeScript typing: strict tsconfig, ge
 type UserId = string & { readonly __brand: 'UserId' };
 function makeUserId(id: string): UserId { return id as UserId; }
 ```
+
 Prevents mixing up `UserId` and `OrderId` at compile time.
 
 ## Function typing

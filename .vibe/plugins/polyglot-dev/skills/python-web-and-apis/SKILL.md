@@ -8,7 +8,7 @@ description: Load this skill when building web services or APIs in Python: choos
 ## Choosing the framework
 
 | Need | Pick |
-|---|---|
+| --- | --- |
 | API-first, async, typed | **FastAPI** (pydantic validation, OpenAPI auto-docs, `async def` routes) |
 | Full-stack, admin, ORM heavy | **Django** (batteries included, Django REST framework for APIs) |
 | Small service, full control | **Flask** or stdlib `http.server` |
@@ -22,13 +22,16 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
+
 class CreateUser(BaseModel):
     name: str
     email: str  # pydantic validates (EmailStr with email-validator)
 
+
 @app.post("/users", status_code=201)
-async def create_user(body: CreateUser, db: Session = Depends(get_db)):
-    ...  # body is validated before the handler runs
+async def create_user(
+    body: CreateUser, db: Session = Depends(get_db)
+): ...  # body is validated before the handler runs
 ```
 
 - Dependency injection via `Depends` — DB session, current user, settings.
@@ -51,6 +54,8 @@ async def create_user(body: CreateUser, db: Session = Depends(get_db)):
 
 ```python
 import strawberry
+
+
 @strawberry.type
 class Query:
     @strawberry.field
