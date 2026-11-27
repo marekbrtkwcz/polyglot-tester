@@ -4,6 +4,31 @@ All notable changes to the polyglot-dev plugin are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning is semantic.
 
+## [Unreleased]
+
+## [1.2.0] - 2026-11-27
+
+### Added
+
+- Skills `git-workflow-polyglot`, `release-and-changelog`, `dependency-audit`.
+- Agent `polyglot-dev:planner`: turns a goal into an ordered, executable plan.
+- Knowledge folder `polyglot-dev:ci-cd` (GitHub Actions) with a diagnostics
+  reference; `reference.md` cheatsheets for JS/TS, Python, and Go extended
+  with everyday and CI-debugging commands.
+- CI: test matrix over Python 3.11–3.14 plus a ruff lint gate; property-based
+  guard test runs when `hypothesis` is installed.
+- Guard blocks additional destructive commands: `find -delete`,
+  `dd of=/dev/<device>`, `chmod -R 777` / `chmod -R` on absolute paths,
+  `shred`, `truncate -s 0`, and `git push` to `main`/`master`/`release/*`.
+- Guard env overrides: `POLYGLOT_GUARD_DISABLED=1`,
+  `POLYGLOT_GUARD_ALLOW_PROTECTED_PUSH=1`.
+- README "Development" section documenting conventions and the release process.
+
+### Changed
+
+- `git push --force` detection is now token-based (any argument position);
+  safe `--force-with-lease` forms still pass.
+
 ## [1.1.0] - 2026-11-27
 
 ### Added

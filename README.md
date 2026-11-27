@@ -13,10 +13,14 @@ and a safety hook that blocks destructive shell commands before they run.
 | Skill | `polyglot-dev:testing-polyglot` | Writing and running tests per language: framework detection, structure, deterministic data, coverage |
 | Skill | `polyglot-dev:code-review-polyglot` | Per-language review checklists (JS/TS, Python, Go) with a severity-ranked verdict format |
 | Skill | `polyglot-dev:debugging-polyglot` | Failure classification, reproduction loop, and per-language debugging guidance |
+| Skill | `polyglot-dev:git-workflow-polyglot` | Day-to-day git: commit conventions, branching, PRs, rebase, bisect, recovery |
+| Skill | `polyglot-dev:release-and-changelog` | Semver, Keep a Changelog, tagging, release notes from a diff, rollback plan |
+| Skill | `polyglot-dev:dependency-audit` | Vulnerability and outdated-dependency audits per language (npm audit, pip-audit, govulncheck) |
 | Agent | `polyglot-dev:code-reviewer` | Read-only subagent reviewing diffs for correctness, security, and language-specific pitfalls |
 | Agent | `polyglot-dev:test-runner` | Detects the repo's runner, runs tests/lint/type checks, reports pass/fail with evidence |
 | Agent | `polyglot-dev:explorer` | Read-only code exploration: structure, call sites, stack detection before planning |
-| Knowledge | `polyglot-dev:javascript-typescript`, `polyglot-dev:python`, `polyglot-dev:go` | Toolchains and conventions per language |
+| Agent | `polyglot-dev:planner` | Turns a goal into a concrete plan: files to touch, test level, risks, verification steps |
+| Knowledge | `polyglot-dev:javascript-typescript`, `polyglot-dev:python`, `polyglot-dev:go`, `polyglot-dev:ci-cd` | Toolchains, conventions, and diagnostics per language plus GitHub Actions |
 | Hook | `guard-destructive-commands` | Pre-tool guard on `bash` (see below) |
 
 ## The destructive-command guard
@@ -27,11 +31,19 @@ and a safety hook that blocks destructive shell commands before they run.
   `-r -f`, `-r dir -f`, `--recursive --force`, inside `sudo`, `xargs`, or a
   command chain (`&&`, `;`)
 - `git reset --hard`, `git clean -f`, `git stash drop|clear`
-- `git push --force` — including `--force-with-lease=false`; the safe
-  `--force-with-lease` / `--force-with-lease=<ref>:<sha>` forms pass
+- `git push --force` in any token position — including `--force-with-lease=false`;
+  the safe `--force-with-lease` / `--force-with-lease=<ref>:<sha>` forms pass
+- `git push` to `main`, `master`, or `release/*`
+- `find ... -delete`, `dd ... of=/dev/<device>`, `chmod -R 777` or `chmod -R` on
+  an absolute path, `shred`, `truncate -s 0`
 
 Unrecognized or unreadable payloads always pass through: the guard can never
 brick a session. Failures exit non-zero with the reason on stderr.
+
+Deliberate overrides via environment variables:
+
+- `POLYGLOT_GUARD_DISABLED=1` — disables every block
+- `POLYGLOT_GUARD_ALLOW_PROTECTED_PUSH=1` — allows pushing to protected branches
 
 ## Install
 
@@ -58,8 +70,24 @@ pip install pytest
 python -m pytest tests/ -q
 ```
 
-34+ cases: every blocked flag spelling, allowed near-misses (`rm -r` without
+80+ cases: every blocked flag spelling, allowed near-misses (`rm -r` without
 force, `--` end-of-options, flags belonging to a chained command), the git
-patterns, commit-message false-positive regressions, and end-to-end hook
-behavior through stdin/stdout. CI runs the suite on every push and pull
-request (`.github/workflows/ci.yml`).
+patterns, commit-message false-positive regressions, end-to-end hook behavior
+through stdin/stdout, and a property-based test (hypothesis) that checks
+`is_bulk_rm` against a reference model over generated flag combinations.
+CI runs the suite on Python 3.11–3.14 plus a ruff lint gate on every push and
+pull request (`.github/workflows/ci.yml`).
+
+## Development
+
+- Agent TOML files use **snake_case** keys (`schema_version`, `agent_type`,
+  `display_name`, `enabled_tools`, `disabled_tools`) — the plugin validator
+  rejects camelCase.
+- Add a skill: new folder under `skills/<name>/SKILL.md` with frontmatter
+  (`name`, `description`).
+- Add an agent: new TOML under `ai.mistral.vibe/agents/`.
+- Run tests: `python -m pytest .vibe/plugins/polyglot-dev/tests/ -q`
+  (optional `hypothesis` enables the property-based test).
+- Lint: `python -m ruff check --isolated --select E4,E7,E9,F .vibe/plugins/polyglot-dev/`
+- Release: bump `plugin.json` + `CHANGELOG.md` (Keep a Changelog), commit
+  `Release vX.Y.Z`, tag `vX.Y.Z`, push branch and tag.
