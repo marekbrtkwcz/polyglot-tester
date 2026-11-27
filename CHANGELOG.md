@@ -15,6 +15,11 @@ versioning is semantic.
   (tsserver renames, `tsc --noEmit` gate, one green step at a time).
 - `scripts/check_readme_skills.py` + tests: CI now fails when a skill is missing
   from the README component table or the table references a removed skill.
+- CI badge + MIT `LICENSE` file in README (license was declared in plugin.json
+  but the file was missing).
+- `release-drafter` workflow: auto-drafted release notes from merged PRs,
+  categorized and version-resolved from labels.
+- Dependabot (weekly) for GitHub Actions versions.
 
 ## [1.4.0] - 2026-11-27
 

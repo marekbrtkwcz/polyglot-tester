@@ -1,5 +1,8 @@
 # polyglot-dev
 
+[![CI](https://github.com/marekbrtkwcz/polyglot-tester/actions/workflows/ci.yml/badge.svg)](https://github.com/marekbrtkwcz/polyglot-tester/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 A [Vibe](https://mistral.ai) plugin (Agent Plugins 1.0 format) for polyglot
 development in JavaScript/TypeScript, Python, and Go: a delivery workflow,
 testing and code-review guidance, per-language knowledge, helper subagents,
