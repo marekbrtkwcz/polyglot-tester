@@ -155,6 +155,19 @@ versioning is semantic.
   `git commit` segment of the command, so `pytest -m wip && git commit -m
   "fix"` no longer false-positives; a WIP subject in ANY commit of a
   chain still blocks.
+- Force-push detection now catches `+`-prefixed refspecs (`git push origin
+  +main`, `+HEAD:main`) — in git the `+` prefix means force without
+  `--force`. Protected-push detection strips the `+` too, treats the short
+  `-n` flag like `--dry-run` (never protected), and `segment_after` is now
+  quote-aware, so `git commit -m "WIP: foo; bar"` can no longer slip past
+  the WIP guard through a quoted separator. The WIP subject regex also
+  accepts `(wip)` parentheses, as its docstring always claimed.
+- `is_bulk_rm` also knows the BSD `-x` flag: `rm -rfx build` is blocked.
+- Secrets guard: the diff-header exclusion is now `+++ ` (with space), so
+  an added code line starting with `++` (e.g. `++i;`) is still scanned;
+  `commit_stages_worktree` strips quoted `-m` payloads first, so
+  `git commit -m "fix -a flag"` no longer triggers an unstaged scan.
+- README test count updated to 282.
 
 ## [1.5.0] - 2026-11-27
 

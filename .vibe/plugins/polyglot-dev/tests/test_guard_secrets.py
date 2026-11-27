@@ -185,6 +185,19 @@ def test_hook_plain_commit_ignores_unstaged_secret(repo):
     assert b"GitHub token" in result.stderr
 
 
+def test_commit_stages_worktree_ignores_flags_inside_message_text():
+    assert secrets_guard.commit_stages_worktree('git commit -m "fix -a flag"') is False
+    assert secrets_guard.commit_stages_worktree("git commit -m x") is False
+    assert secrets_guard.commit_stages_worktree('git commit -am "msg"') is True
+    assert secrets_guard.commit_stages_worktree("git commit --all -m x") is True
+
+
+def test_diff_text_keeps_added_lines_starting_with_plus_plus(repo):
+    # `+++ ` (with space) is the diff header; a code line `++i;` is content
+    stage(repo, "counter.c", "++i;\n")
+    assert "++i;" in secrets_guard.diff_text(str(repo), cached=True)
+
+
 def test_hook_scans_payload_cwd_not_process_cwd(repo):
     # Plugin hooks are spawned from the plugin snapshot; the project repo is
     # named in the payload's cwd. A staged secret there must be caught even

@@ -40,7 +40,9 @@ MESSAGE_ARG = re.compile(
 # -F file / --file=file
 MESSAGE_FILE = re.compile(r"(?:-F\s+|--file=)(\S+)")
 
-WIP_SUBJECT = re.compile(r"^\s*\[?\s*wip\s*\]?\b|^\s*do not merge\b", re.IGNORECASE)
+WIP_SUBJECT = re.compile(
+    r"^\s*[\[\(]?\s*wip\s*[\]\)]?\b|^\s*do not merge\b", re.IGNORECASE
+)
 
 
 def unquote(token):

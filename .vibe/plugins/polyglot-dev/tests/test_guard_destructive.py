@@ -56,6 +56,7 @@ def assert_blocked(result, reason):
         "rm -vrf build",
         "rm -irfv build",  # 4-letter cluster, not a long parameter
         "rm -dvrf build",
+        "rm -rfx build",  # BSD -x (do not cross mount points)
         "sudo rm -rf /",
         "echo hi && rm -rf build",
         "cd /tmp && rm -rf .cache",
@@ -219,6 +220,9 @@ def test_powershell_near_misses_allowed(command):
         "git push origin -f main",
         "git push -vf origin feature/x",  # short flag cluster containing f
         "git push origin main -f",
+        "git push origin +main",  # +refspec: force-push without --force
+        "git push origin +HEAD:feature/x",
+        "git push +feature/x",
     ],
 )
 def test_force_push_token_spellings_blocked(command):
@@ -273,12 +277,31 @@ def test_protected_push_blocked(command):
         "git push origin main:feature/x",  # source may be main, destination is not
         "git push origin HEAD:refs/heads/feature/x",
         "git push --dry-run origin main",  # dry-run changes nothing on the remote
+        "git push -n origin main",  # -n is the short --dry-run
+        "git push -nv origin main",
         "git push",
     ],
 )
 def test_non_protected_push_allowed(command):
     result = run_hook({"command": command})
     assert result.returncode == 0
+
+
+@pytest.mark.parametrize(
+    "command",
+    [
+        "git push origin +main",  # force refspec: destination still decides
+        "git push origin +refs/heads/main",
+        "git push origin +HEAD:release/2.0",
+    ],
+)
+def test_protected_push_force_refspec_destination(command):
+    assert guard.is_protected_push(command) is True
+
+
+def test_segment_after_ignores_separators_inside_quotes():
+    assert guard.segment_after('git commit -m "a; b" && echo hi', 11) == '-m "a; b" '
+    assert guard.segment_after("rm -r dir; echo f", 3) == "-r dir"
 
 
 def test_protected_push_allowed_via_env():

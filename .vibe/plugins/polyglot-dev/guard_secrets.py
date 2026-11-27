@@ -38,10 +38,10 @@ import subprocess
 import sys
 
 try:
-    from guard_destructive import extract_command, segment_after
+    from guard_destructive import extract_command, segment_after, strip_commit_messages
 except ImportError:  # pragma: no cover - hook always runs from the plugin dir
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    from guard_destructive import extract_command, segment_after
+    from guard_destructive import extract_command, segment_after, strip_commit_messages
 
 
 SECRET_PATTERNS = [
@@ -152,7 +152,7 @@ def diff_text(root, cached):
     return "\n".join(
         line
         for line in raw.splitlines()
-        if line.startswith("+") and not line.startswith("+++")
+        if line.startswith("+") and not line.startswith("+++ ")
     )
 
 
@@ -182,7 +182,9 @@ def commit_stages_worktree(command):
     nothing from the worktree.
     """
     for match in GIT_COMMIT.finditer(command):
-        for token in segment_after(command, match.end()).split():
+        # quoted -m payloads are data: `-m "fix -a flag"` is not a -a flag
+        segment = strip_commit_messages(segment_after(command, match.end()))
+        for token in segment.split():
             if token == "--all" or re.fullmatch(r"-[a-zA-Z]*a[a-zA-Z]*", token):
                 return True
     return False

@@ -89,13 +89,14 @@ PROTECTED_REFS = ("main", "master")
 
 
 def is_protected_ref(ref):
-    """True for main, master, release/* (also under refs/heads/)."""
-    ref = ref.removeprefix("refs/heads/")
+    """True for main, master, release/* (also as +ref or under refs/heads/)."""
+    ref = ref.lstrip("+").removeprefix("refs/heads/")
     return ref in PROTECTED_REFS or ref.startswith("release/")
 
 
 # Boundaries of a command within a shell line: stop scanning at the first
-# separator, so "rm -r dir; echo f" is not misread as rm -rf.
+# separator, so "rm -r dir; echo f" is not misread as rm -rf. Separators
+# inside quotes do not count (segment_after is quote-aware).
 SEGMENT_SPLIT = re.compile(r"[;&|]")
 
 # PowerShell long single-dash parameters that must not be parsed as short
@@ -103,10 +104,10 @@ SEGMENT_SPLIT = re.compile(r"[;&|]")
 # confirmation prompt, not recursive+force.
 LONG_RM_FLAGS = {"recurse": "r", "force": "f"}
 
-# GNU rm short options (-d -f -i -I -P -r -R -v), lowercased: a single-dash
-# token made only of these letters is an option cluster of ANY length
-# (-rf, -vrf, -irfv, -dvrf), not a long parameter.
-RM_SHORT_FLAGS = set("dfiprv")
+# GNU/BSD rm short options (-d -f -i -I -P -r -R -v -x), lowercased: a
+# single-dash token made only of these letters is an option cluster of ANY
+# length (-rf, -vrf, -irfv, -dvrf, -rfx), not a long parameter.
+RM_SHORT_FLAGS = set("dfiprvx")
 
 # Quoted strings passed to `git commit -m` / `--message=` are data, never
 # executed: strip them so a commit message that merely mentions a blocked
@@ -144,8 +145,26 @@ def strip_commit_messages(command):
 
 
 def segment_after(command, start):
-    """The part of the command after `start`, cut at the next shell separator."""
-    return SEGMENT_SPLIT.split(command[start:], maxsplit=1)[0]
+    """The part of the command after `start`, cut at the next shell separator.
+
+    Separators inside quotes do not split: `git commit -m "a; b"` stays one
+    segment, so the quoted message is scanned whole.
+    """
+    chars = []
+    quote = None
+    for ch in command[start:]:
+        if quote is not None:
+            chars.append(ch)
+            if ch == quote:
+                quote = None
+        elif ch in ("'", '"'):
+            quote = ch
+            chars.append(ch)
+        elif SEGMENT_SPLIT.match(ch):
+            break
+        else:
+            chars.append(ch)
+    return "".join(chars)
 
 
 def is_bulk_rm(command):
@@ -195,15 +214,18 @@ def is_force_push(command):
     """True when any `git push` rewrites remote history.
 
     Token-based: --force and the short -f (also inside clusters like -vf)
-    always block; --force-with-lease blocks only when the expected ref is
-    missing or malformed (e.g. =false). The safe forms --force-with-lease
-    and --force-with-lease=<ref>:<sha> pass.
+    always block, and so does a refspec prefixed with + (+main, +HEAD:main)
+    — in git that prefix means force-push without --force. --force-with-lease
+    blocks only when the expected ref is missing or malformed (e.g. =false).
+    The safe forms --force-with-lease and --force-with-lease=<ref>:<sha> pass.
     """
     for match in re.finditer(r"\bgit\s+push\b", command):
         segment = segment_after(command, match.end())
         for token in segment.split():
             if token == "--force":
                 return True
+            if token.startswith("+"):
+                return True  # +refspec: force-push without --force
             if re.fullmatch(r"-[a-zA-Z]*f[a-zA-Z]*", token):
                 return True  # short force flag: -f, -vf, ...
             if token.startswith("--force-with-lease") and "=" in token:
@@ -221,15 +243,23 @@ def is_protected_push(command):
     followed by refspecs (or just a refspec when no remote is given). A
     refspec's destination — the part after the colon — decides, so
     `git push origin HEAD:main` is caught while `git push origin main:tmp`
-    is not. `--dry-run` changes nothing on the remote, so a dry-run push
-    is never treated as protected.
+    is not; a leading `+` (force refspec) still counts. `--dry-run`/`-n`
+    changes nothing on the remote, so a dry-run push is never protected.
     """
     if os.environ.get("POLYGLOT_GUARD_ALLOW_PROTECTED_PUSH") == "1":
         return False
     for match in re.finditer(r"\bgit\s+push\b", command):
         tokens = segment_after(command, match.end()).split()
-        if any(token == "--dry-run" for token in tokens):
-            continue
+        if any(
+            token == "--dry-run"
+            or (
+                token.startswith("-")
+                and not token.startswith("--")
+                and "n" in token[1:]
+            )
+            for token in tokens
+        ):
+            continue  # dry-run (-n / --dry-run): nothing changes on the remote
         for token in tokens:
             if token.startswith(("-", ":")):
                 continue  # option, or a `:ref` delete refspec (handled below)

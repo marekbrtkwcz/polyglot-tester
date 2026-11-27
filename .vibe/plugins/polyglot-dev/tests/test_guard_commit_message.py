@@ -85,6 +85,19 @@ def test_blocks_wip_in_any_commit_of_a_chain():
     )
 
 
+def test_blocks_wip_subject_with_separator_inside_quotes():
+    assert wip_guard.is_wip_commit('git commit -m "WIP: foo; bar"') is True
+    assert wip_guard.is_wip_commit("git commit -m 'wip && wip'") is True
+
+
+def test_blocks_parenthesized_wip():
+    assert wip_guard.is_wip_commit('git commit -m "(wip) stuff"') is True
+
+
+def test_quoted_flags_of_other_tools_do_not_leak_into_commit():
+    assert wip_guard.is_wip_commit('pytest -m "wip; x" && git commit -m "ok"') is False
+
+
 def test_subject_from_file(tmp_path):
     msg = tmp_path / "msg.txt"
     msg.write_text("\nWIP: from file\n", encoding="utf-8")

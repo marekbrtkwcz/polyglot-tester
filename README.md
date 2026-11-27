@@ -225,7 +225,7 @@ pip install -r requirements-dev.txt
 python -m pytest tests/ .vibe/plugins/polyglot-dev/tests/ -q
 ```
 
-265 cases: every blocked flag spelling, allowed near-misses (`rm -r` without
+282 cases: every blocked flag spelling, allowed near-misses (`rm -r` without
 force, `--` end-of-options, flags belonging to a chained command), the git
 patterns, commit-message false-positive regressions, end-to-end hook behavior
 through stdin/stdout, and a property-based test (hypothesis) that checks
