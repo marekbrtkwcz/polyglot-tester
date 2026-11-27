@@ -236,7 +236,7 @@ through stdin/stdout, and a property-based test (hypothesis) that checks
 CI runs the suite on Linux across Python 3.11–3.14 plus a Windows job,
 enforces a coverage gate, a ruff lint and format gate, `plugin.json` schema
 validation against the official Agent Plugins 1.0 schema, a check that the
-component table below lists every skill (`scripts/check_readme_skills.py`),
+component table above lists every skill (`scripts/check_readme_skills.py`),
 and a pinned markdownlint pass over all docs — on every push and pull request
 (`.github/workflows/ci.yml`).
 

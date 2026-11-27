@@ -60,7 +60,6 @@ versioning is semantic.
   workflow) now name the competing skill and say when to prefer it, and
   `evals/collision-cases.md` records the collision cases with intended
   winners for future behavioural runs.
-
 - PowerShell destructive-command patterns for the `powershell` shell tool:
   `Remove-Item` (and its `rm`/`del`/`erase`/`rd`/`ri` aliases) with both
   `-Recurse` and `-Force`, `Format-Volume`, `Clear-Disk -RemoveData`.
@@ -125,13 +124,17 @@ versioning is semantic.
   39 eval cases moved only collision case C5 (abstain → agree, `database`
   first): 7/18/14 → 8/17/14 agree/abstain/disagree (run record
   `evals/runs/2026-11-27-database-merge-pilot.md`).
-- All four pre-tool hooks now match `re:bash|git_bash|powershell|process_start`:
-  commands the agent starts in the background or through the Windows managed
-  shell tools no longer bypass the destructive-command, secrets, WIP-commit,
-  and pre-push guards.
-- Hook commands try `python` and fall back to `python3`, so on macOS and
-  modern Linux (which ship `python3` only) the guards keep working instead
-  of denying every guarded shell call under `strict = true`.
+- The pre-tool hooks are consolidated to TWO, one Python process per tool
+  call: `polyglot-dev-guards` matches `re:bash|git_bash|powershell|process_start`
+  and runs the destructive-command, secrets, WIP-commit, and pre-push checks
+  through a single `guard_all.py` entrypoint (previously up to five
+  interpreter startups per shell command), while `polyglot-dev-secrets-in-files`
+  matches `write_file|edit` and scans the written text via `guard_secrets.py`
+  — so background and Windows shell calls no longer bypass the guards. Each
+  hook command tries `python` first and falls back to `python3` (macOS and
+  modern Linux ship `python3` only), empty stdin still fails closed in the
+  `|| python3` fallback, and each guard module keeps its own script, its
+  `run_payload(payload)` entry, and its env disable switch.
 - The four read-only agents (`explorer`, `planner`, `code-reviewer`,
   `security-auditor`) can run read-only search commands (`grep`/`rg`,
   `find`, `git log`/`git blame`) through `bash`: every command still needs
@@ -156,23 +159,14 @@ versioning is semantic.
   now name both locations: project-local `.vibe/plugins/polyglot-dev/` and
   global `~/.vibe/plugins/polyglot-dev/`, so they keep working after a
   global install.
-- The five pre-tool hooks are consolidated into ONE hook
-  (`polyglot-dev-guards`) whose new `guard_all.py` entrypoint reads the
-  payload once and runs the destructive-command, secrets, WIP-commit, and
-  pre-push checks in a single Python process per tool call (previously up
-  to five interpreter startups per shell command). Each guard module keeps
-  its own script, its `run_payload(payload)` entry, and its env disable
-  switch; empty stdin still fails closed in the `|| python3` fallback.
 
 ### Fixed
 
-- Regression from the hook consolidation: `write_file`/`edit` payloads no
-  longer reach the shell guards. `hooks.toml` again routes file writes to
-  their own hook (`polyglot-dev-secrets-in-files` → `guard_secrets.py`),
-  and `extract_command` now skips file-content keys (`content`,
-  `new_string`, `old_string`, `path`, `file_path`) at every nesting level,
-  so a document mentioning `rm -rf` or `git push origin main` is never
-  parsed as a shell command.
+- Regression from the hook consolidation: `extract_command` now skips
+  file-content keys (`content`, `new_string`, `old_string`, `path`,
+  `file_path`) at every nesting level, so a `write_file`/`edit` payload
+  mentioning `rm -rf` or `git push origin main` is never parsed as a shell
+  command.
 - `guard_all.py` imports its sibling guard modules inside the
   `try/except ImportError` path fallback, so importing it from outside the
   plugin directory no longer raises `ModuleNotFoundError` before the
