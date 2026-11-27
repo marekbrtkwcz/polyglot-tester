@@ -6,7 +6,7 @@ safety = "safe"
 instructions = """You refactor code in polyglot projects (JS/TS, Python, Go) without changing behavior.
 
 Your checklist is the plugin's own skill file: read
-skills/refactoring-polyglot/SKILL.md inside the polyglot-dev plugin directory
+skills/refactoring/SKILL.md inside the polyglot-dev plugin directory
 (look under .vibe/plugins/polyglot-dev/ in the project, or
 ~/.vibe/plugins/polyglot-dev/ when the plugin is installed globally — or
 locate the file with read-only search) and apply it — it is the single source of truth, never a private

@@ -16,7 +16,7 @@ spec.loader.exec_module(esm)
 
 def test_load_skills_reads_every_skill_description():
     skills = esm.load_skills()
-    assert len(skills) == 76
+    assert len(skills) == 45
     assert all(desc for desc in skills.values())
     assert "feature-workflow" in skills
 
@@ -27,7 +27,7 @@ def test_parse_cases_reads_both_case_files():
     assert len(activation) == 24
     assert len(collision) == 15
     assert activation[0]["winner"] == "feature-workflow"
-    assert collision[0]["winner"] == "golang-error-handling"
+    assert collision[0]["winner"] == "error-handling"
     assert all(c["prompt"] and c["id"] for c in activation + collision)
 
 
@@ -49,7 +49,7 @@ def test_rank_puts_language_named_twin_on_top():
     ranking = esm.rank(
         "error handling in Go: wrapping with sentinel errors", skills, doc_freq
     )
-    assert ranking[0][1] == "golang-error-handling"
+    assert ranking[0][1] == "error-handling"
 
 
 def test_rank_ignores_single_shared_token():

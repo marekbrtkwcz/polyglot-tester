@@ -63,6 +63,5 @@ appears, split by feature when a layer gets crowded.
 
 ## Related
 
-Skills `typescript-project-structure`, `python-project-structure`,
-`golang-project-structure` cover concrete layouts; `refactoring-polyglot`
-for safe restructuring toward these shapes.
+Skill `project-structure` covers concrete layouts (per-language depth in
+its `references/`); `refactoring` for safe restructuring toward these shapes.

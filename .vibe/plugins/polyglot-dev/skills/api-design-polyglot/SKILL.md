@@ -39,5 +39,5 @@ description: Load this skill when designing, versioning, or hardening HTTP/Graph
 
 ## Related
 
-- `typescript-graphql`, `golang-graphql`, `python-graphql` — GraphQL schema and resolver depth when the API is GraphQL.
+- `graphql`, `graphql`, `graphql` — GraphQL schema and resolver depth when the API is GraphQL.
 - `auth-polyglot` — authentication and authorization controls for the endpoints designed here.

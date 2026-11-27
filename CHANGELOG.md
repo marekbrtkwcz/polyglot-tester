@@ -11,7 +11,7 @@ versioning is semantic.
 - Eval coverage and wiring (audit finding 4): 12 new must-fire activation
   cases (A12–A23), one per per-language twin group with the language named,
   gating the twin deferral sentences — coverage accounting lives in
-  `evals/activation-cases.md` (23/76 skills after the database merge). The
+  `evals/activation-cases.md` (23/45 skills after all twin groups merged). The
   deterministic matcher `scripts/eval_skill_matching.py` now also runs in
   CI as an advisory `skill-evals` job (`continue-on-error: true`) over all
   39 cases;
@@ -103,6 +103,20 @@ versioning is semantic.
 
 ### Changed
 
+- All 13 remaining twin groups merged the way the database pilot did:
+  `error-handling`, `performance`, `refactoring`, `security`,
+  `stay-updated` (the former `*-polyglot` umbrellas) and `testing` absorb
+  their per-language twins, and the twin-only groups become `concurrency`,
+  `context`, `graphql`, `idioms`, `logging`, `project-structure`,
+  `web-and-apis`. Per-language depth moved unchanged into each skill's
+  `references/{go,python,ts}.md`, read on demand after the skill activates.
+  Skill count 76 → 45, description chars 18,100 → 10,934 (−39.6%); all
+  deferral sentences and twin-collision eval rows are removed. Eval cases
+  A10–A23 and collision cases 1–11, 13–14 now expect the merged skills;
+  README component table, agent TOMLs and knowledge cross-references
+  updated. Lexical-baseline run record:
+  `evals/runs/2026-11-27-twin-groups-merge.md` (13 agree / 19 abstain /
+  7 disagree over 39 cases; behavioural model scoring still owed).
 - Pilot for progressive disclosure: the database twin group
   (`database-polyglot`, `golang-database`, `python-database`,
   `typescript-database`) is merged into one `database` skill; the

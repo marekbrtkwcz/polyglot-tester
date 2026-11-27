@@ -1,6 +1,6 @@
 ---
 name: unit-testing-polyglot
-description: Load this skill when writing unit tests in JavaScript/TypeScript, Python, or Go — the fast, isolated layer: structure, assertions, mocks/doubles, deterministic data, and running just one test. For suite-level concerns — framework choice, structure across layers, coverage — prefer testing-polyglot.
+description: Load this skill when writing unit tests in JavaScript/TypeScript, Python, or Go — the fast, isolated layer: structure, assertions, mocks/doubles, deterministic data, and running just one test. For suite-level concerns — framework choice, structure across layers, coverage — prefer testing.
 ---
 
 # Unit Testing (Polyglot)
@@ -61,5 +61,5 @@ func TestApplyDiscount(t *testing.T) {
 
 ## Related
 
-- `testing-polyglot` — the full strategy: levels, runner choice, coverage that means something.
+- `testing` — the full strategy: levels, runner choice, coverage that means something.
 - Knowledge `testing` — determinism rules, flake policy, and the command reference.

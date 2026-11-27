@@ -54,4 +54,4 @@ jobs:
 
 ## Cross-references
 
-- Knowledge `ci-cd` (GitHub Actions reference), `docker-polyglot` for container-based CI, `stay-updated-polyglot` for keeping CI versions current.
+- Knowledge `ci-cd` (GitHub Actions reference), `docker-polyglot` for container-based CI, `stay-updated` for keeping CI versions current.

@@ -1,6 +1,6 @@
 ---
 name: auth-polyglot
-description: Load this skill when implementing or reviewing authentication and authorization in JavaScript/TypeScript, Python, or Go — passwords, sessions, JWT, OAuth2/OIDC, MFA, and access control patterns across languages. For reviewing the crypto choices behind credential storage themselves (hashing, KDFs, parameter choices) prefer security-polyglot.
+description: Load this skill when implementing or reviewing authentication and authorization in JavaScript/TypeScript, Python, or Go — passwords, sessions, JWT, OAuth2/OIDC, MFA, and access control patterns across languages. For reviewing the crypto choices behind credential storage themselves (hashing, KDFs, parameter choices) prefer security.
 ---
 
 # Auth & Access Control (Polyglot)
@@ -48,5 +48,5 @@ description: Load this skill when implementing or reviewing authentication and a
 
 ## Related
 
-- `security-polyglot` — the broader hardening pass (headers, injection, secrets) around auth.
+- `security` — the broader hardening pass (headers, injection, secrets) around auth.
 - Knowledge `security` — per-language checks for sessions, JWT, and crypto.

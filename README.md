@@ -15,9 +15,10 @@ and a safety hook that blocks destructive shell commands before they run.
 2. **Ask for a change** in plain language — e.g. "add input validation to the
    signup endpoint, test-first". The `feature-workflow` skill drives the whole
    loop: plan → failing test → implementation → verification → review.
-3. **Let the right language skill load itself**: when the task touches Go,
-   Python, or TypeScript code, the matching `golang-*`, `python-*`, or
-   `typescript-*` skill activates on its own — you don't need to name it.
+3. **Let the right skill load itself**: when the task touches Go, Python, or
+   TypeScript code, the matching topic skill (e.g. `error-handling`,
+   `logging`, `web-and-apis`) activates on its own and reads the
+   language-specific `references/` file — you don't need to name a language.
 4. **Review before merging**: ask for a review and the `code-review-polyglot`
    checklist plus the `code-reviewer` agent produce a severity-ranked verdict.
 5. **Ship it**: `git-workflow-polyglot` for the branch/commit/PR flow,
@@ -31,7 +32,7 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Component | Name | What it does |
 | --- | --- | --- |
 | Skill | `polyglot-dev:feature-workflow` | End-to-end delivery loop: understand → plan → test-first implement → verify → review → hand off |
-| Skill | `polyglot-dev:testing-polyglot` | Writing and running tests per language: framework detection, structure, deterministic data, coverage |
+| Skill | `polyglot-dev:testing` | Writing and running tests per language: framework detection, structure, deterministic data, coverage; per-language depth in the skill's `references/` files, loaded on demand |
 | Skill | `polyglot-dev:unit-testing-polyglot` | The fast isolated layer per language: Vitest/Jest, pytest, Go table-driven tests, mocks, single-test runs |
 | Skill | `polyglot-dev:code-review-polyglot` | Per-language review checklists (JS/TS, Python, Go) with a severity-ranked verdict format |
 | Skill | `polyglot-dev:debugging-polyglot` | Failure classification, reproduction loop, and per-language debugging guidance |
@@ -46,66 +47,35 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Skill | `polyglot-dev:events-and-queues-polyglot` | Kafka/SQS/RabbitMQ, idempotent consumers, backoff+DLQ, message contracts, async testing |
 | Skill | `polyglot-dev:observability-polyglot` | Structured logs, RED/USE metrics, traces, correlation IDs, symptom-based alerting per language |
 | Skill | `polyglot-dev:docs-polyglot` | READMEs, docstrings, ADRs, API docs, changelogs — docs a new teammate can follow verbatim |
-| Skill | `polyglot-dev:security-polyglot` | Injection, secrets, crypto, HTTP hardening, dependency auditing across JS/TS, Python, Go |
-| Skill | `polyglot-dev:performance-polyglot` | Measure-first optimization: profilers, common wins, benchmarks in CI per language |
-| Skill | `polyglot-dev:error-handling-polyglot` | Error chaining (`%w` / `raise from` / `cause`), domain error types, log-once discipline |
-| Skill | `polyglot-dev:refactoring-polyglot` | Test-first refactoring: one green step at a time, tool-driven renames, no behavior mixing |
+| Skill | `polyglot-dev:security` | Injection, secrets, crypto, HTTP hardening, dependency auditing across JS/TS, Python, Go; per-language depth in the skill's `references/` files, loaded on demand |
+| Skill | `polyglot-dev:performance` | Measure-first optimization: profilers, common wins, benchmarks in CI per language; per-language depth in the skill's `references/` files, loaded on demand |
+| Skill | `polyglot-dev:error-handling` | Error chaining (`%w` / `raise from` / `cause`), domain error types, log-once discipline; per-language depth in the skill's `references/` files, loaded on demand |
+| Skill | `polyglot-dev:refactoring` | Test-first refactoring: one green step at a time, tool-driven renames, no behavior mixing; per-language depth in the skill's `references/` files, loaded on demand |
 | Skill | `polyglot-dev:ci-cd-polyglot` | CI/CD setup per stack: gates, matrices, caching, secrets, merge gating, release automation |
 | Skill | `polyglot-dev:docker-polyglot` | Dockerfiles and multi-stage builds per language, compose, rootless Podman, image scanning, tagging |
-| Skill | `polyglot-dev:stay-updated-polyglot` | Official sources, EOL schedules, and a safe one-thing-at-a-time upgrade routine per language |
+| Skill | `polyglot-dev:stay-updated` | Official sources, EOL schedules, and a safe one-thing-at-a-time upgrade routine per language; per-language depth in the skill's `references/` files, loaded on demand |
+| Skill | `polyglot-dev:concurrency` | Goroutines/channels/errgroup, asyncio vs threads vs processes, event loop + AbortController, cancellation and leak prevention; per-language depth in the skill's `references/` files, loaded on demand |
+| Skill | `polyglot-dev:context` | Request-scoped state: ctx cancellation/deadlines/values (Go), contextvars + context managers (Python), no globals; per-language depth in the skill's `references/` files, loaded on demand |
+| Skill | `polyglot-dev:graphql` | Schema design, resolvers, dataloaders for N+1, typed errors, depth/complexity limits across gqlgen, Strawberry, yoga/Apollo/Pothos; per-language depth in the skill's `references/` files, loaded on demand |
+| Skill | `polyglot-dev:idioms` | Idiomatic Go/Python/JS-TS: guard clauses, EAFP, modern syntax, dataclasses/dunders, Stringer; per-language depth in the skill's `references/` files, loaded on demand |
+| Skill | `polyglot-dev:logging` | Structured logs, levels, correlation IDs, redaction — slog, structlog, pino/winston; per-language depth in the skill's `references/` files, loaded on demand |
+| Skill | `polyglot-dev:project-structure` | Standard layout, packaging, toolchain and lint/format gates per stack; per-language depth in the skill's `references/` files, loaded on demand |
+| Skill | `polyglot-dev:web-and-apis` | HTTP services/APIs per stack (net/http vs gin/echo/fiber, FastAPI/Django/Flask) plus browser DOM/fetch in JS/TS; per-language depth in the skill's `references/` files, loaded on demand |
 | Skill | `polyglot-dev:ai-integration-polyglot` | LLM integration per language: provider SDKs, prompting, structured output, embeddings/RAG, token budgets, prompt-injection safety, LLM feature testing |
-| Skill | `polyglot-dev:golang-error-handling` | Go errors: `%w` wrapping, sentinels, `errors.Is/As`, API error design |
-| Skill | `polyglot-dev:golang-concurrency` | Goroutines, channels, errgroup, context, race/leak prevention |
-| Skill | `polyglot-dev:golang-testing-advanced` | Table-driven tests, testify, mocks, fuzzing, benchmarks, goleak |
-| Skill | `polyglot-dev:golang-security` | Injection, path traversal, secrets, crypto, HTTP hardening, govulncheck |
-| Skill | `polyglot-dev:golang-performance` | pprof profiling, allocations, escape analysis, benchmarking discipline |
-| Skill | `polyglot-dev:golang-project-structure` | Standard layout, naming, modern Go idioms, gofmt/vet/golangci-lint gate |
 | Skill | `polyglot-dev:golang-libraries-and-patterns` | When to pick cobra/viper, gRPC, slog, wire/fx, lo, sqlc, testify |
 | Skill | `polyglot-dev:golang-design-and-data` | Structs vs interfaces, composition, common patterns, choosing data structures |
-| Skill | `polyglot-dev:golang-refactoring` | Safe refactoring: test-first, small compiling steps, gopls rename |
-| Skill | `polyglot-dev:golang-stay-updated` | Toolchain upgrades, go directive, `gopls modernize`, stdlib-first rule |
 | Skill | `polyglot-dev:golang-safety` | Panic recovery, nil map/pointer traps, races, overflow, input limits |
-| Skill | `polyglot-dev:golang-context` | ctx as first param, cancellation, deadlines, values sparingly |
-| Skill | `polyglot-dev:golang-graphql` | gqlgen, schema design, dataloader for N+1, errors, depth limits |
 | Skill | `polyglot-dev:golang-how-to` | Copy-paste recipes: HTTP server, JSON API, env, files, retry, shutdown |
-| Skill | `polyglot-dev:golang-web-and-apis` | net/http vs gin/echo/fiber, handlers, middleware order, graceful shutdown, handler tests |
 | Skill | `polyglot-dev:golang-pkg-go-dev` | Evaluating packages on pkg.go.dev, curated library categories |
 | Skill | `polyglot-dev:golang-samber-libs` | lo, oops, do, mo, hot, ro — what each is for and when to skip it |
-| Skill | `polyglot-dev:golang-language-idioms` | Guard clauses, var vs :=/iota/shadowing, generics, function style, Stringer |
-| Skill | `polyglot-dev:golang-logging` | slog in depth, levels, structured attributes, ctx, when zap/zerolog win |
-| Skill | `polyglot-dev:python-idioms` | Pythonic constructs, EAFP, context managers, dataclasses, dunder methods |
 | Skill | `polyglot-dev:python-typing` | mypy strict, generics, TypeGuard, TypedDict, Protocols, overloads |
-| Skill | `polyglot-dev:python-error-handling` | Custom exceptions, `raise from` chaining, traceback reading, error logging |
-| Skill | `polyglot-dev:python-concurrency` | asyncio vs threads vs processes, the GIL, cancellation, thread safety |
-| Skill | `polyglot-dev:python-context` | contextvars for request-scoped state, context managers, avoiding globals |
-| Skill | `polyglot-dev:python-testing-advanced` | pytest fixtures/parametrize, monkeypatch, mocking, hypothesis, coverage |
-| Skill | `polyglot-dev:python-security` | Injection (SQL/eval/pickle/YAML), path traversal, secrets, bandit + pip-audit |
-| Skill | `polyglot-dev:python-performance` | cProfile, memory_profiler, lru_cache, `__slots__`, when to leave CPython |
-| Skill | `polyglot-dev:python-project-structure` | src layout, pyproject, uv, ruff/mypy gates, pre-commit, packaging |
-| Skill | `polyglot-dev:python-logging` | logging module, structlog, levels, JSON in prod, correlation IDs |
-| Skill | `polyglot-dev:python-web-and-apis` | FastAPI/Django/Flask choice, async SQLAlchemy, Alembic, Strawberry, Celery |
-| Skill | `polyglot-dev:python-graphql` | Strawberry/Ariadne/Graphene choice, schema design, DataLoader for N+1, typed errors, depth limits, testing |
-| Skill | `polyglot-dev:python-refactoring` | Test-first refactoring: rename/extract/move via jedi/rope, one green step at a time |
-| Skill | `polyglot-dev:python-stay-updated` | Python EOL schedule, What's New, deprecation-driven upgrades, dependency bumps |
 | Skill | `polyglot-dev:python-data-and-validation` | pydantic v2 vs attrs vs dataclasses, Protocols, boundary validation |
 | Skill | `polyglot-dev:python-ecosystem` | Evaluating PyPI packages, curated picks (httpx, typer, polars, respx...) |
-| Skill | `polyglot-dev:typescript-idioms` | Modern JS/TS idioms: const/arrow/destructuring, immutable updates, guard clauses |
 | Skill | `polyglot-dev:typescript-typing-advanced` | Strict tsconfig, generics, utility types, type guards, branded types, discriminated unions |
-| Skill | `polyglot-dev:typescript-async-concurrency` | Event loop, promise pitfalls, Promise.all vs sequential await, AbortController, worker threads |
-| Skill | `polyglot-dev:typescript-error-handling` | Error subclasses, `cause` chaining, unhandled rejections, Result type for expected failures |
-| Skill | `polyglot-dev:typescript-testing-advanced` | Vitest/Jest, mocking boundaries, fake timers, fast-check, meaningful coverage |
-| Skill | `polyglot-dev:typescript-security` | XSS/injection, prototype pollution, schema validation, secrets, npm audit, HTTP headers |
-| Skill | `polyglot-dev:typescript-performance` | Profiling, bundle size, memory leaks, Web Vitals, streams in Node |
-| Skill | `polyglot-dev:typescript-project-structure` | package.json hygiene, tsconfig, workspaces/Nx/Turborepo, folder conventions, gates |
 | Skill | `polyglot-dev:typescript-lint-format-tooling` | Biome vs ESLint+Prettier, type-aware linting, pre-commit hooks, CI gates that can fail |
 | Skill | `polyglot-dev:typescript-node-runtime` | Node versions, ESM/CJS, streams/buffers, CLI tools, env validation, graceful shutdown |
-| Skill | `polyglot-dev:typescript-web-and-dom` | DOM APIs, fetch + AbortController, storage, events, IntersectionObserver, a11y basics |
-| Skill | `polyglot-dev:typescript-graphql` | yoga/Apollo/Pothos, dataloaders, typed errors, depth limits, codegen client |
-| Skill | `polyglot-dev:typescript-logging` | pino vs winston, structured fields, correlation IDs via AsyncLocalStorage, redaction, testing logs |
 | Skill | `polyglot-dev:typescript-ecosystem-and-packages` | npm/pnpm/yarn, semver, exports map, publishing with provenance, evaluating dependencies |
 | Skill | `polyglot-dev:typescript-build-and-bundling` | tsc vs bundlers, ESM+CJS+d.ts for libs, attw, Vite/esbuild/tsup, code splitting |
-| Skill | `polyglot-dev:typescript-stay-updated` | TS/ES/Node release tracking, safe upgrade routine, baseline-wide features, dep hygiene |
-| Skill | `polyglot-dev:typescript-refactoring` | Test-first TS refactoring: tsserver renames, `tsc --noEmit` gate, extract/component moves |
 | Agent | `polyglot-dev:code-reviewer` | Read-only subagent reviewing diffs for correctness, security, and language-specific pitfalls |
 | Agent | `polyglot-dev:test-runner` | Detects the repo's runner, runs tests/lint/type/coverage checks — the full suite or the subset related to changed files — and reports pass/fail with evidence |
 | Agent | `polyglot-dev:explorer` | Read-only code exploration: structure, call sites, stack detection before planning |

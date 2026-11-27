@@ -78,3 +78,39 @@ Still NOT run: behavioural scoring with a real model judge, and a live
 Vibe session confirming the model reads `references/<lang>.md` after
 `database` activates — both remain the gate before merging the other 13
 twin groups.
+
+## Vibe-side verification (live session, 2026-11-27T22:51Z)
+
+Result: the references mechanism, the wiring, and on-demand readability are
+confirmed live; one session-registry caveat remains (below).
+
+- Mechanism: loaded `vibe:skill-creator` in the live session — support files
+  in a skill directory are referenced by path relative to the skill directory
+  and "the model reads them with `read_file` on demand". The progressive-
+  disclosure pattern used by the merge is a supported Vibe mechanism, and the
+  runtime contract of this session independently allows `read_file` on
+  reference files mentioned by a loaded skill.
+- Wiring: `skills/database/SKILL.md` names `references/go.md`,
+  `references/python.md`, `references/ts.md` twice — in the frontmatter
+  `description` (routing-visible) and in the body table with an explicit
+  "read the file for the language in use" instruction.
+  `test_skill_references_wired_both_ways` passes; full
+  `tests/test_plugin_structure.py` green (19 passed).
+- Readability: performed the on-demand read live in this session —
+  `read_file` on `skills/database/references/go.md` returned the real
+  per-language content (go.md 2,132 B, python.md 1,919 B, ts.md 2,418 B;
+  all non-empty, no frontmatter, no orphans per the structure test).
+- Caveat: in this running session the merged skill is not yet visible.
+  `skill polyglot-dev:database-polyglot` served the pre-merge umbrella body
+  from a stale materialized base directory (`skills/database-polyglot`, no
+  longer present on disk; disk has `skills/database`). Per `vibe:skill-creator`
+  a running session picks up new/edited skills on its own or after `/reload`;
+  here it did not pick the rename up automatically, so the final hop —
+  activation of `polyglot-dev:database` in a fresh session (or after
+  `/reload`) followed by reading `references/<lang>.md` — still has to be
+  observed once. Everything up to that hop is verified above.
+
+Verdict: references pattern verified as supported and correctly wired; the
+only unverified step is a session-registry refresh artifact, not a skill
+defect. Behavioural model-judge scoring remains owed separately and is still
+the gate for scaling to the remaining 13 twin groups.

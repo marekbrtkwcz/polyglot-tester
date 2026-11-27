@@ -56,7 +56,7 @@ Per case, scored per trial (same as the collision cases):
 | --- | --- | --- | --- |
 | A1 | "We need the checkout endpoint to reject negative quantities — take it all the way to a fix you can prove works" | `feature-workflow` | `unit-testing-polyglot` |
 | A2 | "Checkout returns 500 with nothing in the logs — find out why it dies" | `debugging-polyglot` | `feature-workflow` |
-| A3 | "I'm on main by accident with two finished commits — move them to a branch without losing anything" | `git-workflow-polyglot` | `refactoring-polyglot` |
+| A3 | "I'm on main by accident with two finished commits — move them to a branch without losing anything" | `git-workflow-polyglot` | `refactoring` |
 | A4 | "We ship 2.0 on Friday — what should users read about what changed?" | `release-and-changelog` | `docs-polyglot` |
 | A5 | "The getting-started guide at the repo root hasn't worked for months — make it match reality" | `docs-polyglot` | `feature-workflow` |
 | A6 | "Every PR rebuilds everything and takes 25 minutes — run only what the diff can break" | `ci-cd-polyglot` | `feature-workflow` |
@@ -73,49 +73,51 @@ Per case, scored per trial (same as the collision cases):
 
 | # | Prompt (as a user would type it) | Must fire | Must not dominate |
 | --- | --- | --- | --- |
-| A10 | "Our Python GraphQL API runs one query per list item — fix the N+1 and make the schema safe against deeply nested queries" | `python-graphql` | `python-web-and-apis` |
-| A11 | "Standardize logging across our Node services so one request ID traces a call through all of them, and make sure tokens never reach the logs" | `typescript-logging` | `observability-polyglot` |
+| A10 | "Our Python GraphQL API runs one query per list item — fix the N+1 and make the schema safe against deeply nested queries" | `graphql` | `web-and-apis` |
+| A11 | "Standardize logging across our Node services so one request ID traces a call through all of them, and make sure tokens never reach the logs" | `logging` | `observability-polyglot` |
 
-## Per-language twins (language named in the prompt)
+## Merged twin groups (language named in the prompt)
 
-One must-fire case per twin group gates the deferral sentences added to
-the twin descriptions (2026-11-27): the prompt names a language, the
-matching twin must fire, and the cross-language siblings must not
-dominate. The graphql and logging groups are already covered by A10/A11.
+One must-fire case per merged group gates the `references/` wiring added
+on 2026-11-27: the prompt names a language, the merged skill must fire
+(and read the matching `references/<lang>.md`), and near neighbours must
+not dominate. The graphql and logging groups are covered by A10/A11.
 
 | # | Prompt (as a user would type it) | Must fire | Must not dominate |
 | --- | --- | --- | --- |
-| A12 | "Our Go service leaks goroutines on every request — find and fix the leak" | `golang-concurrency` | `python-concurrency`, `typescript-async-concurrency` |
-| A13 | "Pass request-scoped values through our Python services without global state" | `python-context` | `golang-context` |
-| A14 | "Our Django ORM fires one query per row in the list endpoint" | `database` | `performance-polyglot` |
-| A15 | "Callers in our Express app can't tell a 404 from a 500 — give them typed errors" | `typescript-error-handling` | `golang-error-handling`, `python-error-handling` |
-| A16 | "Make this TypeScript codebase read idiomatic — modern syntax and small habits" | `typescript-idioms` | `golang-language-idioms`, `python-idioms` |
-| A17 | "Our FastAPI endpoint got slower after the last release — profile it and prove the fix" | `python-performance` | `golang-performance`, `typescript-performance` |
-| A18 | "Reorganize our Go module into a standard layout with a lint gate" | `golang-project-structure` | `python-project-structure`, `typescript-project-structure` |
-| A19 | "Rename this function across our whole Python codebase, safely" | `python-refactoring` | `golang-refactoring`, `typescript-refactoring` |
-| A20 | "Audit our Node API for injection and leaked secrets before launch" | `typescript-security` | `golang-security`, `python-security` |
-| A21 | "Bump our TypeScript toolchain safely — ES proposals, release notes, Node LTS" | `typescript-stay-updated` | `golang-stay-updated`, `python-stay-updated` |
-| A22 | "Add property-based tests and benchmarks to our Go package" | `golang-testing-advanced` | `python-testing-advanced`, `typescript-testing-advanced` |
-| A23 | "Build a JSON API in Go with middleware order and graceful shutdown" | `golang-web-and-apis` | `python-web-and-apis`, `typescript-web-and-dom` |
-| A24 | "Our Go service opens a new DB connection per request — set up pooling and context-aware queries properly" | `database` | `golang-web-and-apis` |
+| A12 | "Our Go service leaks goroutines on every request — find and fix the leak" | `concurrency` | `performance` |
+| A13 | "Pass request-scoped values through our Python services without global state" | `context` | `concurrency` |
+| A14 | "Our Django ORM fires one query per row in the list endpoint" | `database` | `performance` |
+| A15 | "Callers in our Express app can't tell a 404 from a 500 — give them typed errors" | `error-handling` | `api-design-polyglot` |
+| A16 | "Make this TypeScript codebase read idiomatic — modern syntax and small habits" | `idioms` | `refactoring` |
+| A17 | "Our FastAPI endpoint got slower after the last release — profile it and prove the fix" | `performance` | `observability-polyglot` |
+| A18 | "Reorganize our Go module into a standard layout with a lint gate" | `project-structure` | `refactoring` |
+| A19 | "Rename this function across our whole Python codebase, safely" | `refactoring` | `project-structure` |
+| A20 | "Audit our Node API for injection and leaked secrets before launch" | `security` | `dependency-audit` |
+| A21 | "Bump our TypeScript toolchain safely — ES proposals, release notes, Node LTS" | `stay-updated` | `dependency-audit` |
+| A22 | "Add property-based tests and benchmarks to our Go package" | `testing` | `unit-testing-polyglot` |
+| A23 | "Build a JSON API in Go with middleware order and graceful shutdown" | `web-and-apis` | `api-design-polyglot` |
+| A24 | "Our Go service opens a new DB connection per request — set up pooling and context-aware queries properly" | `database` | `web-and-apis` |
 
 ## Merged groups
 
-The database twin group (`database-polyglot`, `golang-database`,
-`python-database`, `typescript-database`) was merged into the single
-`database` skill with per-language `references/` files on 2026-11-27
-(pilot for progressive disclosure): A14 and A24 gate it. Merging removed
-the group's deferral sentences and its twin-collision rows (collision
-cases 5, 6, 15 now expect `database`).
+All 14 twin groups were merged into single skills with per-language
+`references/` files (progressive disclosure): `database` on 2026-11-27
+(pilot: `database-polyglot` + `golang-database` + `python-database` +
+`typescript-database`, gated by A14/A24 and collision cases 5/6/15), and
+the remaining 13 groups on 2026-11-27 the same way — `error-handling`,
+`performance`, `refactoring`, `security`, `stay-updated`, `testing`,
+`concurrency`, `context`, `graphql`, `idioms`, `logging`,
+`project-structure`, `web-and-apis` — gated by A10–A23. Merging removed
+every group's deferral sentences and twin-collision rows.
 
 ## Backlog
 
-Coverage accounting (2026-11-27, after the database merge): 23 of 76
-skills have a must-fire case (A1–A24 — `database` is the target of both
-A14 and A24, so 24 cases cover 23 unique skills): 10 backbone/umbrella
-skills (A1–A9 + `database`) and 13 twin skills. Still owed: 25 twin
-skills (the other languages in the 13 remaining twin groups) and 28
-non-twin skills — 53 total.
+Coverage accounting (2026-11-27, after merging all 14 twin groups): 23
+of 45 skills have a must-fire case (A1–A24 — `database` is the target of
+both A14 and A24, so 24 cases cover 23 unique skills): 10
+backbone/umbrella skills (A1–A9 + `database`) and 13 merged topic
+skills. Still owed: 22 non-covered skills.
 Extend per the coverage rule as skills are edited: one must-fire case
 rides along with the edit that needs it — do not batch-write cases nobody
 has scored. Behavioural scoring needs a model judge; the deterministic

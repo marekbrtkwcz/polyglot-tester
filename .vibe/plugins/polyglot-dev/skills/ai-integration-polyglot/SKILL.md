@@ -55,6 +55,6 @@ description: Load this skill when integrating LLM APIs into an app in JavaScript
 ## Related
 
 - `observability-polyglot` — token/cost metrics, latency traces, and drift alerting belong in the same signals as the rest of the app.
-- `security-polyglot` — API-key handling and injection hardening around the integration points.
-- `testing-polyglot` — where the golden-set regression gate for prompts lives in the suite.
+- `security` — API-key handling and injection hardening around the integration points.
+- `testing` — where the golden-set regression gate for prompts lives in the suite.
 - `api-design-polyglot` — if the LLM feature is exposed as an endpoint, the error-envelope and rate-limiting rules apply.

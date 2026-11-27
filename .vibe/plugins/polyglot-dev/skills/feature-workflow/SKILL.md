@@ -1,6 +1,6 @@
 ---
 name: feature-workflow
-description: Load this skill when implementing a new feature, bug fix, or refactor in JavaScript, TypeScript, Python, or Go. Covers the end-to-end delivery loop: understand, plan, test-first implement, verify, review, and hand off. For just the review step prefer code-review-polyglot; for just the refactor mechanics prefer refactoring-polyglot.
+description: Load this skill when implementing a new feature, bug fix, or refactor in JavaScript, TypeScript, Python, or Go. Covers the end-to-end delivery loop: understand, plan, test-first implement, verify, review, and hand off. For just the review step prefer code-review-polyglot; for just the refactor mechanics prefer refactoring.
 ---
 
 # Feature Workflow (Polyglot)
@@ -22,7 +22,7 @@ A language-agnostic delivery loop. Use the knowledge folders
 - List the files to touch and the behavior each change produces.
 - Decide the test level: unit for logic, integration for boundaries, E2E only
   for user-visible flows.
-- For a bug fix, write the failing test first (see the `testing-polyglot`
+- For a bug fix, write the failing test first (see the `testing`
   skill).
 
 ## 3. Implement
