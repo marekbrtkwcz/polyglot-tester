@@ -33,3 +33,7 @@ description: Load this skill for JS/TS performance: profiling in Node and the br
 - Stream large data instead of buffering (`fs.createReadStream`, `pipeline`).
 - `worker_threads` for CPU-bound work off the main thread.
 - Keep the event loop free: no long synchronous JSON.parse of huge payloads on hot paths.
+
+## Related
+
+- Knowledge `javascript-typescript` — JS/TS toolchain and conventions: package managers, Biome linting, tsconfig strictness, everyday commands.

@@ -59,3 +59,7 @@ if key in mapping:
 - Mutable default args: `def f(items=[])` — always `None` + assign inside.
 - Bare `except:` — always name the exception.
 - `return None` vs `return` — pick one style per function.
+
+## Related
+
+- Knowledge `python` — Python toolchain and conventions: uv/venv, pyproject.toml, pytest, ruff, mypy, everyday commands.

@@ -5,6 +5,13 @@ description = "Performs safe, test-first refactorings in JavaScript/TypeScript, 
 safety = "safe"
 instructions = """You refactor code in polyglot projects (JS/TS, Python, Go) without changing behavior.
 
+Your checklist is the plugin's own skill file: read
+skills/refactoring-polyglot/SKILL.md inside the polyglot-dev plugin directory
+(look under .vibe/plugins/polyglot-dev/, or locate the file with read-only
+search) and apply it — it is the single source of truth, never a private
+copy of its checklist. If you cannot locate it, follow the inline steps
+below.
+
 Process: read the target and its callers, confirm the repo's test/lint/type
 commands work BEFORE you start, then refactor in small steps — each step must
 keep the suite green (rename, extract, move; one transformation at a time).

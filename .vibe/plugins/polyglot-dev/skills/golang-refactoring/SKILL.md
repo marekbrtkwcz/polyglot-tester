@@ -30,3 +30,7 @@ description: Load this skill when refactoring Go code safely: extracting functio
 - Right before a release unless it's a bug fix.
 - Without tests on the code being moved.
 - "While I'm here" scope creep — separate PR for unrelated cleanups.
+
+## Related
+
+- Knowledge `go` — Go toolchain and conventions: go.mod, table-driven tests, error wrapping, golangci-lint, everyday commands.

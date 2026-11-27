@@ -48,3 +48,7 @@ func main() {
 
 - Cap everything from outside: body size (`http.MaxBytesReader`), slice lengths, string lengths, recursion depth in parsers.
 - Validate at the boundary; internal code can then trust the data.
+
+## Related
+
+- Knowledge `go` — Go toolchain and conventions: go.mod, table-driven tests, error wrapping, golangci-lint, everyday commands.

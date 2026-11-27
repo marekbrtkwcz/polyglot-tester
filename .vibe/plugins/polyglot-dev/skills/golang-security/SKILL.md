@@ -39,3 +39,7 @@ description: Load this skill when writing or reviewing security-sensitive Go cod
 - [ ] Any secret in code, config committed, or logs?
 - [ ] TLS verified, versions pinned?
 - [ ] Auth checks on every handler route, not just the happy path?
+
+## Related
+
+- Knowledge `go` — Go toolchain and conventions: go.mod, table-driven tests, error wrapping, golangci-lint, everyday commands.

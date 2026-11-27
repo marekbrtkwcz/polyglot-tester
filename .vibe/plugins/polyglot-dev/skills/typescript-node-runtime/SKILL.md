@@ -31,3 +31,7 @@ description: Load this skill for Node.js-specific development in TS: runtime ver
 - Handle `SIGTERM`/`SIGINT`: stop accepting work, close servers (`server.close()`), drain queues, then exit; set a forced-exit timeout.
 - `process.on('uncaughtException'/'unhandledRejection')` to log, then exit non-zero.
 - `node --watch` for local dev; `tsx`/`ts-node` for running TS directly (not for production).
+
+## Related
+
+- Knowledge `javascript-typescript` — JS/TS toolchain and conventions: package managers, Biome linting, tsconfig strictness, everyday commands.

@@ -10,7 +10,6 @@ description: Load this skill when writing serious pytest suites: fixtures and sc
 ```python
 import pytest
 
-
 @pytest.fixture(scope="module")  # function < class < module < session
 def db():
     engine = create_engine(TEST_URL)
@@ -49,7 +48,6 @@ def test_parse(raw, expected): ...
 ```python
 from hypothesis import given, strategies as st
 
-
 @given(st.lists(st.integers()))
 def test_sort_idempotent(xs):
     assert sorted(sorted(xs)) == sorted(xs)
@@ -75,3 +73,7 @@ def test_sort_idempotent(xs):
 - `test-automation:writing-playwright-tests-best-practices`, `test-automation:api-playwright-test-developer` — Playwright UI/API test writing when the repo uses Playwright.
 - `test-automation:diagnosing-test-failures`, `test-automation:stabilizing-flaky-tests` — failure classification and flake fixing.
 - `qa-mcp` — Playwright MCP + Chrome DevTools MCP for live browser debugging, k6 MCP for load tests.
+
+## Related
+
+- Knowledge `python` — Python toolchain and conventions: uv/venv, pyproject.toml, pytest, ruff, mypy, everyday commands.

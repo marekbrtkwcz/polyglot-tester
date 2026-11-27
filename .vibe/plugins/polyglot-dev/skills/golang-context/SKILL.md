@@ -44,3 +44,7 @@ case <-ctx.Done():
 - Storing ctx in a struct that outlives the request (leaks, stale cancellation).
 - Using values for config/dependencies — that's what constructor params are for.
 - Ignoring `ctx.Err()` after a blocking call returns an error — check which one fired.
+
+## Related
+
+- Knowledge `go` — Go toolchain and conventions: go.mod, table-driven tests, error wrapping, golangci-lint, everyday commands.

@@ -14,7 +14,6 @@ description: Load this skill when building GraphQL APIs in Python: choosing Stra
 ```python
 import strawberry
 
-
 @strawberry.type
 class Query:
     @strawberry.field
@@ -53,5 +52,6 @@ class Query:
 
 ## Related
 
+- Knowledge `python` — Python toolchain and conventions: uv/venv, pyproject.toml, pytest, ruff, mypy, everyday commands.
 - `python-web-and-apis` — HTTP framework choice (FastAPI/Django/Flask), REST endpoints, background tasks.
 - `api-design-polyglot` — cross-language API design rules when the API is GraphQL.

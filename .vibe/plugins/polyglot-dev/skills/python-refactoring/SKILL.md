@@ -33,3 +33,7 @@ description: Load this skill when refactoring Python code safely: test-first, sm
 ## When to stop
 
 - If a step breaks the build and the fix isn't obvious in minutes, revert that step and report the state — don't pile on changes.
+
+## Related
+
+- Knowledge `python` — Python toolchain and conventions: uv/venv, pyproject.toml, pytest, ruff, mypy, everyday commands.

@@ -38,3 +38,7 @@ description: Load this skill when writing idiomatic JavaScript/TypeScript: moder
 - `structuredClone` for deep copies of plain data (not for class instances/functions).
 - `Intl` APIs (`Intl.NumberFormat`, `Intl.DateTimeFormat`) instead of hand-rolled formatting.
 - Avoid `any`; reach for `unknown` + type narrowing when the type is genuinely unknown.
+
+## Related
+
+- Knowledge `javascript-typescript` — JS/TS toolchain and conventions: package managers, Biome linting, tsconfig strictness, everyday commands.

@@ -35,3 +35,7 @@ Generate with `go run github.com/99designs/gqlgen generate` after schema changes
 - Disable introspection in production.
 - Auth in a directive (`@auth(role: ADMIN)`) so it's enforced per field, not forgotten in resolvers.
 - Persisted queries for known clients (faster, allowlist-only in prod).
+
+## Related
+
+- Knowledge `go` — Go toolchain and conventions: go.mod, table-driven tests, error wrapping, golangci-lint, everyday commands.

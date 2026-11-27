@@ -40,3 +40,7 @@ description: Load this skill when working with databases from Node.js/TypeScript
 - Use `include`/`select` relations explicitly (Prisma) or explicit joins (Drizzle); dataloader-style batching for GraphQL resolvers.
 - Add indexes for query predicates; verify with `EXPLAIN ANALYZE`, don't guess.
 - Read replicas for heavy reporting queries, with lag awareness (don't read-your-write across replicas).
+
+## Related
+
+- Knowledge `javascript-typescript` — JS/TS toolchain and conventions: package managers, Biome linting, tsconfig strictness, everyday commands.

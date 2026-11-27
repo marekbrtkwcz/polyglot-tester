@@ -39,3 +39,7 @@ description: Load this skill when building or consuming GraphQL APIs in TypeScri
 
 - Codegen (graphql-codegen) from the schema so queries and types never drift; validate queries at build time.
 - Normalized cache (Apollo/urql) with sensible `typePolicies`; refetch after mutations that change lists.
+
+## Related
+
+- Knowledge `javascript-typescript` — JS/TS toolchain and conventions: package managers, Biome linting, tsconfig strictness, everyday commands.

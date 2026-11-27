@@ -48,3 +48,7 @@ Choose by fit, not popularity. Default to stdlib; add a library when it saves re
 ## Rule
 
 Every added dependency: recorded reason in the PR, license check, `govulncheck` clean, and a plan for updates (`go list -m -u all` in CI).
+
+## Related
+
+- Knowledge `go` — Go toolchain and conventions: go.mod, table-driven tests, error wrapping, golangci-lint, everyday commands.

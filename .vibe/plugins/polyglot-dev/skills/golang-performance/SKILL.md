@@ -37,3 +37,7 @@ description: Load this skill when optimizing Go code: profiling with pprof, allo
 ## Rule
 
 Optimize the hot path proven by a profile, keep the code readable, and add a benchmark so the win is locked in CI.
+
+## Related
+
+- Knowledge `go` — Go toolchain and conventions: go.mod, table-driven tests, error wrapping, golangci-lint, everyday commands.

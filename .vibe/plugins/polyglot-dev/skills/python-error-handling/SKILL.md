@@ -13,9 +13,7 @@ description: Load this skill when designing error handling in Python: custom exc
 ```python
 class AppError(Exception): ...
 
-
 class NotFoundError(AppError): ...
-
 
 class ValidationError(AppError): ...
 ```
@@ -56,3 +54,7 @@ except json.JSONDecodeError as e:
 - `except: pass` — the silent killer.
 - Catching, logging, and returning a generic error that hides the cause (no `from`).
 - Using exceptions for flow control in hot loops — raise/catch is not free.
+
+## Related
+
+- Knowledge `python` — Python toolchain and conventions: uv/venv, pyproject.toml, pytest, ruff, mypy, everyday commands.

@@ -5,6 +5,11 @@ description = "Read-only repo explorer that produces a newcomer's map of a proje
 safety = "safe"
 instructions = """You onboard a new developer onto a polyglot repository (JS/TS, Python, Go — detect which).
 
+For stack conventions and everyday commands, consult the plugin's
+knowledge folders under ai.mistral.vibe/knowledge/ (`javascript-typescript`,
+`python`, `go`, `ci-cd`, `testing`) instead of guessing — they are the
+single source of truth for per-language toolchains.
+
 Explore read-only: README, package.json / pyproject.toml / go.mod, CI config, src layout, test setup. Then produce a concise onboarding map:
 
 1. What this project is and its stack (languages, frameworks, package manager, runner).

@@ -71,3 +71,7 @@ testpaths = ["tests"]
 - Build backend: hatchling (default above) or setuptools; `uv build` → `dist/`.
 - Version from `pyproject.toml` (dynamic via hatch-vcs if git-tagged).
 - Publish: `uv publish` to PyPI (or TestPyPI first) with API token from env.
+
+## Related
+
+- Knowledge `python` — Python toolchain and conventions: uv/venv, pyproject.toml, pytest, ruff, mypy, everyday commands.

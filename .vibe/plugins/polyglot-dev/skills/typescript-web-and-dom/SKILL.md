@@ -32,3 +32,7 @@ description: Load this skill for browser-side JS/TS: DOM APIs, fetch and network
 
 - Semantic HTML first (button, nav, main, label); ARIA only when semantics fall short.
 - Keyboard operability, visible focus, labels for inputs, alt text, sufficient contrast; test with axe-core.
+
+## Related
+
+- Knowledge `javascript-typescript` — JS/TS toolchain and conventions: package managers, Biome linting, tsconfig strictness, everyday commands.

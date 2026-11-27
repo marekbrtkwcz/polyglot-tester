@@ -49,3 +49,7 @@ go.mod, go.sum, README.md, Makefile
 
 - `go mod tidy` after changes; commit `go.mod` + `go.sum`; CI uses `go mod download` / `go build -mod=readonly`.
 - Prefer stdlib; add a dependency only with a recorded reason. Audit with `govulncheck ./...`.
+
+## Related
+
+- Knowledge `go` — Go toolchain and conventions: go.mod, table-driven tests, error wrapping, golangci-lint, everyday commands.

@@ -15,7 +15,6 @@ description: Load this skill when adding or enforcing type hints in Python: mypy
 ```python
 from typing import Any, Optional, Union
 
-
 def find(users: list[User], id: int) -> User | None: ...  # 3.10+ union syntax
 ```
 
@@ -29,7 +28,6 @@ def find(users: list[User], id: int) -> User | None: ...  # 3.10+ union syntax
 
 ```python
 from typing import TypeGuard
-
 
 def is_str_list(val: list[object]) -> TypeGuard[list[str]]: ...
 ```
@@ -45,7 +43,6 @@ def is_str_list(val: list[object]) -> TypeGuard[list[str]]: ...
 ```python
 from typing import Protocol
 
-
 class SupportsClose(Protocol):
     def close(self) -> None: ...
 ```
@@ -59,7 +56,6 @@ class SupportsClose(Protocol):
 from typing import Generic, TypeVar
 
 T = TypeVar("T")
-
 
 class Stack(Generic[T]):
     def push(self, item: T) -> None: ...
@@ -81,3 +77,7 @@ plugins = ["pydantic.mypy"]  # if using pydantic
 ## Rule
 
 Types are documentation that the compiler checks — `mypy --strict` in CI turns them into a contract.
+
+## Related
+
+- Knowledge `python` — Python toolchain and conventions: uv/venv, pyproject.toml, pytest, ruff, mypy, everyday commands.

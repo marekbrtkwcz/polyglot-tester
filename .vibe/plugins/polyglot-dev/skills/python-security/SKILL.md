@@ -44,3 +44,7 @@ description: Load this skill when writing security-sensitive Python: injection (
 - [ ] Paths from user input sanitized?
 - [ ] Secrets out of code, logs, and git?
 - [ ] bandit + pip-audit green in CI?
+
+## Related
+
+- Knowledge `python` — Python toolchain and conventions: uv/venv, pyproject.toml, pytest, ruff, mypy, everyday commands.

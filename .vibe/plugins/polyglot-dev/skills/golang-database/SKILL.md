@@ -53,3 +53,7 @@ if err := tx.Commit(); err != nil { return err }
 - [ ] Indexes on queried columns — verify with `EXPLAIN ANALYZE`.
 - [ ] Credentials from env/secret manager, never in code; TLS to the DB.
 - [ ] Connection limits set; slow query log enabled.
+
+## Related
+
+- Knowledge `go` — Go toolchain and conventions: go.mod, table-driven tests, error wrapping, golangci-lint, everyday commands.

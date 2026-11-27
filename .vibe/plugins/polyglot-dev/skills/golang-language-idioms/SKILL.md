@@ -58,3 +58,7 @@ const (
 - Variadic last: `func F(prefix string, items ...string)`.
 - `Stringer`: `func (s Status) String() string { ... }` — used by fmt, logging, errors. Keep it total (no panics).
 - Methods on value vs pointer receiver: pointer when the method mutates or the struct is large; be **consistent per type** (vet's copylocks catches mixing on mutexes).
+
+## Related
+
+- Knowledge `go` — Go toolchain and conventions: go.mod, table-driven tests, error wrapping, golangci-lint, everyday commands.

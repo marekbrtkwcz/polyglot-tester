@@ -38,3 +38,7 @@ tests/ or e2e/       # integration & E2E
 
 - Lint + format + typecheck in pre-commit (lint-staged / husky) and CI; Biome for new projects (one tool for lint+format), ESLint+Prettier when already set up.
 - `tsc --noEmit` in CI; tests in CI; fail on `console.error` in app code where a logger exists.
+
+## Related
+
+- Knowledge `javascript-typescript` — JS/TS toolchain and conventions: package managers, Biome linting, tsconfig strictness, everyday commands.

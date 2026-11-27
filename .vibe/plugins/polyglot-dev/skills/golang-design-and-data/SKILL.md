@@ -49,3 +49,7 @@ Flat structs with explicit fields beat deep embedding hierarchies. If a struct h
 - Interface with 10+ methods (consumer-defined interfaces stay small).
 - Premature abstraction: three structs sharing a pattern > one generic base type.
 - `interface{}` parameters where a concrete type or small interface works.
+
+## Related
+
+- Knowledge `go` — Go toolchain and conventions: go.mod, table-driven tests, error wrapping, golangci-lint, everyday commands.

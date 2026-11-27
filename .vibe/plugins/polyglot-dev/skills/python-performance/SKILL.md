@@ -36,3 +36,7 @@ description: Load this skill when optimizing Python: profiling with cProfile, me
 - Optimizing without a profile.
 - `lru_cache` on functions with mutable/unhashable args (crashes or wrong results) — or unbounded growth (use `maxsize`).
 - Micro-optimizing cold code; readability wins outside hot paths.
+
+## Related
+
+- Knowledge `python` — Python toolchain and conventions: uv/venv, pyproject.toml, pytest, ruff, mypy, everyday commands.

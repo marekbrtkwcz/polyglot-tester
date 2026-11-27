@@ -53,3 +53,7 @@ Reactive-style chaining over values (`ro.Pipe`) — niche; evaluate against plai
 - **Adopt**: `lo` (everyday), `oops` (service boundaries).
 - **Situational**: `do` (big graphs), `mo` (optional-heavy code).
 - **Niche/dev-only**: `hot`, `ro`.
+
+## Related
+
+- Knowledge `go` — Go toolchain and conventions: go.mod, table-driven tests, error wrapping, golangci-lint, everyday commands.

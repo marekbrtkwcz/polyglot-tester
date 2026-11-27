@@ -48,3 +48,7 @@ for (const item of items) { await save(item); }
 
 - Always `clearTimeout`/`clearInterval` on cleanup paths.
 - `setInterval` drifts; for periodic work prefer recursive `setTimeout`.
+
+## Related
+
+- Knowledge `javascript-typescript` — JS/TS toolchain and conventions: package managers, Biome linting, tsconfig strictness, everyday commands.

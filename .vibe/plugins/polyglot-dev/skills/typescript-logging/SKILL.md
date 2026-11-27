@@ -58,5 +58,6 @@ const log = logger.child({ requestId });
 
 ## Related
 
+- Knowledge `javascript-typescript` — JS/TS toolchain and conventions: package managers, Biome linting, tsconfig strictness, everyday commands.
 - `observability-polyglot` — metrics, tracing and alerting beyond logs.
 - `typescript-node-runtime` — process lifecycle, signals, env validation.

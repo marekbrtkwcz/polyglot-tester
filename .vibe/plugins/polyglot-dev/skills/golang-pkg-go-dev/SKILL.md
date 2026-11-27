@@ -37,3 +37,7 @@ Before importing, check on [pkg.go.dev](https://pkg.go.dev):
 - One new dependency per PR, with the reason written down.
 - Prefer packages that accept interfaces (`io.Reader`) — they compose with stdlib.
 - Check [awesome-go](https://awesome-go.com) for vetted lists by category.
+
+## Related
+
+- Knowledge `go` — Go toolchain and conventions: go.mod, table-driven tests, error wrapping, golangci-lint, everyday commands.

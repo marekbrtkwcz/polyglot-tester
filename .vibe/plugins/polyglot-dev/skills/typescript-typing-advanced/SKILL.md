@@ -47,3 +47,7 @@ Prevents mixing up `UserId` and `OrderId` at compile time.
 
 - `unknown` + narrowing beats `any`; `any` disables checking for everything it touches.
 - For untyped third-party code, write a minimal `.d.ts` instead of `any`.
+
+## Related
+
+- Knowledge `javascript-typescript` — JS/TS toolchain and conventions: package managers, Biome linting, tsconfig strictness, everyday commands.

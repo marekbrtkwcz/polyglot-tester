@@ -27,3 +27,7 @@ description: Load this skill for lint/format/type tooling in JS/TS: Biome vs ESL
 - Pre-commit: lint-staged (or Biome directly) + husky, or plain git hooks; keep hooks fast (<10s) or people bypass them.
 - CI gate must be able to fail: `biome ci`, `tsc --noEmit`, `vitest run` — not `|| true`, not continue-on-error.
 - Cache node_modules and tool caches in CI (actions/cache, pnpm store) for speed.
+
+## Related
+
+- Knowledge `javascript-typescript` — JS/TS toolchain and conventions: package managers, Biome linting, tsconfig strictness, everyday commands.

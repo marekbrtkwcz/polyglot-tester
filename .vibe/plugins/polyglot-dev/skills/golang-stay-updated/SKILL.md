@@ -31,3 +31,7 @@ Since Go 1.0 the language is backwards compatible, and since Go 1.21 the toolcha
 - `go.dev/doc` — spec changes.
 - `pkg.go.dev` — check stdlib additions before writing your own helper (`slices`, `maps`, `cmp`, `log/slog`, `unique`, `structs`...).
 - Rule: before hand-rolling a helper, check if the current stdlib already has it.
+
+## Related
+
+- Knowledge `go` — Go toolchain and conventions: go.mod, table-driven tests, error wrapping, golangci-lint, everyday commands.

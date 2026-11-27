@@ -31,3 +31,7 @@ description: Load this skill for the JS/TS package ecosystem: npm/pnpm/yarn choi
 
 - `npm publish --access public` for scoped; use provenance (`--provenance` in CI with OIDC) instead of long-lived tokens.
 - Tag dist-tags: `latest`, `next`, `beta`; never force-overwrite a published version — publish a patch instead.
+
+## Related
+
+- Knowledge `javascript-typescript` — JS/TS toolchain and conventions: package managers, Biome linting, tsconfig strictness, everyday commands.

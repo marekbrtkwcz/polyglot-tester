@@ -42,3 +42,7 @@ func GetUser(id string) (*User, error) {
 - `if err != nil { return err }` everywhere without adding context — the trace becomes useless.
 - Logging AND returning the error (double handling) — return it, let the top layer log once.
 - `errors.New(fmt.Sprintf(...))` — use `fmt.Errorf` without `%w` when no wrap is needed.
+
+## Related
+
+- Knowledge `go` — Go toolchain and conventions: go.mod, table-driven tests, error wrapping, golangci-lint, everyday commands.

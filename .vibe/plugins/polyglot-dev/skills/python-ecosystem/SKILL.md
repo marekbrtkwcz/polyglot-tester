@@ -35,3 +35,7 @@ description: Load this skill when choosing Python libraries: how to evaluate a p
 - One new dependency per PR with the reason written; review its tree.
 - `pip-audit` + `bandit` in CI as recurring gates.
 - Awesome-python lists for vetted options by category.
+
+## Related
+
+- Knowledge `python` — Python toolchain and conventions: uv/venv, pyproject.toml, pytest, ruff, mypy, everyday commands.

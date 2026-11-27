@@ -44,3 +44,7 @@ type Result<T, E = Error> =
 - Log once, at the boundary: catch at the top level, log with context (request id, user id), return a generic message to the client.
 - Never log secrets (tokens, passwords, PII) — scrub before logging.
 - Include `error.stack` in logs; in production responses send only a safe message + correlation id.
+
+## Related
+
+- Knowledge `javascript-typescript` — JS/TS toolchain and conventions: package managers, Biome linting, tsconfig strictness, everyday commands.

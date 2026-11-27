@@ -26,7 +26,6 @@ async def main():
     results = await asyncio.gather(fetch(a), fetch(b), fetch(c))  # concurrent
     # return_exceptions=True to not fail-fast on first error
 
-
 async with aiohttp.ClientSession() as session:
     ...  # one session per app
 ```
@@ -61,3 +60,7 @@ with ThreadPoolExecutor(max_workers=10) as ex:
 - `asyncio.run()` called twice in one process (loop already running → error); use one loop per app or `nest_asyncio` as a last resort.
 - Fire-and-forget tasks without keeping references.
 - `ProcessPoolExecutor` with lambdas (not picklable) — use top-level functions.
+
+## Related
+
+- Knowledge `python` — Python toolchain and conventions: uv/venv, pyproject.toml, pytest, ruff, mypy, everyday commands.

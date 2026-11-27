@@ -53,3 +53,7 @@ log.info("user_login", user_id=u.id, ip=request.remote_addr)  # kwargs = fields
 
 - `caplog` fixture captures logs in tests; assert on `caplog.records` messages/levels.
 - Or inject a logger (dependency) and assert on a mock — better for unit tests.
+
+## Related
+
+- Knowledge `python` — Python toolchain and conventions: uv/venv, pyproject.toml, pytest, ruff, mypy, everyday commands.

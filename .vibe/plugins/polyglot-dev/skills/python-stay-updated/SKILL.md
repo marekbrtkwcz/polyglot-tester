@@ -32,3 +32,7 @@ description: Load this skill when upgrading Python or its toolchain: version EOL
 ## Official sources
 
 - Releases & EOL: python.org/downloads · What's New: docs.python.org/3/whatsnew · PEP index: peps.python.org
+
+## Related
+
+- Knowledge `python` — Python toolchain and conventions: uv/venv, pyproject.toml, pytest, ruff, mypy, everyday commands.

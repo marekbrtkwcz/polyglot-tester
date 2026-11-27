@@ -45,3 +45,7 @@ logger.Info("user logged in", "user_id", u.ID, "ip", r.RemoteAddr)
 ## Testing
 
 - Inject the logger (field or param), in tests use `slog.New(slog.NewTextHandler(io.Discard, nil))` to silence, or a buffer handler to assert on output.
+
+## Related
+
+- Knowledge `go` — Go toolchain and conventions: go.mod, table-driven tests, error wrapping, golangci-lint, everyday commands.

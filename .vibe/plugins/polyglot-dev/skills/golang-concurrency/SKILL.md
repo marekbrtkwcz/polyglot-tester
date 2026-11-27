@@ -49,3 +49,7 @@ func processAll(ctx context.Context, items []Item) error {
 - Starting a goroutine per request without a bound (use a semaphore channel or errgroup `SetLimit`).
 - Sharing a loop variable in a closure (fixed in Go 1.22 — know your module's `go` directive).
 - `time.Sleep` in code to "wait for" a goroutine — use a channel/WaitGroup.
+
+## Related
+
+- Knowledge `go` — Go toolchain and conventions: go.mod, table-driven tests, error wrapping, golangci-lint, everyday commands.

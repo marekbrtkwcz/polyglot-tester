@@ -55,3 +55,7 @@ def db_session():
 - Module-level mutable globals are a testing and concurrency hazard — pass dependencies explicitly (constructor injection).
 - If you need app-wide singletons (config, logger), initialize once in one place and pass references; tests can then swap them.
 - Logging: `logging.getLogger(__name__)` per module is the idiom — never `print` in library code.
+
+## Related
+
+- Knowledge `python` — Python toolchain and conventions: uv/venv, pyproject.toml, pytest, ruff, mypy, everyday commands.

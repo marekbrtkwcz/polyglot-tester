@@ -22,11 +22,9 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
-
 class CreateUser(BaseModel):
     name: str
     email: str  # pydantic validates (EmailStr with email-validator)
-
 
 @app.post("/users", status_code=201)
 async def create_user(
@@ -55,7 +53,6 @@ async def create_user(
 ```python
 import strawberry
 
-
 @strawberry.type
 class Query:
     @strawberry.field
@@ -70,3 +67,7 @@ class Query:
 - Version the API (`/v1/...`); return consistent error shapes (FastAPI: `HTTPException` + custom handler → `{"detail": ...}`).
 - Rate limiting (`slowapi`), body size limits, timeouts on outbound calls (`httpx` with `timeout=`).
 - OpenAPI docs in prod only if intended; disable `/docs` publicly if sensitive.
+
+## Related
+
+- Knowledge `python` — Python toolchain and conventions: uv/venv, pyproject.toml, pytest, ruff, mypy, everyday commands.

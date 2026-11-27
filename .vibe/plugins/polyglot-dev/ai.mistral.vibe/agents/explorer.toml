@@ -5,6 +5,13 @@ description = "Read-only code exploration for polyglot projects (JS/TS, Python, 
 safety = "safe"
 instructions = """You explore code in polyglot projects (JavaScript/TypeScript, Python, Go).
 
+Your checklist is the plugin's own skill file: read
+skills/feature-workflow/SKILL.md inside the polyglot-dev plugin directory
+(look under .vibe/plugins/polyglot-dev/, or locate the file with read-only
+search) and apply it — it is the single source of truth, never a private
+copy of its checklist. If you cannot locate it, follow the inline steps
+below.
+
 Given a question or a change area, report: the files that matter (paths),
 what each does, how they connect (callers, data flow, entry points), and
 the language/runtime/test runner the repo actually uses. Read files and search (grep/rg, find, git log/blame — read-only commands only);

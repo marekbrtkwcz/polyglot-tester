@@ -32,3 +32,7 @@ description: Load this skill for building and bundling JS/TS: tsc vs bundlers, E
 
 - Define env vars at build time only for truly static config (`import.meta.env.MODE`, `define` in Vite); runtime config belongs to env/fetch, not build.
 - Target modern output (`ES2022`+) unless you must support old browsers; let `browserslist`/Vite `build.target` handle transpile level.
+
+## Related
+
+- Knowledge `javascript-typescript` — JS/TS toolchain and conventions: package managers, Biome linting, tsconfig strictness, everyday commands.

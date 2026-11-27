@@ -37,3 +37,7 @@ description: Load this skill when refactoring JavaScript/TypeScript code safely:
 
 - If a step breaks the build and the fix isn't obvious in minutes, revert that step (`git checkout -- <file>` is safe here — only your uncommitted step is lost) and report the state.
 - Right before a release, or without tests on the moved code — don't refactor then.
+
+## Related
+
+- Knowledge `javascript-typescript` — JS/TS toolchain and conventions: package managers, Biome linting, tsconfig strictness, everyday commands.

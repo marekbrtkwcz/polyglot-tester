@@ -90,3 +90,7 @@ for i := 0; i < 5; i++ {
 port := flag.Int("port", 8080, "listen port")
 flag.Parse()
 ```
+
+## Related
+
+- Knowledge `go` — Go toolchain and conventions: go.mod, table-driven tests, error wrapping, golangci-lint, everyday commands.

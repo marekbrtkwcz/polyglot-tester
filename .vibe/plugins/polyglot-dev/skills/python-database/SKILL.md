@@ -37,3 +37,7 @@ description: Load this skill when working with databases from Python: SQLAlchemy
 - Bound parameters everywhere (`text("... :param")` with dict, or driver placeholders `%s`); never f-strings into SQL.
 - Set `statement_timeout` for user-facing queries; cap result sizes (`LIMIT`).
 - Verify index usage with `EXPLAIN (ANALYZE, BUFFERS)` on slow queries.
+
+## Related
+
+- Knowledge `python` — Python toolchain and conventions: uv/venv, pyproject.toml, pytest, ruff, mypy, everyday commands.

@@ -29,3 +29,7 @@ description: Load this skill to stay current with JavaScript/TypeScript: ECMAScr
 
 - Monthly: `npm outdated`, Dependabot/Renovate PRs reviewed, `npm audit fix` for safe fixes.
 - Major dep bumps: check migration guides, run E2E tests, watch error tracker after deploy.
+
+## Related
+
+- Knowledge `javascript-typescript` — JS/TS toolchain and conventions: package managers, Biome linting, tsconfig strictness, everyday commands.

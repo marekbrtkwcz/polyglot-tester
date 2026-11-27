@@ -8,6 +8,14 @@ versioning is semantic.
 
 ### Added
 
+- Collection cross-wiring from the qualitative audit: all 55 per-language
+  skills (`golang-*`, `python-*`, `typescript-*`) now link their language
+  knowledge folder (`go`, `python`, `javascript-typescript`) in a `## Related`
+  section, and 7 of 9 agents (`doc-writer`, `test-runner`,
+  `performance-profiler`, `refactorer`, `planner`, `explorer`, `onboarder`)
+  point at the plugin's own skill or knowledge files as the single source of
+  truth instead of carrying a private copy of the checklist — matching the
+  pattern `code-reviewer` and `security-auditor` already used.
 - Two per-language skills closing the parity gaps: `python-graphql`
   (Strawberry/Ariadne/Graphene, schema design, DataLoader, depth limits) and
   `typescript-logging` (pino vs winston, AsyncLocalStorage correlation IDs,

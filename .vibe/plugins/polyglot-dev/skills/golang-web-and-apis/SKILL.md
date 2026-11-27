@@ -47,3 +47,7 @@ srv.Shutdown(ctx) // drains in-flight requests
 
 - `httptest.NewRecorder` + `httptest.NewRequest` — test handlers without a network.
 - Table-driven tests over routes: method, path, body, want status, want JSON.
+
+## Related
+
+- Knowledge `go` — Go toolchain and conventions: go.mod, table-driven tests, error wrapping, golangci-lint, everyday commands.

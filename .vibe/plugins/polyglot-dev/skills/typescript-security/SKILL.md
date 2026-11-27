@@ -36,3 +36,7 @@ description: Load this skill for JS/TS application security: XSS and injection, 
 
 - Lockfiles committed; review new dependencies (`npm view <pkg>`, check maintainer activity, weekly downloads).
 - Be wary of install scripts (`--ignore-scripts` where feasible); pin versions for critical deps.
+
+## Related
+
+- Knowledge `javascript-typescript` — JS/TS toolchain and conventions: package managers, Biome linting, tsconfig strictness, everyday commands.
