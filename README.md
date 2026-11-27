@@ -118,6 +118,7 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Knowledge | `polyglot-dev:javascript-typescript`, `polyglot-dev:python`, `polyglot-dev:go`, `polyglot-dev:ci-cd`, `polyglot-dev:testing`, `polyglot-dev:docker`, `polyglot-dev:databases`, `polyglot-dev:security`, `polyglot-dev:cloud`, `polyglot-dev:architecture` | Toolchains, conventions, and diagnostics per language plus CI/CD, testing, containers, databases, security, cloud, architecture patterns |
 | Hook | `guard-destructive-commands` | Pre-tool guard on every shell tool — `bash`/`git_bash`/`powershell`, background included (see below) |
 | Hook | `guard-secrets-in-git` | On `git add`/`git commit`, scans staged/unstaged/untracked content for secret patterns and blocks the command |
+| Hook | `guard-secrets-in-files` | Before `write_file`/`edit`, scans the text about to be written for the same secret patterns and blocks the write |
 | Hook | `guard-wip-commit-message` | Blocks `git commit` with a WIP/DO NOT MERGE subject (see below) |
 | Hook | `pre-push-checks` | Before `git push`, runs the README-drift check and structure tests (see below) |
 
@@ -160,6 +161,13 @@ and untracked files (skipping lockfiles and minified bundles) for likely
 secrets: AWS keys, GitHub/Slack/Stripe/Google tokens, private key blocks, and
 generic `api_key`/`secret`/`token` assignments. Findings are reported masked
 (first/last characters only) and the command is blocked.
+
+The same script runs before `write_file` and `edit` calls: the text about to
+be written (`content`, or `new_string` for edits) is scanned with the same
+patterns, so a secret is blocked at write time — outside git repositories
+too. An edit whose `old_string` holds a secret and whose `new_string` is clean
+passes (it removes the secret); lockfile paths are skipped like on the git
+side.
 
 Override for a deliberate, informed case: `POLYGLOT_SECRETS_DISABLED=1`.
 

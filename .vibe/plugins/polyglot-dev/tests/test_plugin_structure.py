@@ -171,16 +171,26 @@ def _hooks():
     return data.get("hooks", [])
 
 
-def test_pre_tool_hooks_match_every_shell_tool():
-    # The agent's shell calls go through different tool names per platform
-    # and mode: `bash`, Windows `git_bash`/`powershell`, and background
-    # `process_start`. A hook matching only one of them is bypassable.
+def test_pre_tool_hooks_cover_whole_tool_class():
+    # A hook guarding a tool class must cover every variant of that class,
+    # or it is bypassable: shell calls arrive as `bash`, Windows
+    # `git_bash`/`powershell`, and background `process_start`; file writes
+    # arrive as `write_file` and `edit`.
+    classes = {
+        "shell": ("bash", "git_bash", "powershell", "process_start"),
+        "file writes": ("write_file", "edit"),
+    }
     for hook in _hooks():
         if hook.get("type") != "pre_tool":
             continue
         match = hook.get("match", "")
-        for tool in ("bash", "git_bash", "powershell", "process_start"):
-            assert tool in match, f"{hook.get('name')}: match does not cover {tool}"
+        for cls_name, tools in classes.items():
+            if any(tool in match for tool in tools):
+                for tool in tools:
+                    assert tool in match, (
+                        f"{hook.get('name')}: match covers {cls_name} "
+                        f"only partially: missing {tool}"
+                    )
 
 
 def test_hook_commands_fallback_to_python3():

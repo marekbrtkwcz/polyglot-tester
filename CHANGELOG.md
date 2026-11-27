@@ -53,6 +53,12 @@ versioning is semantic.
   release-and-changelog, unit-testing), and security-polyglot,
   refactoring-polyglot, and testing-polyglot gained knowledge-folder
   pointers in their existing sections.
+- `guard-secrets-in-files` hook: `write_file` and `edit` payloads are
+  scanned for the same secret patterns before the text lands in a file —
+  a secret is caught at write time (inside or outside a git repository),
+  not only at the next `git add`. An edit that *removes* a secret passes,
+  lockfile paths are skipped, and the structure test now enforces that a
+  hook guarding a tool class covers every variant of that class.
 
 ### Changed
 

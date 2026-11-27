@@ -1,9 +1,13 @@
-"""Pre-tool guard: block committing likely secrets.
+"""Pre-tool guard: block committing or writing likely secrets.
 
 When a bash command contains `git add` or `git commit`, scans the staged
 diff, the unstaged diff, and untracked files for known secret patterns
 (AWS keys, GitHub/Slack/Stripe tokens, private key blocks, generic
 api_key/secret assignments). Exits non-zero with the findings on stderr.
+
+When a `write_file`/`edit` payload carries the text about to be written
+(`content`/`new_string`), scans that text too, so a secret is caught the
+moment it would land in a file — not only at the next `git add`.
 
 Fail-open on anything unreadable: the guard must never brick a session.
 
@@ -111,6 +115,54 @@ def find_secrets(text):
     return findings
 
 
+CONTENT_KEYS = ("content", "new_string")
+PATH_KEYS = ("path", "file_path")
+
+
+def extract_written_strings(payload, keys=CONTENT_KEYS):
+    """Collect the text a write/edit payload is about to write.
+
+    `new_string` only, never `old_string`: an edit that replaces a secret
+    with a clean value must pass.
+    """
+    found = []
+    if not isinstance(payload, dict):
+        return found
+    for key in keys:
+        value = payload.get(key)
+        if isinstance(value, str):
+            found.append(value)
+    for value in payload.values():
+        found.extend(extract_written_strings(value, keys))
+    return found
+
+
+def extract_written_path(payload):
+    """The target file path from a write/edit payload, when present."""
+    if not isinstance(payload, dict):
+        return None
+    for key in PATH_KEYS:
+        value = payload.get(key)
+        if isinstance(value, str):
+            return value
+    for value in payload.values():
+        found = extract_written_path(value)
+        if found:
+            return found
+    return None
+
+
+def scan_written_text(payload):
+    """Secrets in the text a write/edit payload is about to write."""
+    written = extract_written_strings(payload)
+    if not written:
+        return []
+    path = extract_written_path(payload)
+    if path and SKIP_PATHS.search(path.replace("\\", "/")):
+        return []
+    return find_secrets("\n".join(written))
+
+
 def main():
     if os.environ.get("POLYGLOT_SECRETS_DISABLED"):
         return 0
@@ -120,6 +172,16 @@ def main():
         payload = json.loads(raw) if raw.strip() else {}
     except Exception:  # noqa: BLE001 - fail open, never brick the session
         return 0
+
+    if isinstance(payload, dict):
+        findings = scan_written_text(payload)
+        if findings:
+            sys.stderr.write(
+                "blocked by polyglot-dev secrets guard: likely secret(s) in the file being written:\n"
+                + "\n".join(f"  - {f}" for f in findings[:20])
+                + "\nIf this is a false positive (test fixture, docs), set POLYGLOT_SECRETS_DISABLED=1.\n"
+            )
+            return 1
 
     command = extract_command(payload)
     if not command or not GIT_TRIGGER.search(command):

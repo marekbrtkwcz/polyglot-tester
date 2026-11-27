@@ -128,3 +128,77 @@ def test_hook_skips_lockfiles(repo):
     stage(repo, "package-lock.json", '"api_key": "abcdef1234567890abcd"\n')
     result = run_hook({"command": "git commit -m chore"}, cwd=repo)
     assert result.returncode == 0
+
+
+# --- write/edit payload mode -------------------------------------------------
+
+
+def test_hook_blocks_write_file_with_aws_key():
+    result = run_hook(
+        {"path": "config.py", "content": "key = 'AKIAIOSFODNN7EXAMPLE'\n"}
+    )
+    assert result.returncode == 1
+    assert b"AWS access key" in result.stderr
+
+
+def test_hook_blocks_edit_inserting_github_token():
+    result = run_hook(
+        {
+            "file_path": "settings.py",
+            "old_string": "token = None",
+            "new_string": "token = 'ghp_" + "C" * 36 + "'",
+        }
+    )
+    assert result.returncode == 1
+    assert b"GitHub token" in result.stderr
+
+
+def test_hook_blocks_nested_write_payload():
+    result = run_hook(
+        {"tool_input": {"path": "x.py", "content": "k = 'AKIAIOSFODNN7EXAMPLE'"}}
+    )
+    assert result.returncode == 1
+
+
+def test_hook_allows_clean_write_file():
+    result = run_hook({"path": "main.py", "content": "print('hello')\n"})
+    assert result.returncode == 0
+
+
+def test_hook_allows_edit_removing_a_secret():
+    # old_string carries the secret being deleted — the file ends up
+    # cleaner, so the write must pass
+    result = run_hook(
+        {
+            "file_path": "settings.py",
+            "old_string": "token = 'ghp_" + "D" * 36 + "'",
+            "new_string": "token = os.environ['TOKEN']",
+        }
+    )
+    assert result.returncode == 0
+
+
+def test_hook_write_file_skips_lockfile_paths():
+    result = run_hook(
+        {
+            "path": "package-lock.json",
+            "content": '"api_key": "abcdef1234567890abcd"\n',
+        }
+    )
+    assert result.returncode == 0
+
+
+def test_hook_write_file_env_override_disables():
+    result = run_hook(
+        {"path": "config.py", "content": "key = 'AKIAIOSFODNN7EXAMPLE'\n"},
+        env_extra={"POLYGLOT_SECRETS_DISABLED": "1"},
+    )
+    assert result.returncode == 0
+
+
+def test_hook_write_mode_works_outside_git_repo(tmp_path):
+    result = run_hook(
+        {"path": "config.py", "content": "key = 'AKIAIOSFODNN7EXAMPLE'\n"},
+        cwd=tmp_path,
+    )
+    assert result.returncode == 1

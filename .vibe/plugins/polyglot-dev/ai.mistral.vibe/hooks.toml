@@ -13,6 +13,13 @@ command = "python guard_secrets.py || python3 guard_secrets.py"
 strict = true
 
 [[hooks]]
+name = "guard-secrets-in-files"
+type = "pre_tool"
+match = "re:write_file|edit"
+command = "python guard_secrets.py || python3 guard_secrets.py"
+strict = true
+
+[[hooks]]
 name = "guard-wip-commit-message"
 type = "pre_tool"
 match = "re:bash|git_bash|powershell|process_start"
