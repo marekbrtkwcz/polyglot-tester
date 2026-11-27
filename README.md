@@ -23,7 +23,7 @@ and a safety hook that blocks destructive shell commands before they run.
 5. **Ship it**: `git-workflow-polyglot` for the branch/commit/PR flow,
    `release-and-changelog` for versioning and release notes.
 
-The `guard-destructive-commands` hook is active from the first run — a
+The `polyglot-dev-guards` hook is active from the first run — a
 mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 
 ## Components
@@ -119,15 +119,16 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Agent | `polyglot-dev:performance-profiler` | Picks the right profiler per stack, reads the output, reports bottlenecks with evidence |
 | Agent | `polyglot-dev:onboarder` | Read-only repo explorer producing a newcomer's map: stack, layout, commands, conventions |
 | Knowledge | `polyglot-dev:javascript-typescript`, `polyglot-dev:python`, `polyglot-dev:go`, `polyglot-dev:ci-cd`, `polyglot-dev:testing`, `polyglot-dev:docker`, `polyglot-dev:databases`, `polyglot-dev:security`, `polyglot-dev:cloud`, `polyglot-dev:architecture` | Toolchains, conventions, and diagnostics per language plus CI/CD, testing, containers, databases, security, cloud, architecture patterns |
-| Hook | `guard-destructive-commands` | Pre-tool guard on every shell tool — `bash`/`git_bash`/`powershell`, background included (see below) |
-| Hook | `guard-secrets-in-git` | On `git add`/`git commit`, scans staged/unstaged/untracked content for secret patterns and blocks the command |
-| Hook | `guard-secrets-in-files` | Before `write_file`/`edit`, scans the text about to be written for the same secret patterns and blocks the write |
-| Hook | `guard-wip-commit-message` | Blocks `git commit` with a WIP/DO NOT MERGE subject (see below) |
-| Hook | `pre-push-checks` | Before `git push`, runs the README-drift check and structure tests (see below) |
+| Hook | `polyglot-dev-guards` | One `pre_tool` hook on every shell tool and file write, run as a single Python process (`guard_all.py`): destructive commands, secrets in git and in written files, WIP commit subjects, pre-push checks (see below) |
 
 ## The destructive-command guard
 
-`guard_destructive.py` runs before every shell tool call — `bash`, `git_bash`, `powershell`, including background `process_start` commands — and blocks:
+All guards run in ONE Python process per tool call: `hooks.toml` declares a
+single `pre_tool` hook (`polyglot-dev-guards`, matching `bash`/`git_bash`/
+`powershell`/`process_start`/`write_file`/`edit`) whose `guard_all.py`
+entrypoint reads the payload once and runs every check described below.
+
+`guard_destructive.py` guards every shell tool call — `bash`, `git_bash`, `powershell`, including background `process_start` commands — and blocks:
 
 - `rm` combining recursive + force in **any flag spelling**: `-rf`, `-fr`,
   `-r -f`, `-r dir -f`, `--recursive --force`, inside `sudo`, `xargs`, or a

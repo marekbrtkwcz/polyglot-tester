@@ -1,34 +1,6 @@
 [[hooks]]
-name = "guard-destructive-commands"
+name = "polyglot-dev-guards"
 type = "pre_tool"
-match = "re:bash|git_bash|powershell|process_start"
-command = "python guard_destructive.py || python3 guard_destructive.py"
-strict = true
-
-[[hooks]]
-name = "guard-secrets-in-git"
-type = "pre_tool"
-match = "re:bash|git_bash|powershell|process_start"
-command = "python guard_secrets.py || python3 guard_secrets.py"
-strict = true
-
-[[hooks]]
-name = "guard-secrets-in-files"
-type = "pre_tool"
-match = "re:write_file|edit"
-command = "python guard_secrets.py || python3 guard_secrets.py"
-strict = true
-
-[[hooks]]
-name = "guard-wip-commit-message"
-type = "pre_tool"
-match = "re:bash|git_bash|powershell|process_start"
-command = "python guard_commit_message.py || python3 guard_commit_message.py"
-strict = true
-
-[[hooks]]
-name = "pre-push-checks"
-type = "pre_tool"
-match = "re:bash|git_bash|powershell|process_start"
-command = "python prepush_checks.py || python3 prepush_checks.py"
+match = "re:bash|git_bash|powershell|process_start|write_file|edit"
+command = "python guard_all.py || python3 guard_all.py"
 strict = true

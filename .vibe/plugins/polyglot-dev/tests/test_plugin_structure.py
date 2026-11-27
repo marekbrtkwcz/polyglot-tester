@@ -193,6 +193,26 @@ def test_pre_tool_hooks_cover_whole_tool_class():
                     )
 
 
+def test_single_guard_entrypoint_hook():
+    # All guards run through one hook (one Python process per tool call);
+    # its match must still cover every shell and file-write tool variant.
+    pre_tool = [h for h in _hooks() if h.get("type") == "pre_tool"]
+    assert len(pre_tool) == 1, (
+        f"expected one consolidated guard hook, got {[h.get('name') for h in pre_tool]}"
+    )
+    hook = pre_tool[0]
+    assert "guard_all.py" in hook["command"], hook["command"]
+    for tool in (
+        "bash",
+        "git_bash",
+        "powershell",
+        "process_start",
+        "write_file",
+        "edit",
+    ):
+        assert tool in hook["match"], f"{hook.get('name')}: match missing {tool}"
+
+
 def test_hook_commands_fallback_to_python3():
     # macOS and modern Linux ship `python3` only. With `strict = true`,
     # a command that names just `python` fails to spawn there and

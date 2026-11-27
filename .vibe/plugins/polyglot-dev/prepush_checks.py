@@ -124,16 +124,9 @@ def read_payload():
         return None
 
 
-def main():
+def run_payload(payload):
+    """Run the pre-push checks against an already-read payload."""
     if os.environ.get("POLYGLOT_PREPUSH_DISABLED") == "1":
-        return 0
-    payload = read_payload()
-    if payload is EMPTY:
-        sys.stderr.write(
-            "pre-push blocked: empty stdin, no payload to inspect (fail-closed)\n"
-        )
-        return 1
-    if payload is None:
         return 0
     command = extract_command(payload)
     if not command or not GIT_PUSH.search(command):
@@ -158,6 +151,18 @@ def main():
         )
         return 1
     return 0
+
+
+def main():
+    payload = read_payload()
+    if payload is EMPTY:
+        sys.stderr.write(
+            "pre-push blocked: empty stdin, no payload to inspect (fail-closed)\n"
+        )
+        return 1
+    if payload is None:
+        return 0
+    return run_payload(payload)
 
 
 if __name__ == "__main__":

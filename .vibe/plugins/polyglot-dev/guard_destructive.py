@@ -293,19 +293,10 @@ def read_payload():
         return None
 
 
-def main():
+def run_payload(payload):
+    """Run every destructive-command check against an already-read payload."""
     if os.environ.get("POLYGLOT_GUARD_DISABLED") == "1":
         return 0
-
-    payload = read_payload()
-    if payload is EMPTY:
-        sys.stderr.write(
-            "blocked by polyglot-dev guard: empty stdin, no payload to inspect "
-            "(fail-closed)\n"
-        )
-        return 1
-    if payload is None:
-        return 0  # never block on a payload we cannot read
 
     command = extract_command(payload)
     if not command:
@@ -331,6 +322,19 @@ def main():
             )
             return 1
     return 0
+
+
+def main():
+    payload = read_payload()
+    if payload is EMPTY:
+        sys.stderr.write(
+            "blocked by polyglot-dev guard: empty stdin, no payload to inspect "
+            "(fail-closed)\n"
+        )
+        return 1
+    if payload is None:
+        return 0  # never block on a payload we cannot read
+    return run_payload(payload)
 
 
 if __name__ == "__main__":

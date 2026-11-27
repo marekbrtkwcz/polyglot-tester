@@ -36,7 +36,7 @@ def test_ignores_non_push_commands():
 
 
 def test_skips_force_push():
-    # history-rewriting pushes belong to guard-destructive-commands
+    # history-rewriting pushes belong to the destructive guard
     assert prepush.FORCE_PUSH.search("git push --force origin main")
     assert prepush.FORCE_PUSH.search("git push -f origin main")  # short flag
     assert prepush.FORCE_PUSH.search("git push origin main -f")

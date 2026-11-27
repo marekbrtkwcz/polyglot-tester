@@ -28,7 +28,7 @@ automate the pass. Grep narrows the field; a human decides.
 - Secrets in history: `gitleaks detect --source .`
 - Cross-language rules: `semgrep --config=auto`.
 - Pre-push, this repo also blocks secret patterns via its
-  `guard-secrets-in-git` hook — the scan above is the CI-side net.
+  `polyglot-dev-guards` hook — the scan above is the CI-side net.
 
 ## Live HTTP header check
 

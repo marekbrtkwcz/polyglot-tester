@@ -19,7 +19,7 @@ description: Load this skill when writing or reviewing security-sensitive code i
 
 - Never in code or git: env vars or a secret manager, fail fast at startup if missing.
 - `.env` local only, gitignored; different secrets per environment.
-- Redact tokens/cookies/API keys from logs in all languages; scan history with gitleaks/trufflehog. This repo's `guard-secrets-in-git` hook blocks secret patterns on `git add`/`git commit`.
+- Redact tokens/cookies/API keys from logs in all languages; scan history with gitleaks/trufflehog. This repo's `polyglot-dev-guards` hook blocks secret patterns on `git add`/`git commit`.
 - Rotate on suspicion.
 
 ## Crypto

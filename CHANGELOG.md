@@ -122,6 +122,13 @@ versioning is semantic.
   (mapped by naming convention and package) before the full suite, and it
   reports the runner's coverage summary when the repo already supports
   coverage without adding any new dependency.
+- The five pre-tool hooks are consolidated into ONE hook
+  (`polyglot-dev-guards`) whose new `guard_all.py` entrypoint reads the
+  payload once and runs the destructive-command, secrets, WIP-commit, and
+  pre-push checks in a single Python process per tool call (previously up
+  to five interpreter startups per shell command). Each guard module keeps
+  its own script, its `run_payload(payload)` entry, and its env disable
+  switch; empty stdin still fails closed in the `|| python3` fallback.
 
 ### Fixed
 
