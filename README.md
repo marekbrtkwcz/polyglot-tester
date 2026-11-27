@@ -53,6 +53,7 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Skill | `polyglot-dev:ci-cd-polyglot` | CI/CD setup per stack: gates, matrices, caching, secrets, merge gating, release automation |
 | Skill | `polyglot-dev:docker-polyglot` | Dockerfiles and multi-stage builds per language, compose, rootless Podman, image scanning, tagging |
 | Skill | `polyglot-dev:stay-updated-polyglot` | Official sources, EOL schedules, and a safe one-thing-at-a-time upgrade routine per language |
+| Skill | `polyglot-dev:ai-integration-polyglot` | LLM integration per language: provider SDKs, prompting, structured output, embeddings/RAG, token budgets, prompt-injection safety, LLM feature testing |
 | Skill | `polyglot-dev:golang-error-handling` | Go errors: `%w` wrapping, sentinels, `errors.Is/As`, API error design |
 | Skill | `polyglot-dev:golang-concurrency` | Goroutines, channels, errgroup, context, race/leak prevention |
 | Skill | `polyglot-dev:golang-testing-advanced` | Table-driven tests, testify, mocks, fuzzing, benchmarks, goleak |

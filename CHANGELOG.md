@@ -59,6 +59,13 @@ versioning is semantic.
   not only at the next `git add`. An edit that *removes* a secret passes,
   lockfile paths are skipped, and the structure test now enforces that a
   hook guarding a tool class covers every variant of that class.
+- New skill `ai-integration-polyglot`: integrating LLM APIs in JS/TS,
+  Python, and Go — provider/SDK choice behind one adapter, prompt
+  structure, structured output, embeddings and vector search, RAG
+  basics, token budgets and cost/latency control, prompt-injection
+  safety, and testing LLM-backed features. Ships with its must-fire
+  activation case (A9) in `evals/activation-cases.md` per the coverage
+  rule.
 
 ### Changed
 

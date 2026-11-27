@@ -63,6 +63,12 @@ Per case, scored per trial (same as the collision cases):
 | A7 | "The app ships in Polish and German; where do we stand for Arabic?" | `i18n-polyglot` | `feature-workflow` |
 | A8 | "A blind employee cannot place an order in the dashboard — find out where the UI blocks them" | `accessibility-polyglot` | `debugging-polyglot` |
 
+## AI integration
+
+| # | Prompt (as a user would type it) | Must fire | Must not dominate |
+| --- | --- | --- | --- |
+| A9 | "Our support bot invents refund rules that don't exist — plug it into a real model and make it answer only from our own docs" | `ai-integration-polyglot` | `debugging-polyglot` |
+
 ## Backlog
 
 The starter set covers the workflow backbone only. Extend per the
