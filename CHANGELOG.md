@@ -144,6 +144,10 @@ versioning is semantic.
   plugin directory no longer raises `ModuleNotFoundError` before the
   `sys.path` fix runs.
 - `guard_all.py` added to `--paths-to-mutate` in the mutation workflow.
+- `ai-integration-polyglot` now names the official Mistral SDKs per language
+  (`mistralai` for Python, `@mistralai/mistralai` for JS/TS,
+  `mistralai/client-go` for Go, key in `MISTRAL_API_KEY`) alongside the
+  other providers.
 
 - `pre-push-checks` is now a silent no-op when the plugin is installed in a
   project other than its own repository: it no longer prints `skipped` noise
