@@ -1,9 +1,10 @@
 """Pre-tool guard: block destructive shell commands before they run.
 
-Reads the tool-call JSON on stdin, looks for the bash command string in
-common payload shapes, and exits non-zero (with a reason on stderr) when the
-command matches a destructive pattern. Unrecognized payloads pass through so
-the guard can never brick the session.
+Reads the tool-call JSON on stdin, looks for the shell command string
+(bash, Git Bash, or PowerShell) in common payload shapes, and exits
+non-zero (with a reason on stderr) when the command matches a destructive
+pattern. Unrecognized payloads pass through so the guard can never brick
+the session.
 
 Environment overrides (for deliberate, informed use):
   POLYGLOT_GUARD_DISABLED=1              disable every block
@@ -32,6 +33,12 @@ BLOCKED_PATTERNS = [
     (r"\bkubectl\s+delete\b[^;|&]*\s--all(?:-namespaces)?\b", "kubectl delete --all: removes every resource in scope"),
     (r"\bgit\s+push\b[^;|&]*\s--delete\b", "git push --delete: removes a remote branch"),
     (r"\bgit\s+push\b[^;|&]*\s(?::\S+)", "git push :ref: deletes the remote branch"),
+    # PowerShell equivalents, for the `powershell` shell tool on native
+    # Windows. Long parameters only: -Recurse without -Force passes, like
+    # `rm -r` does; `rm -Recurse -Force` is already caught by is_bulk_rm.
+    (r"(?i:\b(?:remove-item|del|erase|rd|ri)\b(?=[^;|&]*\s-[a-z]*recurse)(?=[^;|&]*\s-[a-z]*force))", "Remove-Item -Recurse -Force: irreversible bulk delete"),
+    (r"(?i:\bformat-volume\b)", "Format-Volume: formats the volume, destroying all data on it"),
+    (r"(?i:\bclear-disk\b[^;|&]*\s-remove[a-z]*)", "Clear-Disk -RemoveData: wipes the disk"),
 ]
 
 # git push to a protected branch, unless explicitly allowed via env.
@@ -87,7 +94,9 @@ def is_bulk_rm(command):
     """True when any rm invocation combines recursive and force.
 
     Catches every flag spelling: -rf, -fr, -r -f, -fr --force, -r dir -f,
-    --recursive --force, and rm invocations inside a command chain.
+    --recursive --force, the uppercase GNU -R, the capitalized PowerShell
+    -Recurse/-Force long parameters, and rm invocations inside a command
+    chain.
     """
     for match in re.finditer(r"\brm\b", command):
         segment = segment_after(command, match.end())
@@ -102,9 +111,10 @@ def is_bulk_rm(command):
                 elif token == "--force":
                     force = True
             elif token.startswith("-") and len(token) > 1:
-                if "r" in token[1:]:
+                flags = token[1:].lower()
+                if "r" in flags:
                     recursive = True
-                if "f" in token[1:]:
+                if "f" in flags:
                     force = True
         if recursive and force:
             return True

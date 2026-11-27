@@ -4,6 +4,32 @@ All notable changes to the polyglot-dev plugin are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning is semantic.
 
+## [Unreleased]
+
+### Added
+
+- PowerShell destructive-command patterns for the `powershell` shell tool:
+  `Remove-Item` (and its `rm`/`del`/`erase`/`rd`/`ri` aliases) with both
+  `-Recurse` and `-Force`, `Format-Volume`, `Clear-Disk -RemoveData`.
+  Near-misses keep bash parity: `-Recurse` without `-Force` passes like
+  `rm -r`.
+
+### Changed
+
+- All four pre-tool hooks now match `re:bash|git_bash|powershell|process_start`:
+  commands the agent starts in the background or through the Windows managed
+  shell tools no longer bypass the destructive-command, secrets, WIP-commit,
+  and pre-push guards.
+- Hook commands try `python` and fall back to `python3`, so on macOS and
+  modern Linux (which ship `python3` only) the guards keep working instead
+  of denying every guarded shell call under `strict = true`.
+
+### Fixed
+
+- `rm` flag detection in the destructive-command guard is now
+  case-insensitive: the GNU uppercase spelling `rm -Rf` and the capitalized
+  PowerShell `-Recurse`/`-Force` parameters no longer bypass it.
+
 ## [1.5.0] - 2026-11-27
 
 ### Added

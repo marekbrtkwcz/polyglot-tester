@@ -116,14 +116,14 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Agent | `polyglot-dev:performance-profiler` | Picks the right profiler per stack, reads the output, reports bottlenecks with evidence |
 | Agent | `polyglot-dev:onboarder` | Read-only repo explorer producing a newcomer's map: stack, layout, commands, conventions |
 | Knowledge | `polyglot-dev:javascript-typescript`, `polyglot-dev:python`, `polyglot-dev:go`, `polyglot-dev:ci-cd`, `polyglot-dev:testing`, `polyglot-dev:docker`, `polyglot-dev:databases`, `polyglot-dev:security`, `polyglot-dev:cloud`, `polyglot-dev:architecture` | Toolchains, conventions, and diagnostics per language plus CI/CD, testing, containers, databases, security, cloud, architecture patterns |
-| Hook | `guard-destructive-commands` | Pre-tool guard on `bash` (see below) |
+| Hook | `guard-destructive-commands` | Pre-tool guard on every shell tool — `bash`/`git_bash`/`powershell`, background included (see below) |
 | Hook | `guard-secrets-in-git` | On `git add`/`git commit`, scans staged/unstaged/untracked content for secret patterns and blocks the command |
 | Hook | `guard-wip-commit-message` | Blocks `git commit` with a WIP/DO NOT MERGE subject (see below) |
 | Hook | `pre-push-checks` | Before `git push`, runs the README-drift check and structure tests (see below) |
 
 ## The destructive-command guard
 
-`guard_destructive.py` runs before every `bash` tool call and blocks:
+`guard_destructive.py` runs before every shell tool call — `bash`, `git_bash`, `powershell`, including background `process_start` commands — and blocks:
 
 - `rm` combining recursive + force in **any flag spelling**: `-rf`, `-fr`,
   `-r -f`, `-r dir -f`, `--recursive --force`, inside `sudo`, `xargs`, or a
@@ -139,6 +139,9 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
   `/dev/vd*`, `/dev/xvd*`, `/dev/hd*`)
 - `kubectl delete --all` / `--all-namespaces`
 - `git push --delete` and the `git push origin :branch` delete-refspec form
+- PowerShell equivalents (the `powershell` tool): `Remove-Item` and its
+  `rm`/`del`/`erase`/`rd`/`ri` aliases combining `-Recurse` with `-Force`,
+  `Format-Volume`, `Clear-Disk -RemoveData`/`-RemoveOEM`
 
 Unrecognized or unreadable payloads always pass through: the guard can never
 brick a session. Failures exit non-zero with the reason on stderr.
@@ -150,7 +153,8 @@ Deliberate overrides via environment variables:
 
 ## The secrets guard
 
-`guard_secrets.py` also runs as a `pre_tool` hook on `bash`. When the command
+`guard_secrets.py` also runs as a `pre_tool` hook on every shell tool
+(see the destructive-command guard). When the command
 contains `git add` or `git commit`, it scans the staged diff, unstaged diff,
 and untracked files (skipping lockfiles and minified bundles) for likely
 secrets: AWS keys, GitHub/Slack/Stripe/Google tokens, private key blocks, and
@@ -161,14 +165,14 @@ Override for a deliberate, informed case: `POLYGLOT_SECRETS_DISABLED=1`.
 
 ## The WIP commit guard
 
-`guard_commit_message.py` (`pre_tool` on `bash`) blocks `git commit` whose
+`guard_commit_message.py` (`pre_tool` on every shell tool) blocks `git commit` whose
 subject starts with `WIP`/`[WIP]`/`DO NOT MERGE` — taken from the first
 `-m`/`--message` argument or the first line of a `-F` message file. Commits
 without inline messages (editor flow) pass. Override: `POLYGLOT_WIP_DISABLED=1`.
 
 ## The pre-push checks
 
-`prepush_checks.py` (`pre_tool` on `bash`) runs fast local checks before a
+`prepush_checks.py` (`pre_tool` on every shell tool) runs fast local checks before a
 plain `git push`: the README/skills drift check and the plugin structure
 test suite. A failing check blocks the push with the output on stderr;
 history-rewriting pushes are left to the destructive-command guard. The hook
@@ -187,6 +191,10 @@ User global (available in every project):
 ```
 ~/.vibe/plugins/polyglot-dev/
 ```
+
+The hooks need Python 3.11+ on PATH — `python` or `python3`; every hook
+command tries `python` first and falls back to `python3`. With no Python at
+all, guarded commands are blocked (fail-closed) rather than silently allowed.
 
 Then run `/reload` in your Vibe session.
 

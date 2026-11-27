@@ -51,6 +51,9 @@ def run_hook(payload, env_extra=None):
         "xargs rm -rf",
         "rm -rf build; echo done",
         "rm  -rf  build",
+        "rm -Rf build",  # GNU uppercase-R spelling
+        "rm -R -f build",
+        "rm -Recurse -Force build",  # PowerShell long parameters
     ],
 )
 def test_bulk_rm_blocked(command):
@@ -99,6 +102,49 @@ def test_git_patterns_blocked(command):
 
 def test_force_with_lease_allowed():
     result = run_hook({"command": "git push origin feature/x --force-with-lease"})
+    assert result.returncode == 0
+
+
+# --- PowerShell equivalents (the powershell tool on native Windows) -----------
+
+
+@pytest.mark.parametrize(
+    "command",
+    [
+        "Remove-Item -Recurse -Force build",
+        "Remove-Item -Force -Recurse build",
+        "Remove-Item build -Recurse -Force",
+        "Remove-Item -Path build -Recurse -Force",
+        "remove-item -recurse -force build",
+        "Remove-Item -Recurse -Force build; echo done",
+        "del -Recurse -Force build",
+        "erase -Recurse -Force build",
+        "rd -Recurse -Force build",
+        "ri -Recurse -Force build",
+        "rm -Recurse -Force build",  # PS alias of Remove-Item
+        "Format-Volume -DriveLetter D",
+        "Clear-Disk -Number 0 -RemoveData",
+        "Clear-Disk -Number 0 -RemoveData -RemoveOEM",
+    ],
+)
+def test_powershell_destructive_blocked(command):
+    result = run_hook({"command": command})
+    assert result.returncode == 1
+    assert b"blocked by polyglot-dev guard" in result.stderr
+
+
+@pytest.mark.parametrize(
+    "command",
+    [
+        "Remove-Item build",  # no flags
+        "Remove-Item -Force build.log",  # force without recurse
+        "Remove-Item -Recurse build",  # recurse without force, like `rm -r`
+        "rm -Recurse build",  # alias, recurse only
+        "Remove-Item -Recurse build; echo -Force",  # -Force belongs to echo
+    ],
+)
+def test_powershell_near_misses_allowed(command):
+    result = run_hook({"command": command})
     assert result.returncode == 0
 
 

@@ -1,27 +1,27 @@
 [[hooks]]
 name = "guard-destructive-commands"
 type = "pre_tool"
-match = "bash"
-command = "python guard_destructive.py"
+match = "re:bash|git_bash|powershell|process_start"
+command = "python guard_destructive.py || python3 guard_destructive.py"
 strict = true
 
 [[hooks]]
 name = "guard-secrets-in-git"
 type = "pre_tool"
-match = "bash"
-command = "python guard_secrets.py"
+match = "re:bash|git_bash|powershell|process_start"
+command = "python guard_secrets.py || python3 guard_secrets.py"
 strict = true
 
 [[hooks]]
 name = "guard-wip-commit-message"
 type = "pre_tool"
-match = "bash"
-command = "python guard_commit_message.py"
+match = "re:bash|git_bash|powershell|process_start"
+command = "python guard_commit_message.py || python3 guard_commit_message.py"
 strict = true
 
 [[hooks]]
 name = "pre-push-checks"
 type = "pre_tool"
-match = "bash"
-command = "python prepush_checks.py"
+match = "re:bash|git_bash|powershell|process_start"
+command = "python prepush_checks.py || python3 prepush_checks.py"
 strict = true

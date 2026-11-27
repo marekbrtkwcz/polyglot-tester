@@ -143,5 +143,33 @@ def test_hooks_toml_parseable_with_required_fields():
         assert hook.get("command"), f"{hook.get('name')}: missing command"
 
 
+def _hooks():
+    data = tomllib.loads((VIBE_DIR / "hooks.toml").read_text(encoding="utf-8"))
+    return data.get("hooks", [])
+
+
+def test_pre_tool_hooks_match_every_shell_tool():
+    # The agent's shell calls go through different tool names per platform
+    # and mode: `bash`, Windows `git_bash`/`powershell`, and background
+    # `process_start`. A hook matching only one of them is bypassable.
+    for hook in _hooks():
+        if hook.get("type") != "pre_tool":
+            continue
+        match = hook.get("match", "")
+        for tool in ("bash", "git_bash", "powershell", "process_start"):
+            assert tool in match, f"{hook.get('name')}: match does not cover {tool}"
+
+
+def test_hook_commands_fallback_to_python3():
+    # macOS and modern Linux ship `python3` only. With `strict = true`,
+    # a command that names just `python` fails to spawn there and
+    # escalates to denying every guarded shell call.
+    for hook in _hooks():
+        command = hook.get("command", "")
+        assert "|| python3 " in command, (
+            f"{hook.get('name')}: command lacks a python3 fallback: {command}"
+        )
+
+
 if __name__ == "__main__":
     raise SystemExit(pytest.main([__file__, "-q"]))
