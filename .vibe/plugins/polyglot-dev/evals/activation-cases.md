@@ -87,7 +87,7 @@ dominate. The graphql and logging groups are already covered by A10/A11.
 | --- | --- | --- | --- |
 | A12 | "Our Go service leaks goroutines on every request — find and fix the leak" | `golang-concurrency` | `python-concurrency`, `typescript-async-concurrency` |
 | A13 | "Pass request-scoped values through our Python services without global state" | `python-context` | `golang-context` |
-| A14 | "Our Django ORM fires one query per row in the list endpoint" | `python-database` | `golang-database`, `typescript-database` |
+| A14 | "Our Django ORM fires one query per row in the list endpoint" | `database` | `performance-polyglot` |
 | A15 | "Callers in our Express app can't tell a 404 from a 500 — give them typed errors" | `typescript-error-handling` | `golang-error-handling`, `python-error-handling` |
 | A16 | "Make this TypeScript codebase read idiomatic — modern syntax and small habits" | `typescript-idioms` | `golang-language-idioms`, `python-idioms` |
 | A17 | "Our FastAPI endpoint got slower after the last release — profile it and prove the fix" | `python-performance` | `golang-performance`, `typescript-performance` |
@@ -97,13 +97,24 @@ dominate. The graphql and logging groups are already covered by A10/A11.
 | A21 | "Bump our TypeScript toolchain safely — ES proposals, release notes, Node LTS" | `typescript-stay-updated` | `golang-stay-updated`, `python-stay-updated` |
 | A22 | "Add property-based tests and benchmarks to our Go package" | `golang-testing-advanced` | `python-testing-advanced`, `typescript-testing-advanced` |
 | A23 | "Build a JSON API in Go with middleware order and graceful shutdown" | `golang-web-and-apis` | `python-web-and-apis`, `typescript-web-and-dom` |
+| A24 | "Our Go service opens a new DB connection per request — set up pooling and context-aware queries properly" | `database` | `golang-web-and-apis` |
+
+## Merged groups
+
+The database twin group (`database-polyglot`, `golang-database`,
+`python-database`, `typescript-database`) was merged into the single
+`database` skill with per-language `references/` files on 2026-11-27
+(pilot for progressive disclosure): A14 and A24 gate it. Merging removed
+the group's deferral sentences and its twin-collision rows (collision
+cases 5, 6, 15 now expect `database`).
 
 ## Backlog
 
-Coverage accounting (2026-11-27): 23 of 79 skills have a must-fire case
-(A1–A23): 9 backbone/umbrella skills (A1–A9) and 14 twin skills. Still
-owed: 27 twin skills (the other languages in each group) and 29 non-twin
-skills — 56 total.
+Coverage accounting (2026-11-27, after the database merge): 24 of 76
+skills have a must-fire case (A1–A24): 10 backbone/umbrella skills
+(A1–A9 + `database`) and 14 twin skills. Still owed: 26 twin skills (the
+other languages in the 13 remaining twin groups) and 26 non-twin
+skills — 52 total.
 Extend per the coverage rule as skills are edited: one must-fire case
 rides along with the edit that needs it — do not batch-write cases nobody
 has scored. Behavioural scoring needs a model judge; the deterministic

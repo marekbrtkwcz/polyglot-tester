@@ -18,10 +18,10 @@ trial; disagreeing trials are recorded, not discarded.
 | 2 | "Our checkout keeps returning generic 500s — the Go worker and the Python API both swallow errors, tie them together properly" | `error-handling-polyglot` | neither twin alone |
 | 3 | "Run the usual npm and pip checks before we ship on Monday — anything known-bad in there?" | `dependency-audit` | `security-polyglot` |
 | 4 | "We keep passwords hashed with plain sha256 somewhere — is that the right approach for the API?" | `security-polyglot` | — |
-| 5 | "We're seeing N+1 queries from Prisma in the orders endpoint" | `typescript-database` | `database-polyglot` |
-| 6 | "Should the new notification service stay on Postgres or move to DynamoDB?" | `database-polyglot` | any `*-database` twin |
+| 5 | "We're seeing N+1 queries from Prisma in the orders endpoint" | `database` | `performance-polyglot` |
+| 6 | "Should the new notification service stay on Postgres or move to DynamoDB?" | `database` | — |
 | 7 | "Profile the Python ingestion job — it eats 8 GB and takes four minutes, users say it got worse after the last release" | `python-performance` | `performance-polyglot` |
-| 15 | "Our services are written in different languages and every one of them queries the database in a loop — where do we even start?" | `database-polyglot` | any `*-database` twin |
+| 15 | "Our services are written in different languages and every one of them queries the database in a loop — where do we even start?" | `database` | — |
 
 ## Testing pair
 
@@ -65,6 +65,10 @@ Per case, scored per trial:
 The per-language twins now name their cross-language siblings in their
 descriptions ("If the language is not Go, prefer ..."), so a
 language-ambiguous request should wake the umbrella skill, not a random
-twin — case 15 covers this. If trials still show the wrong twin waking on a
+twin — case 15 covered this. On 2026-11-27 the database group was merged
+into the single `database` skill with `references/` (pilot), so cases
+5, 6, 15 now expect `database` and have no twin to stay quiet. The other
+13 twin groups keep their deferral sentences until they are merged the
+same way. If trials still show the wrong twin waking on a
 language-ambiguous prompt, re-run this file's cases before editing the
 descriptions again.

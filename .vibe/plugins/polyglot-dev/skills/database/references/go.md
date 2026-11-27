@@ -1,8 +1,3 @@
----
-name: golang-database
-description: Load this skill when working with databases in Go: choosing between database/sql, sqlx, sqlc, and ORMs, plus connection pooling, migrations, and query safety. If the language is not Go, prefer python-database or typescript-database.
----
-
 # Go Database Access
 
 ## Choose the layer

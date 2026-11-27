@@ -38,7 +38,7 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Skill | `polyglot-dev:git-workflow-polyglot` | Day-to-day git: commit conventions, branching, PRs, rebase, bisect, recovery |
 | Skill | `polyglot-dev:release-and-changelog` | Semver, Keep a Changelog, tagging, release notes from a diff, rollback plan |
 | Skill | `polyglot-dev:dependency-audit` | Vulnerability and outdated-dependency audits per language (npm audit, pip-audit, govulncheck) |
-| Skill | `polyglot-dev:database-polyglot` | Store choice, safe queries, transactions, expand/contract migrations, pooling across JS/TS, Python, Go |
+| Skill | `polyglot-dev:database` | Store choice, safe queries, transactions, expand/contract migrations, pooling across JS/TS, Python, Go; per-language depth (drivers, ORMs, tools) in the skill's `references/` files, loaded on demand |
 | Skill | `polyglot-dev:api-design-polyglot` | Resource modeling, status codes, error envelopes, pagination, versioning, breaking-change policy |
 | Skill | `polyglot-dev:auth-polyglot` | Passwords (argon2/bcrypt), sessions, JWT, OAuth2/OIDC+PKCE, authorization, MFA across all three languages |
 | Skill | `polyglot-dev:accessibility-polyglot` | WCAG 2.2 AA: semantics, keyboard, screen readers, axe-core per stack, manual sign-off |
@@ -66,7 +66,6 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Skill | `polyglot-dev:golang-stay-updated` | Toolchain upgrades, go directive, `gopls modernize`, stdlib-first rule |
 | Skill | `polyglot-dev:golang-safety` | Panic recovery, nil map/pointer traps, races, overflow, input limits |
 | Skill | `polyglot-dev:golang-context` | ctx as first param, cancellation, deadlines, values sparingly |
-| Skill | `polyglot-dev:golang-database` | sqlc/sqlx/ORM choice, pooling, transactions, migrations, query safety |
 | Skill | `polyglot-dev:golang-graphql` | gqlgen, schema design, dataloader for N+1, errors, depth limits |
 | Skill | `polyglot-dev:golang-how-to` | Copy-paste recipes: HTTP server, JSON API, env, files, retry, shutdown |
 | Skill | `polyglot-dev:golang-web-and-apis` | net/http vs gin/echo/fiber, handlers, middleware order, graceful shutdown, handler tests |
@@ -86,7 +85,6 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Skill | `polyglot-dev:python-logging` | logging module, structlog, levels, JSON in prod, correlation IDs |
 | Skill | `polyglot-dev:python-web-and-apis` | FastAPI/Django/Flask choice, async SQLAlchemy, Alembic, Strawberry, Celery |
 | Skill | `polyglot-dev:python-graphql` | Strawberry/Ariadne/Graphene choice, schema design, DataLoader for N+1, typed errors, depth limits, testing |
-| Skill | `polyglot-dev:python-database` | SQLAlchemy 2.x sync/async, psycopg3/asyncpg, Alembic up/down, pooling, transactions |
 | Skill | `polyglot-dev:python-refactoring` | Test-first refactoring: rename/extract/move via jedi/rope, one green step at a time |
 | Skill | `polyglot-dev:python-stay-updated` | Python EOL schedule, What's New, deprecation-driven upgrades, dependency bumps |
 | Skill | `polyglot-dev:python-data-and-validation` | pydantic v2 vs attrs vs dataclasses, Protocols, boundary validation |
@@ -102,7 +100,6 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Skill | `polyglot-dev:typescript-lint-format-tooling` | Biome vs ESLint+Prettier, type-aware linting, pre-commit hooks, CI gates that can fail |
 | Skill | `polyglot-dev:typescript-node-runtime` | Node versions, ESM/CJS, streams/buffers, CLI tools, env validation, graceful shutdown |
 | Skill | `polyglot-dev:typescript-web-and-dom` | DOM APIs, fetch + AbortController, storage, events, IntersectionObserver, a11y basics |
-| Skill | `polyglot-dev:typescript-database` | Prisma vs Drizzle vs pg, pool sizing, transactions, migrations, N+1 |
 | Skill | `polyglot-dev:typescript-graphql` | yoga/Apollo/Pothos, dataloaders, typed errors, depth limits, codegen client |
 | Skill | `polyglot-dev:typescript-logging` | pino vs winston, structured fields, correlation IDs via AsyncLocalStorage, redaction, testing logs |
 | Skill | `polyglot-dev:typescript-ecosystem-and-packages` | npm/pnpm/yarn, semver, exports map, publishing with provenance, evaluating dependencies |

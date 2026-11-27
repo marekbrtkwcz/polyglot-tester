@@ -99,6 +99,17 @@ versioning is semantic.
 
 ### Changed
 
+- Pilot for progressive disclosure: the database twin group
+  (`database-polyglot`, `golang-database`, `python-database`,
+  `typescript-database`) is merged into one `database` skill; the
+  per-language depth moved unchanged into `references/go.md`,
+  `references/python.md`, `references/ts.md`, read on demand after the
+  skill activates. Skill count 79 → 76, description chars −9%, and the
+  group's deferral sentences and twin-collision eval rows are removed.
+  Eval cases A14/A24 and collision cases 5/6/15 now expect `database`;
+  a lexical-baseline run record is in
+  `evals/runs/2026-11-27-database-merge-pilot.md` (behavioural re-run on
+  a real model is still owed before merging further groups).
 - All four pre-tool hooks now match `re:bash|git_bash|powershell|process_start`:
   commands the agent starts in the background or through the Windows managed
   shell tools no longer bypass the destructive-command, secrets, WIP-commit,

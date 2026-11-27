@@ -1,9 +1,9 @@
 ---
-name: database-polyglot
-description: Load this skill when working with databases in JavaScript/TypeScript, Python, or Go — choosing a store, writing safe queries, transactions, migrations, and connection pooling across languages. When the stack is already fixed, prefer the matching golang-database, python-database, or typescript-database skill for tool-specific depth.
+name: database
+description: Load this skill when working with databases in JavaScript/TypeScript, Python, or Go — choosing a store, writing safe queries, transactions, migrations, and connection pooling. Once the language is known, also read the matching references/ file (go.md, python.md, ts.md) for driver-, ORM-, and tool-specific depth.
 ---
 
-# Database Work (Polyglot)
+# Database Work
 
 ## Choosing a store
 
@@ -29,11 +29,16 @@ description: Load this skill when working with databases in JavaScript/TypeScrip
 - Every migration must be reversible or explicitly marked irreversible; test up AND down.
 - Backfills: batch them, monitor load, make re-runnable (idempotent).
 
-## Per-language quick reference
+## Per-language deep dives
 
-- **JS/TS**: Prisma or Drizzle (SQL-safe, typed); pg with a pool (`max` sized to ~DB connections / app instances); transactions via `$transaction` / callback API.
-- **Python**: SQLAlchemy Core/ORM with `text()` bound params, psycopg3; Alembic for migrations; pool via `pool_size`/`max_overflow`.
-- **Go**: sqlc (type-safe SQL) or pgx stdlib; `database/sql` pool via `SetMaxOpenConns`; transactions with `pgx.Tx` or `sql.Tx` + `defer rollback`.
+The rules above apply in every language. For tool-specific depth, read the
+file for the language in use (relative to this skill's directory):
+
+| Language | File | Covers |
+| --- | --- | --- |
+| Go | `references/go.md` | database/sql vs sqlx vs sqlc vs ORMs, pooling, transactions, migrations, query safety |
+| Python | `references/python.md` | SQLAlchemy 2.x sync/async, psycopg3/asyncpg, Alembic, pooling, async traps, query safety |
+| JavaScript/TypeScript | `references/ts.md` | Prisma vs Drizzle vs pg, pool sizing, transactions, migrations, N+1 |
 
 ## Pooling & ops
 
@@ -43,5 +48,4 @@ description: Load this skill when working with databases in JavaScript/TypeScrip
 
 ## Related
 
-- Per-language depth: `golang-database`, `python-database`, `typescript-database`.
 - Knowledge `databases` — concepts plus diagnostics (EXPLAIN reading, health queries, migration verification).

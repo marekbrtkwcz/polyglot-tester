@@ -16,7 +16,7 @@ spec.loader.exec_module(esm)
 
 def test_load_skills_reads_every_skill_description():
     skills = esm.load_skills()
-    assert len(skills) == 79
+    assert len(skills) == 76
     assert all(desc for desc in skills.values())
     assert "feature-workflow" in skills
 
@@ -24,7 +24,7 @@ def test_load_skills_reads_every_skill_description():
 def test_parse_cases_reads_both_case_files():
     activation = esm.parse_cases(esm.EVALS / "activation-cases.md")
     collision = esm.parse_cases(esm.EVALS / "collision-cases.md")
-    assert len(activation) == 23
+    assert len(activation) == 24
     assert len(collision) == 15
     assert activation[0]["winner"] == "feature-workflow"
     assert collision[0]["winner"] == "golang-error-handling"
@@ -66,5 +66,5 @@ def test_main_outputs_valid_json_with_all_cases():
         check=True,
     )
     data = json.loads(result.stdout)
-    assert len(data) == 38
+    assert len(data) == 39
     assert all("mechanical_pick" in case and "winner_rank" in case for case in data)
