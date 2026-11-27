@@ -17,6 +17,9 @@ versioning is semantic.
   `golang-refactoring`, `golang-stay-updated`, `golang-safety`,
   `golang-context`, `golang-database`, `golang-graphql`, `golang-how-to`,
   `golang-pkg-go-dev`, `golang-samber-libs`.
+- Two more skills from the cxuu/golang-skills topic range: `golang-language-idioms`
+  (control flow, declarations, generics, function style) and `golang-logging`
+  (slog, levels, structured attributes, zap/zerolog comparison).
 
 ## [1.2.0] - 2026-11-27
 

@@ -33,6 +33,8 @@ and a safety hook that blocks destructive shell commands before they run.
 | Skill | `polyglot-dev:golang-how-to` | Copy-paste recipes: HTTP server, JSON API, env, files, retry, shutdown |
 | Skill | `polyglot-dev:golang-pkg-go-dev` | Evaluating packages on pkg.go.dev, curated library categories |
 | Skill | `polyglot-dev:golang-samber-libs` | lo, oops, do, mo, hot, ro — what each is for and when to skip it |
+| Skill | `polyglot-dev:golang-language-idioms` | Guard clauses, var vs :=/iota/shadowing, generics, function style, Stringer |
+| Skill | `polyglot-dev:golang-logging` | slog in depth, levels, structured attributes, ctx, when zap/zerolog win |
 | Agent | `polyglot-dev:code-reviewer` | Read-only subagent reviewing diffs for correctness, security, and language-specific pitfalls |
 | Agent | `polyglot-dev:test-runner` | Detects the repo's runner, runs tests/lint/type checks, reports pass/fail with evidence |
 | Agent | `polyglot-dev:explorer` | Read-only code exploration: structure, call sites, stack detection before planning |
