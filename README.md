@@ -5,6 +5,24 @@ development in JavaScript/TypeScript, Python, and Go: a delivery workflow,
 testing and code-review guidance, per-language knowledge, helper subagents,
 and a safety hook that blocks destructive shell commands before they run.
 
+## Quickstart
+
+1. **Install** the plugin into your project (see [Install](#install)) and run
+   `/reload` in Vibe.
+2. **Ask for a change** in plain language — e.g. "add input validation to the
+   signup endpoint, test-first". The `feature-workflow` skill drives the whole
+   loop: plan → failing test → implementation → verification → review.
+3. **Let the right language skill load itself**: when the task touches Go,
+   Python, or TypeScript code, the matching `golang-*`, `python-*`, or
+   `typescript-*` skill activates on its own — you don't need to name it.
+4. **Review before merging**: ask for a review and the `code-review-polyglot`
+   checklist plus the `code-reviewer` agent produce a severity-ranked verdict.
+5. **Ship it**: `git-workflow-polyglot` for the branch/commit/PR flow,
+   `release-and-changelog` for versioning and release notes.
+
+The `guard-destructive-commands` hook is active from the first run — a
+mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
+
 ## Components
 
 | Component | Name | What it does |
@@ -129,9 +147,40 @@ pull request (`.github/workflows/ci.yml`).
 - Agent TOML files use **snake_case** keys (`schema_version`, `agent_type`,
   `display_name`, `enabled_tools`, `disabled_tools`) — the plugin validator
   rejects camelCase.
-- Add a skill: new folder under `skills/<name>/SKILL.md` with frontmatter
-  (`name`, `description`).
 - Add an agent: new TOML under `ai.mistral.vibe/agents/`.
+
+### Adding your own skill
+
+A skill is one folder with one file:
+
+```
+.vibe/plugins/polyglot-dev/skills/<skill-name>/SKILL.md
+```
+
+Conventions:
+
+- **Name**: lowercase `kebab-case`, unique across the plugin; prefix it with
+  the language when it is language-specific (`golang-`, `python-`,
+  `typescript-`) and leave it unprefixed for cross-language topics.
+- **Frontmatter** (required, exactly two fields):
+
+  ```yaml
+  ---
+  name: my-skill
+  description: Load this skill when ... — one sentence that tells the agent
+    exactly which requests should trigger it.
+  ---
+  ```
+
+  The `description` is the trigger: write it from the user's point of view
+  ("Load this skill when writing idiomatic Python..."), not from the file's.
+- **Body**: markdown, imperative and example-driven. Lead with the decision
+  the reader must make, then the rules, then copy-paste examples. Keep it
+  scannable — bullets over prose, code blocks over explanations.
+- **No extra files** unless the skill needs them (reference docs, scripts);
+  link them from `SKILL.md`.
+- After adding: list the skill in the Components table above and in
+  `CHANGELOG.md` under `[Unreleased]`.
 - Run tests: `python -m pytest .vibe/plugins/polyglot-dev/tests/ -q`
   (optional `hypothesis` enables the property-based test).
 - Lint: `python -m ruff check --isolated --select E4,E7,E9,F .vibe/plugins/polyglot-dev/`
