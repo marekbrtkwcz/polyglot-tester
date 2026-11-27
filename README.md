@@ -220,7 +220,8 @@ Then run `/reload` in your Vibe session.
 
 ## Tests
 
-The guard is the only component with executable logic, and it is tested:
+The pre-tool guard hooks and the scripts under `scripts/` are the only
+components with executable logic, and they are tested:
 
 ```bash
 pip install -r requirements-dev.txt

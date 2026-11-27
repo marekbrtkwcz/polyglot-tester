@@ -48,7 +48,7 @@ External review of this pilot found two arithmetic errors, now fixed in
 place:
 
 - Description chars were compared apples-to-oranges (with vs without the
-  `description: ` prefix): the merge actually went 18,779 → 18,035 chars
+  `description:` prefix): the merge actually went 18,779 → 18,035 chars
   (−744, −4.0%), not 19,806 → 18,035 (−9%). Fixed above and in
   `CHANGELOG.md`.
 - Coverage accounting in `evals/activation-cases.md`: A14 and A24 both
@@ -78,4 +78,3 @@ Still NOT run: behavioural scoring with a real model judge, and a live
 Vibe session confirming the model reads `references/<lang>.md` after
 `database` activates — both remain the gate before merging the other 13
 twin groups.
-

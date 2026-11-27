@@ -10,10 +10,11 @@ versioning is semantic.
 
 - Eval coverage and wiring (audit finding 4): 12 new must-fire activation
   cases (A12–A23), one per per-language twin group with the language named,
-  gating the twin deferral sentences — coverage is now 23/79 skills
-  (backlog accounting in `evals/activation-cases.md`). The deterministic
-  matcher `scripts/eval_skill_matching.py` now also runs in CI as an
-  advisory `skill-evals` job (`continue-on-error: true`) over all 38 cases;
+  gating the twin deferral sentences — coverage accounting lives in
+  `evals/activation-cases.md` (23/76 skills after the database merge). The
+  deterministic matcher `scripts/eval_skill_matching.py` now also runs in
+  CI as an advisory `skill-evals` job (`continue-on-error: true`) over all
+  39 cases;
   behavioural model scoring remains a manual step (run record in
   `evals/runs/2026-11-27-twin-group-cases-and-ci.md`).
 - Twin deferral sentences in the 41 per-language skill descriptions across
@@ -96,7 +97,6 @@ versioning is semantic.
   safety, and testing LLM-backed features. Ships with its must-fire
   activation case (A9) in `evals/activation-cases.md` per the coverage
   rule.
-
 - Structure test for progressive disclosure: every `references/*.md` file
   of a skill must be named in its `SKILL.md`, exist and be non-empty, and
   carry no frontmatter; no SKILL.md may name a missing reference file and
@@ -109,9 +109,9 @@ versioning is semantic.
   `typescript-database`) is merged into one `database` skill; the
   per-language depth moved unchanged into `references/go.md`,
   `references/python.md`, `references/ts.md`, read on demand after the
-  skill activates. Skill count 79 → 76, description chars 18,779 → 18,035
-  (−4.0%), and the
-  group's deferral sentences and twin-collision eval rows are removed.
+  skill activates. Skill count 79 → 76, description chars 18,779 →
+  18,035 (−4.0%), and the group's deferral sentences and twin-collision
+  eval rows are removed.
   Eval cases A14/A24 and collision cases 5/6/15 now expect `database`;
   a lexical-baseline run record is in
   `evals/runs/2026-11-27-database-merge-pilot.md` (behavioural re-run on
@@ -184,7 +184,6 @@ versioning is semantic.
   honestly that Mistral ships no official Go SDK and points to the
   OpenAI-compatible endpoint `https://api.mistral.ai/v1` (e.g. via
   `openai-go`) or the community `gage-technologies/mistral-go`.
-
 - `pre-push-checks` is now a silent no-op when the plugin is installed in a
   project other than its own repository: it no longer prints `skipped` noise
   on every push there, and a missing pytest there no longer blocks the push.
@@ -223,11 +222,11 @@ versioning is semantic.
   the WIP guard through a quoted separator. The WIP subject regex also
   accepts `(wip)` parentheses, as its docstring always claimed.
 - `is_bulk_rm` also knows the BSD `-x` flag: `rm -rfx build` is blocked.
-- Secrets guard: the diff-header exclusion is now `+++ ` (with space), so
-  an added code line starting with `++` (e.g. `++i;`) is still scanned;
+- Secrets guard: the diff-header exclusion is now `+++` followed by a
+  space, so an added code line starting with `++` (e.g. `++i;`) is still
+  scanned;
   `commit_stages_worktree` strips quoted `-m` payloads first, so
   `git commit -m "fix -a flag"` no longer triggers an unstaged scan.
-- README test count updated to 282.
 - `segment_after` is escape-aware inside quotes: `\"` no longer closes the
   string, so `git commit -m "WIP: \"a; b"` can no longer slip past the WIP
   guard through a separator after an escaped quote.
