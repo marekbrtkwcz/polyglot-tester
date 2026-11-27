@@ -45,3 +45,12 @@ icon: code
   not a style issue.
 - `time.After` in a loop leaks timers until they fire; use `NewTimer` +
   `Reset`.
+
+## Official sources
+
+- https://go.dev — downloads, tour, blog, release notes.
+- https://go.dev/doc/effective_go — Effective Go (read before writing idiomatic Go).
+- https://go.dev/ref/spec — the language specification.
+- https://pkg.go.dev — standard library + package docs (evaluate third-party packages here).
+- https://go.dev/doc/devel/release — per-version release notes; read before upgrading the toolchain.
+- https://github.com/golang/go/wiki/CodeReviewComments — code review guidelines.
