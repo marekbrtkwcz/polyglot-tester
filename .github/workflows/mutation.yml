@@ -1,0 +1,31 @@
+name: Mutation testing
+
+on:
+  # enable the nightly schedule once the mutation baseline is triaged and
+  # the threshold in the gate step is grounded in a full run
+  workflow_dispatch:
+
+jobs:
+  mutmut:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements-dev.txt "mutmut==2.5.1"
+      - name: Mutation-test the guard scripts
+        # mutmut exits 2 when any mutant survives; the score-gate step below
+        # is the single point of truth for pass/fail
+        continue-on-error: true
+        run: |
+          mutmut run \
+            --paths-to-mutate=".vibe/plugins/polyglot-dev/guard_destructive.py,.vibe/plugins/polyglot-dev/guard_secrets.py,.vibe/plugins/polyglot-dev/guard_commit_message.py,.vibe/plugins/polyglot-dev/prepush_checks.py" \
+            --tests-dir=".vibe/plugins/polyglot-dev/tests" \
+            --runner="python -m pytest .vibe/plugins/polyglot-dev/tests/ -q" \
+            --simple-output
+      - name: Mutation score report and gate
+        if: always()
+        run: python scripts/mutation_gate.py --min-score 0.85
