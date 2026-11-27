@@ -110,11 +110,12 @@ cases 5, 6, 15 now expect `database`).
 
 ## Backlog
 
-Coverage accounting (2026-11-27, after the database merge): 24 of 76
-skills have a must-fire case (A1–A24): 10 backbone/umbrella skills
-(A1–A9 + `database`) and 14 twin skills. Still owed: 26 twin skills (the
-other languages in the 13 remaining twin groups) and 26 non-twin
-skills — 52 total.
+Coverage accounting (2026-11-27, after the database merge): 23 of 76
+skills have a must-fire case (A1–A24 — `database` is the target of both
+A14 and A24, so 24 cases cover 23 unique skills): 10 backbone/umbrella
+skills (A1–A9 + `database`) and 13 twin skills. Still owed: 25 twin
+skills (the other languages in the 13 remaining twin groups) and 28
+non-twin skills — 53 total.
 Extend per the coverage rule as skills are edited: one must-fire case
 rides along with the edit that needs it — do not batch-write cases nobody
 has scored. Behavioural scoring needs a model judge; the deterministic

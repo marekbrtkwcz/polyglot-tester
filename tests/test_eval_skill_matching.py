@@ -40,8 +40,11 @@ def test_rank_puts_language_named_twin_on_top():
     ranking = esm.rank(
         "N+1 queries from Prisma in the orders endpoint", skills, doc_freq
     )
-    # the case-file prompts deliberately avoid description vocabulary, so the
-    # mechanical matcher abstains (all zero) instead of guessing
+    # `database` names its tools in the description, so this prompt matches it
+    # lexically (collision case C5); prompts sharing no vocabulary with any
+    # description still abstain (all zero) instead of guessing
+    assert ranking[0][1] == "database"
+    ranking = esm.rank("the quick brown fox jumps over the lazy dog", skills, doc_freq)
     assert all(score == 0.0 for score, _, _ in ranking)
     ranking = esm.rank(
         "error handling in Go: wrapping with sentinel errors", skills, doc_freq

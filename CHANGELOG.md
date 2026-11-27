@@ -97,6 +97,11 @@ versioning is semantic.
   activation case (A9) in `evals/activation-cases.md` per the coverage
   rule.
 
+- Structure test for progressive disclosure: every `references/*.md` file
+  of a skill must be named in its `SKILL.md`, exist and be non-empty, and
+  carry no frontmatter; no SKILL.md may name a missing reference file and
+  no reference file may be orphaned (`tests/test_plugin_structure.py`).
+
 ### Changed
 
 - Pilot for progressive disclosure: the database twin group
@@ -104,12 +109,22 @@ versioning is semantic.
   `typescript-database`) is merged into one `database` skill; the
   per-language depth moved unchanged into `references/go.md`,
   `references/python.md`, `references/ts.md`, read on demand after the
-  skill activates. Skill count 79 → 76, description chars −9%, and the
+  skill activates. Skill count 79 → 76, description chars 18,779 → 18,035
+  (−4.0%), and the
   group's deferral sentences and twin-collision eval rows are removed.
   Eval cases A14/A24 and collision cases 5/6/15 now expect `database`;
   a lexical-baseline run record is in
   `evals/runs/2026-11-27-database-merge-pilot.md` (behavioural re-run on
-  a real model is still owed before merging further groups).
+  a real model is still owed before merging further groups). The
+  `database` description now names the concrete tools (SQL/ORMs, N+1,
+  Prisma, Drizzle, SQLAlchemy, Alembic, sqlc, pgx) so prompts like
+  "N+1 queries from Prisma in the orders endpoint" activate the skill
+  even when the word "database" never appears (external review of the
+  pilot); coverage accounting in `evals/activation-cases.md` corrected
+  to 23/76 skills covered, 53 owed. Before/after lexical gate on the
+  39 eval cases moved only collision case C5 (abstain → agree, `database`
+  first): 7/18/14 → 8/17/14 agree/abstain/disagree (run record
+  `evals/runs/2026-11-27-database-merge-pilot.md`).
 - All four pre-tool hooks now match `re:bash|git_bash|powershell|process_start`:
   commands the agent starts in the background or through the Windows managed
   shell tools no longer bypass the destructive-command, secrets, WIP-commit,

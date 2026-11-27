@@ -1,6 +1,6 @@
 ---
 name: database
-description: Load this skill when working with databases in JavaScript/TypeScript, Python, or Go — choosing a store, writing safe queries, transactions, migrations, and connection pooling. Once the language is known, also read the matching references/ file (go.md, python.md, ts.md) for driver-, ORM-, and tool-specific depth.
+description: Load this skill when working with databases (SQL/ORMs, N+1, Prisma, Drizzle, SQLAlchemy, Alembic, sqlc, pgx) in JavaScript/TypeScript, Python, or Go — choosing a store, writing safe queries, transactions, migrations, and connection pooling. Once the language is known, also read the matching references/ file (go.md, python.md, ts.md) for driver-, ORM-, and tool-specific depth.
 ---
 
 # Database Work

@@ -270,5 +270,40 @@ def test_hook_commands_fallback_to_python3():
         )
 
 
+# --- skill references/ ------------------------------------------------------
+
+
+def test_skill_references_wired_both_ways():
+    # Progressive disclosure: a skill's references/*.md support files are read
+    # on demand after activation. Every file must be named in SKILL.md (no
+    # orphans), every name in SKILL.md must resolve to a non-empty file, and
+    # reference files carry no frontmatter — they are not skills themselves.
+    for d in skill_dirs():
+        skill_md = (d / "SKILL.md").read_text(encoding="utf-8")
+        refs_dir = d / "references"
+        mentioned = set(re.findall(r"references/([A-Za-z0-9_.-]+\.md)", skill_md))
+        if not refs_dir.is_dir():
+            assert not mentioned, (
+                f"{d.name}: SKILL.md names references/ files but the dir is missing: {sorted(mentioned)}"
+            )
+            continue
+        actual = {p.name for p in refs_dir.glob("*.md")}
+        assert actual, f"{d.name}: references/ exists but contains no .md files"
+        missing = mentioned - actual
+        assert not missing, (
+            f"{d.name}: SKILL.md names missing reference files: {sorted(missing)}"
+        )
+        orphaned = actual - mentioned
+        assert not orphaned, (
+            f"{d.name}: reference files not named in SKILL.md: {sorted(orphaned)}"
+        )
+        for name in sorted(actual):
+            text = (refs_dir / name).read_text(encoding="utf-8")
+            assert text.strip(), f"{d.name}: references/{name} is empty"
+            assert not text.lstrip().startswith("---"), (
+                f"{d.name}: references/{name} must not carry frontmatter"
+            )
+
+
 if __name__ == "__main__":
     raise SystemExit(pytest.main([__file__, "-q"]))
