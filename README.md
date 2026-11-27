@@ -101,7 +101,9 @@ mistyped `rm -rf` or force-push is blocked with an explanation, never executed.
 | Agent | `polyglot-dev:security-auditor` | Read-only security review: injection, access control, secrets, deserialization, supply chain |
 | Agent | `polyglot-dev:doc-writer` | Writes READMEs, docstrings, ADRs, changelogs matching the repo's existing docs style |
 | Agent | `polyglot-dev:refactorer` | Test-first refactoring in small green steps; never mixes refactor with behavior change |
-| Knowledge | `polyglot-dev:javascript-typescript`, `polyglot-dev:python`, `polyglot-dev:go`, `polyglot-dev:ci-cd`, `polyglot-dev:testing`, `polyglot-dev:docker`, `polyglot-dev:databases` | Toolchains, conventions, and diagnostics per language plus CI/CD, testing, containers, databases |
+| Agent | `polyglot-dev:performance-profiler` | Picks the right profiler per stack, reads the output, reports bottlenecks with evidence |
+| Agent | `polyglot-dev:onboarder` | Read-only repo explorer producing a newcomer's map: stack, layout, commands, conventions |
+| Knowledge | `polyglot-dev:javascript-typescript`, `polyglot-dev:python`, `polyglot-dev:go`, `polyglot-dev:ci-cd`, `polyglot-dev:testing`, `polyglot-dev:docker`, `polyglot-dev:databases`, `polyglot-dev:security`, `polyglot-dev:cloud` | Toolchains, conventions, and diagnostics per language plus CI/CD, testing, containers, databases, security, cloud |
 | Hook | `guard-destructive-commands` | Pre-tool guard on `bash` (see below) |
 | Hook | `guard-secrets-in-git` | On `git add`/`git commit`, scans staged/unstaged/untracked content for secret patterns and blocks the command |
 
@@ -173,8 +175,9 @@ force, `--` end-of-options, flags belonging to a chained command), the git
 patterns, commit-message false-positive regressions, end-to-end hook behavior
 through stdin/stdout, and a property-based test (hypothesis) that checks
 `is_bulk_rm` against a reference model over generated flag combinations.
-CI runs the suite on Python 3.11–3.14 plus a ruff lint gate on every push and
-pull request (`.github/workflows/ci.yml`).
+CI runs the suite on Python 3.11–3.14, a ruff lint gate, `plugin.json` schema
+validation against the official Agent Plugins 1.0 schema, and a markdownlint
+pass over all docs — on every push and pull request (`.github/workflows/ci.yml`).
 
 ## Development
 

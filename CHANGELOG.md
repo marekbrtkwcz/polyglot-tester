@@ -38,6 +38,14 @@ versioning is semantic.
 - Three more cross-language skills: `accessibility-polyglot` (WCAG 2.2),
   `i18n-polyglot` (locales, plurals, RTL), `events-and-queues-polyglot`
   (brokers, idempotency, DLQ).
+- Agents `performance-profiler` and `onboarder`.
+- Knowledge folders `security` (OWASP per language + tooling) and `cloud`
+  (IAM, core services, Terraform workflow).
+- Secrets guard detects npm tokens, GitLab PATs, SendGrid keys, Slack
+  webhooks, and JWTs in addition to the existing patterns.
+- CI gains a `plugin-schema` job (plugin.json validated against the official
+  Agent Plugins 1.0 schema via `scripts/validate_plugin_schema.py`) and a
+  `docs-lint` job (markdownlint-cli2 over all markdown).
 
 ## [1.3.0] - 2026-11-27
 
