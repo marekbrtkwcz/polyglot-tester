@@ -29,3 +29,15 @@ Companion to the `debugging-polyglot` skill: the commands that answer
   declaration site, not the write site.
 - Deadlock detected: look for `sync.Mutex` held across a call that takes
   it again, or a channel nobody sends on/receives from.
+
+## Everyday commands
+
+- After editing imports/deps: `go mod tidy` (then commit `go.mod` + `go.sum`).
+- Regenerate code: `go generate ./...`.
+- Full local gate: `gofmt -l . && go vet ./... && go test -race -count=1 ./...`.
+- Static analysis: `staticcheck ./...` or `golangci-lint run`.
+
+## CI debugging (Go)
+- Cache issues: `go clean -modcache` locally to reproduce a cold CI run.
+- Version mismatch: CI `setup-go` `go-version` vs local `go version`; modules may require a minimum (`go.mod` `go` directive).
+- Vulnerability gate: `govulncheck ./...` as its own CI job.

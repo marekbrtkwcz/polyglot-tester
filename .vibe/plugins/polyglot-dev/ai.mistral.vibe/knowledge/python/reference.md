@@ -29,3 +29,17 @@ Companion to the `debugging-polyglot` skill: the commands that answer
   producing function, not the consuming one.
 - `ImportError` only in CI: usually an uninstalled/extra dependency or a
   different Python version.
+
+## Everyday commands
+
+- Sync env from lockfile (CI): `uv sync --locked --frozen`; locally `uv sync`.
+- Fast test loops: `pytest -q -k name`, `pytest --lf` (last failed), `pytest -x`.
+- Lint/format gate: `ruff check .` and `ruff format --check .` (apply with `ruff format .`).
+- Types: `mypy --strict src` (incremental by default; `mypy --no-incremental` for a clean run).
+- Coverage: `pytest --cov=mypackage --cov-report=term-missing`.
+
+## CI debugging (Python)
+
+- Version mismatch: CI uses the `setup-python` version — mirror it locally with `uv python install <ver>`.
+- Missing dep in CI: the package's extras (`pip install -e ".[dev]"` / `uv sync --extra dev`).
+- Vulnerability gate: `pip-audit` (or `uv run pip-audit`) in a separate CI job so it never blocks the test job.

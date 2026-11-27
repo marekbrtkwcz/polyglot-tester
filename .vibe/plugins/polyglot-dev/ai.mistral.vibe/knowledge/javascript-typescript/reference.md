@@ -30,3 +30,17 @@ Companion to the `debugging-polyglot` skill: the commands that answer
    machine.
 3. `Cannot read properties of undefined` — trace where the value is
    *produced*, not where it is *read*.
+
+## Everyday commands
+
+- Install exactly from the lockfile (CI): `npm ci` / `pnpm install --frozen-lockfile` / `bun install --frozen-lockfile`.
+- Watch tests while coding: `npx vitest` (watch mode), `npx vitest related <file>` for tests touching a file.
+- Lint/format gate: `npx biome check .` / `npx biome check --write .`.
+- Types in watch: `npx tsc --noEmit --watch`.
+- Bundle size: `npx vite build --mode analyze` or `source-map-explorer dist/*.js`.
+
+## CI debugging (JS/TS)
+
+- Fails only in CI: check Node version (`actions/setup-node` `node-version` vs local `node -v`), then `npm ci` (not `npm install`).
+- Playwright in CI: `npx playwright install --with-deps chromium` before running; set `CI=true` for retries policy.
+- Out-of-memory in build: `NODE_OPTIONS=--max-old-space-size=4096`.
